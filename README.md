@@ -1,4 +1,6 @@
-gensim
-======
+WorldSim
+========
 
-Rudimentary genetic simulation, for fun
+Rudimentary world simulation, for fun. 
+
+Trying out Entity-Component Architecture and data parallelism.
