@@ -1,15 +1,10 @@
 \chapter*{Parallel Plan}
 
-The AKWDS design includes several places to introduce and explore parallelism.
+The GWS design includes several places to introduce and explore parallelism.
 
 \begin{description}
-\item[N-body] The core N-body physics simulation seems like it will support up to one thread of execution per body. Efficiently handling interactions, such as collisions, can add some complexity to the solution.
-\item[AKWDS] The main computation can be articulated as a processing pipeline with phases for identifying objects between samples, computing trajectories, and computing firing solutions.
-\item[Object Tracking] At each sample, objects need to be identified and grouped. It seems like a non-trivial computation that could benefit from running in parallel and may be able to take advantage of stencils due to locality expectations between time steps.
-\item[Trajectories] Trivially parallel. For N tracked objects, fit the data points to a function.
-\item[Firing Solutions] Trivially parallel. For M targets (where M is the number of cannons to fire), compute the future state of the target and compute the required BDS heading, azmuth, and velocity to hit the target in the future.
+\item[Task Parallelism] The core simulation is run by the various Systems which can all be run in parallel, and shared data can be managed either through a rudimentary message passing mechanism or careful design to minimize shared data.
+\item[Data Parallelism] All entities are made up of components which are stored in contiguous vectors which will enable vectorization of the code (instruction-level parallelism) and the use of elemental functions across components.
 \end{description}
 
-We plan to look at system scaling by varying the number of initial objects in the simulation and the number of cannons available. We intend to look at wall clock time to complete a fixed number of simulation steps. We also intend to look at latency between the FOSA transmission time and BDS receive time to see if pipelining provides a significant benefit.
-
-If we have extra time, we would like to explore using MPI to spread the simulator and AKWDS computations across nodes to increase the size of simulation that can be done in realtime.
+We plan to look at system scaling by varying the number of initial objects in the simulation and the number of systems available. We intend to look at wall clock time to complete a fixed number of simulation steps.

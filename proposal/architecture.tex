@@ -1,23 +1,31 @@
 \chapter*{Highlevel Architecture}
 
 \begin{figure}[h]
-\includegraphics{./akwds_arch.pdf}
+\includegraphics[width=\textwidth]{architecture.png}
 \caption{High Level Architecture Diagram}
 \label{fig:arch}
 \end{figure}
 
-Figure 1 shows a block level diagram of the AKWDS software (without the visualization component). There are two main programs in the solution.
+Figure~\ref{fig:arch} shows a block level diagram of the GWS system and its various parts.
+
 \begin{description}
-\item[AKWDS] This is the control software that OSNAP needs in support of its mission to plan for and execute plans related to real and imagined extraterrestrial encounters. In this case, a hostile invasion scenario.
-\item[Simulator] The Simulator is responsible for emulating the world that a deployed AKWDS system would be deployed in. This software supports evaluation and tuning of AKWDS without enduring actual extraterrestrial invasion.
+\item[World Simulator] This is the host that will house the various Systems of the world to be simulated
+\item[Component Manager] Manages the components that will make up entities (an entity is a representation of a single organism in the world).
+\item[System Manager] Manages all the systems that will interact with the world. For example, the WeatherSystem will interact with the oxygen, water, and heat level in the world.
 \end{description}
-AKWDS and the Simulator will be connected over a network. The Simulator will be responsible for handling the effects of delay called out in the project description.
+
+We will utilize object composition in a manner known as Entity-Component Architecture to model alien organisms (entities) in an alien environment (made up of various Systems). Each entity is made up of different Components in order to provide room for growth and mutation. For example, a kind of alien plant might not have Movement or Offensive components (this particular alien plant cannot move), but will definitely have Growth and Mating components. On the other hand, a different alien plant might be able to move and thus will have a Movement component.
+
+Figure~\ref{fig:comp} describes a Component system that is similar to what we will implement in our project.
+
+\begin{figure}[h]
+\includegraphics[width=\textwidth]{Fig-2.png}
+\caption{Component Diagram}
+\label{fig:comp}
+\end{figure}
 
 \subsection*{Simulator}
-The core of the simulator is a basic physics simulation. This N-body simulation will track projectiles and vehicles within the world and apply basic Newtonian physics. The simulator will expose the current location of each simulated object at regular intervals as a list of 3D cartesian coordinates and object radii. This stream will be sent using the FOSA format. The simulator will also take in a stream of BDS actions and add projectiles to the simulation as appropriate. The simulator also enforces some sanity rules regarding object motion and provides some basic flight paths for UFOs.
-
-\subsection*{AKWDS}
-AKWDS will take the FOSA stream of object locations and attempt to formulate some tracking of the objects (object A with location $L$ last time step is at location $L'$ this time step). This will be used to help estimate the future location of the object so that targets can be lead correctly for firing. AKWDS will then select a set of object to fire at and set of cannons to fire from and send the needed information via the BDS stream.
+The core of the simulator is a basic ecological simulation. This N-body simulation will track organisms and systems within the world and apply various rules of growth, mutation, and predation upon entities. The simulator will expose the current location of each simulated object at regular intervals as a list of 2D cartesian coordinates and list of characteristics. This stream will be output to the screen or sent to a web browser which will interpret/display the results in a graphical manner, likely a 2D plot of pixels representing organisms.
 
 \subsection*{Visualization}
-Visualization is not a core component of the project deliverable. However AKWDS debugging and demonstration will be very difficult without providing some animation of the system behavior. A visualizer, online or post-hoc, that works from the FOSA stream will be provided to help validate the software.
+Visualization is a core component of the project deliverable. However we have not decided to use a local 2D output or to output the data graphically through a web browser (possibly over WebGL).
