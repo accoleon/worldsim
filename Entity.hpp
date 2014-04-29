@@ -4,6 +4,8 @@
 // University of Oregon
 // 2014-04-18
 
-struct Entity {
-	int id;
-};
+namespace gws {
+	struct Entity {
+		int id;
+	};
+} /* gws */

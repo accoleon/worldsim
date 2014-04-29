@@ -13,7 +13,7 @@ using std::endl;
 #include <SDL.h>
 
 #include "units.hpp"
-using namespace gensim;
+using namespace gws;
 
 units world;
 
@@ -21,25 +21,8 @@ units world;
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
-void createUnits() {
-	cout << "Creating units...\n";
-	// Create a basic plant;
-	
-}
-
-void runWorld() {
-	cout << "Running world...\n";
-}
-
-void teardown()
-{
-	cout << "Tearing down...\n";
-}
-
-int main (int, char**)
-{
+void setupGraphics(SDL_Window* window) {
 	// Setup Window
-	SDL_Window* window = NULL;
 	SDL_Surface* screenSurface = NULL;
 	// Initialize SDL
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -58,18 +41,44 @@ int main (int, char**)
 			
 		}
 	}
-	// create units
-	createUnits();
-	// run world
-	runWorld();
-	// teardown
-	teardown();
+}
+void teardownGraphics(SDL_Window* window) {
 	// Wait
 	SDL_Delay(2000);
 	// Destroy Window
 	SDL_DestroyWindow(window);
 	// Exit SDL Subsystem
 	SDL_Quit();
+}
+
+void createUnits() {
+	cout << "Creating units...\n";
+	// Create a basic plant;
+	// Entities should be added to the world here
+}
+
+void runWorld() {
+	cout << "Running world...\n";
+	// Simulation loop should be here
 	
+	// Run Systems
+}
+
+void teardown()
+{
+	cout << "Tearing down...\n";
+}
+
+int main (int, char**)
+{
+	SDL_Window* window = NULL; // Maybe this should be a global
+	setupGraphics(window);
+	// create units
+	createUnits();
+	// run world
+	runWorld();
+	// teardown
+	teardown();
+	teardownGraphics(window);
 	return 0;
 }

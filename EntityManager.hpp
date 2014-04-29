@@ -6,11 +6,14 @@
 
 #include "Components/Component.hpp"
 
-class EntityManager {
-public:
-	EntityManager();
-	~EntityManager();
 
-private:
+namespace gws {
+	class EntityManager {
+	public:
+		EntityManager();
+		~EntityManager();
+
+	private:
 	
-};
+	};
+} /* gws */

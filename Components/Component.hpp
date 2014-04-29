@@ -4,5 +4,7 @@
 // University of Oregon
 // 2014-04-18
 
-struct Component {
-};
+namespace gws {
+	struct Component {
+	};
+} /* gws */

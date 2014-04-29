@@ -3,7 +3,7 @@
 // Xu Junjie, Kevin
 // University of Oregon
 // 2014-04-16
-namespace gensim {
+namespace gws {
 	struct units {
 		char* rateOfGrowth;
 		char* movementMechanism;
@@ -24,4 +24,4 @@ namespace gensim {
 	void addAnimal();
 	void addPlant();
 	void removeUnit(int index);	
-} /* gensim */
+} /* gws */

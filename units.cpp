@@ -6,17 +6,17 @@
 
 #include "units.hpp"
 
-void gensim::addAnimal()
+void gws::addAnimal()
 {
 	
 }
 
-void gensim::addPlant()
+void gws::addPlant()
 {
 	
 }
 
-void gensim::removeUnit(int index)
+void gws::removeUnit(int index)
 {
 	
 }
