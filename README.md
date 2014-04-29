@@ -9,8 +9,9 @@ Entity-Component Architecture and data/task parallelism.
 
 [Intel C++ Studio XE 2013 for Linux](https://registrationcenter.intel.com/RegCenter/NComForm.aspx?ProductID=1534&pass=yes)
 
-##Build
-`make`
+##Get/Build
+	git clone https://github.com/accoleon/worldsim
+	make
 
 ##Run
-`./worldsim`
+	./worldsim
