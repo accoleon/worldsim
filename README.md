@@ -1,16 +1,16 @@
-Genetic World Simulator
-=======================
+#Genetic World Simulator
 
-World Simulation Visualization with mutating organisms.
 
-Install/Prerequisites
--------
-SDL 2.0.3
-http://www.libsdl.org/download-2.0.php
+World Simulation Visualization with mutating organisms, based on an 
+Entity-Component Architecture and data/task parallelism.
 
-Intel C++ Studio XE 2013 for Linux
-https://registrationcenter.intel.com/RegCenter/NComForm.aspx?ProductID=1534&pass=yes
+##Install/Prerequisites
+[SDL 2.0.3](http://www.libsdl.org/download-2.0.php)
 
-`make` to build, `./worldsim` to run
+[Intel C++ Studio XE 2013 for Linux](https://registrationcenter.intel.com/RegCenter/NComForm.aspx?ProductID=1534&pass=yes)
 
-Trying out Entity-Component Architecture and data parallelism.
+##Build
+`make`
+
+##Run
+`./worldsim`
