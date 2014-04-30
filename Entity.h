@@ -1,4 +1,4 @@
-// Entity.hpp
+// Entity.h
 // Entity header file
 // Xu Junjie, Kevin
 // University of Oregon

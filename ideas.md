@@ -1,12 +1,14 @@
-"World Simulator"
-=================
+#Genetic World Simulator Ideas
 
 Component-based architecture
 
 Helps leverage parallelism through vectorization/memory access
 
-Systems
--------
+##Visualization/Interface
+Hotkeys to start, stop, pause, exit program
+
+
+##Systems
 
 * WeatherSystem
 * EcoSystem
@@ -14,8 +16,7 @@ Systems
 	* AnimalSystem
 	* MatingSystem
 	
-Components
-----------
+##Components
 
 * RenderComponent
 

@@ -1,11 +1,13 @@
-CC:=icc
+CC:=icpc
 CXX:=icpc
-CXXFLAGS:=-O3 -Wall -Wextra $(shell sdl2-config --cflags)
-LDFLAGS:=$(shell sdl2-config --libs)
+CPPFLAGS:=-debug -Wall -Wextra -pedantic -stdlib=libc++
+LDFLAGS:=-lsfml-system -lsfml-graphics -lsfml-window -ltbb -stdlib=libc++
 
 all: worldsim
 	
-worldsim: worldsim.o units.o
+worldsim: worldsim.o units.o World.o EntityManager.o
+
+testSFML: testSFML.o
 
 clean:
 	rm -f worldsim *.o

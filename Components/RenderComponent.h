@@ -1,4 +1,4 @@
-// RenderComponent.hpp
+// RenderComponent.h
 // RenderComponent header
 // Xu Junjie, Kevin
 // University of Oregon

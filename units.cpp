@@ -4,7 +4,7 @@
 // University of Oregon
 // 2014-04-16
 
-#include "units.hpp"
+#include "units.h"
 
 void gws::addAnimal()
 {

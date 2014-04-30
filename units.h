@@ -1,4 +1,4 @@
-// units.hpp
+// units.h
 // Basic SoA unit
 // Xu Junjie, Kevin
 // University of Oregon

@@ -1,4 +1,4 @@
-// Component.hpp
+// Component.h
 // Component header
 // Xu Junjie, Kevin
 // University of Oregon

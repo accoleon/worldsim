@@ -1,10 +1,10 @@
-// EntityManager.hpp
+// EntityManager.h
 // EntityManager header
 // Xu Junjie, Kevin
 // University of Oregon
 // 2014-04-18
 
-#include "Components/Component.hpp"
+#include "Components/Component.h"
 
 
 namespace gws {

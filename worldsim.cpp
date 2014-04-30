@@ -10,48 +10,41 @@
 using std::cout;
 using std::endl;
 #include <string>
-#include <SDL.h>
+#include <SFML/Graphics.hpp>
 
-#include "units.hpp"
+#include "Entity.h"
+#include "EntityManager.h"
+#include "units.h"
+#include "World.h"
 using namespace gws;
 
 units world;
 
-// Screen constants
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
-
-void setupGraphics(SDL_Window* window) {
+void setupGraphics() {
 	// Setup Window
-	SDL_Surface* screenSurface = NULL;
-	// Initialize SDL
-	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-		printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
-	} else {
-		// Create Window
-		window = SDL_CreateWindow("WorldSim",SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-		if (window == NULL){
-			printf("Cannot create window: SDL_Error: %s\n", SDL_GetError());
-		} else {
-			screenSurface = SDL_GetWindowSurface(window);
-			// Fill white
-			SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 0xFF, 0xFF, 0xFF));
-			// Update surface
-			SDL_UpdateWindowSurface(window);
-			
-		}
-	}
+	sf::RenderWindow window(sf::VideoMode(200, 200), "Testing");
+  sf::CircleShape shape(100.f);
+  shape.setFillColor(sf::Color::Green);
+
+  while (window.isOpen())
+  {
+    sf::Event event;
+    while (window.pollEvent(event))
+    {
+      if (event.type == sf::Event::Closed)
+        window.close();
+    }
+
+    window.clear();
+    window.draw(shape);
+    window.display();
+  }
 }
-void teardownGraphics(SDL_Window* window) {
-	// Wait
-	SDL_Delay(2000);
-	// Destroy Window
-	SDL_DestroyWindow(window);
-	// Exit SDL Subsystem
-	SDL_Quit();
+void teardownGraphics() {
+
 }
 
-void createUnits() {
+void createUnits(World& world) {
 	cout << "Creating units...\n";
 	// Create a basic plant;
 	// Entities should be added to the world here
@@ -71,14 +64,17 @@ void teardown()
 
 int main (int, char**)
 {
-	SDL_Window* window = NULL; // Maybe this should be a global
-	setupGraphics(window);
+	setupGraphics();
+	EntityManager man;
+	Entity ents;
+	// create world
+	World world;
 	// create units
-	createUnits();
+	createUnits(world);
 	// run world
 	runWorld();
 	// teardown
 	teardown();
-	teardownGraphics(window);
+	teardownGraphics();
 	return 0;
 }
