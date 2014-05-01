@@ -4,11 +4,13 @@
 // University of Oregon
 // 2014-04-30
 
+#ifndef SYSTEM_H
+#define SYSTEM_H
 namespace gws {
 	class System {
 	public:
-		virtual System();
-		virtual ~System();
-		virtual void Update();
+		virtual void Update() = 0;
 	};
 } /* gws */
+#endif
+

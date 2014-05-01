@@ -1,4 +1,6 @@
 #include <SFML/Graphics.hpp>
+#include <vector>
+#include <iostream>
  
 int main()
 {
@@ -15,6 +17,12 @@ int main()
             // Close window : exit
             if (Event.type == sf::Event::Closed)
                 App.close();
+						std::vector<int> vec;
+						vec.push_back(1);
+						vec.push_back(2);
+						for (auto num : vec) {
+							std::cout << num << std::endl;
+						}
         }
  
         // Clear screen, and fill it with blue

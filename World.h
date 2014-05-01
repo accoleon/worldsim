@@ -8,8 +8,14 @@
 
 #ifndef WORLD_H
 #define WORLD_H
+#include <vector>
 
 #include "tbb/concurrent_vector.h"
+
+#include "Components/PositionComponent.h"
+#include "Components/WaterComponent.h"
+#include "Components/RenderComponent.h"
+#include "Systems/System.h"
 
 // 2D world, maybe add the third z dimension later
 // width/height refers to the size of the world being simulated, but
@@ -23,9 +29,10 @@ namespace gws {
 	public:
 		World(int width = default_width, int height = default_height);
 		~World();
-		tbb::concurrent_vector<int> x;
-		tbb::concurrent_vector<int> y;
-	
+		std::vector<System*> systems;
+		tbb::concurrent_vector<PositionComponent> positions;
+		tbb::concurrent_vector<WaterComponent> waters;
+		tbb::concurrent_vector<RenderComponent> renders;
 	private:
 		int width;
 		int height;

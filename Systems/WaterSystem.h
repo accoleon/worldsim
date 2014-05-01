@@ -4,13 +4,20 @@
 // University of Oregon
 // 2014-04-30
 
+#ifndef WATER_SYSTEM_H
+#define WATER_SYSTEM_H
+#include "System.h"
+#include "../World.h"
+
 namespace gws {
-	class WaterSystem : System {
+	class WaterSystem : public System {
 	public:
-		WaterSystem(arguments);
+		WaterSystem(World& world);
 		~WaterSystem();
 		void Update();
 	private:
-		/* data */
+		World& world;
 	};
 } /* gws */
+#endif
+

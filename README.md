@@ -5,7 +5,9 @@ World Simulation Visualization with mutating organisms, based on an
 Entity-Component Architecture and data/task parallelism.
 
 ##Install/Prerequisites
-[SFML 2.1](http://www.sfml-dev.org/download/sfml/2.1/)
+[SDL 2.0.3](http://www.libsdl.org/download-2.0.php)
+
+[SFML 2.1 (Not recommended)](http://www.sfml-dev.org/download/sfml/2.1/)
 
 [Intel C++ Studio XE 2013 for Linux](https://registrationcenter.intel.com/RegCenter/NComForm.aspx?ProductID=1534&pass=yes)
 
