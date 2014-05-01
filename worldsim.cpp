@@ -15,6 +15,7 @@ using std::endl;
 #include "Entity.h"
 #include "EntityManager.h"
 #include "units.h"
+#include "Systems/SystemManager.h"
 #include "World.h"
 using namespace gws;
 
@@ -25,6 +26,7 @@ void setupGraphics() {
 	sf::RenderWindow window(sf::VideoMode(0, 0), "Testing", sf::Style::Fullscreen);
   sf::CircleShape shape(100.f);
   shape.setFillColor(sf::Color::Green);
+	sf::Font font;
 
   while (window.isOpen())
   {

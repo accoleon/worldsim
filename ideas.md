@@ -7,10 +7,16 @@ Helps leverage parallelism through vectorization/memory access
 ##Visualization/Interface
 Hotkeys to start, stop, pause, exit program
 
+Escape to exit program
+
+Space to start/pause
+
+Need to restart simulation?
 
 ##Systems
 
 * WeatherSystem
+	* WaterSystem
 * EcoSystem
 	* PlantSystem
 	* AnimalSystem
