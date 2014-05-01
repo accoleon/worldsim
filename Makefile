@@ -1,6 +1,6 @@
 CC:=icpc
 CXX:=icpc
-CPPFLAGS:=-debug -Wall -Wextra -pedantic
+CPPFLAGS:=-O3 -debug -Wall -Wextra -pedantic
 LDFLAGS:=-lsfml-system -lsfml-graphics -lsfml-window -ltbb
 UNAME:=$(shell uname)
 ifeq ($(UNAME),Darwin)
