@@ -6,14 +6,19 @@
 
 #include <iostream>
 using std::cout;
+using std::endl;
+#include <string>
+using std::string;
 #include "WaterSystem.h"
 
 namespace gws {
 	WaterSystem::WaterSystem(World& world) : world(world) {
-		cout << "WaterSystem attached to world\n";
+
 	}
 	WaterSystem::~WaterSystem() {}
 	void WaterSystem::Update() {
-		
+	}
+	string WaterSystem::getName() {
+		return "WaterSystem";
 	}
 } /* gws */

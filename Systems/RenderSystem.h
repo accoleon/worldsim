@@ -6,6 +6,7 @@
 
 #ifndef RENDER_SYSTEM_H
 #define RENDER_SYSTEM_H
+#include <string>
 #include <SDL2/SDL.h>
 
 #include "System.h"
@@ -17,6 +18,7 @@ namespace gws {
 		RenderSystem(World& world, SDL_Window* window);
 		~RenderSystem();
 		void Update();
+		std::string getName();
 	private:
 		World& world;
 		SDL_Window* window;

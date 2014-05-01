@@ -6,10 +6,12 @@
 
 #ifndef SYSTEM_H
 #define SYSTEM_H
+#include <string>
 namespace gws {
 	class System {
 	public:
 		virtual void Update() = 0;
+		virtual std::string getName() = 0;
 	};
 } /* gws */
 #endif

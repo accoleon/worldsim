@@ -15,6 +15,7 @@ namespace gws {
 		WaterSystem(World& world);
 		~WaterSystem();
 		void Update();
+		std::string getName();
 	private:
 		World& world;
 	};

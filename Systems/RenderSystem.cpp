@@ -6,13 +6,17 @@
 
 #include <iostream>
 using std::cout;
-
+#include <string>
+using std::string;
 #include "RenderSystem.h"
 
 namespace gws {
 	RenderSystem::RenderSystem(World& world, SDL_Window* window) : world(world), window(window) {
-		cout << "RenderSystem attached to world\n";
+		
 	}
 	RenderSystem::~RenderSystem() {}
 	void RenderSystem::Update() {}
+	string RenderSystem::getName() {
+		return "RenderSystem";
+	}
 } /* gws */

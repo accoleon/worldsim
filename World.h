@@ -10,7 +10,7 @@
 #define WORLD_H
 #include <vector>
 
-#include "tbb/concurrent_vector.h"
+#include "tbb/tbb.h"
 
 #include "Components/PositionComponent.h"
 #include "Components/WaterComponent.h"
@@ -33,9 +33,11 @@ namespace gws {
 		tbb::concurrent_vector<PositionComponent> positions;
 		tbb::concurrent_vector<WaterComponent> waters;
 		tbb::concurrent_vector<RenderComponent> renders;
-	private:
+		void addSystem(System& system);
 		int width;
 		int height;
+	private:
+
 	};
 } /* gws */
 #endif

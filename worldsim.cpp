@@ -91,7 +91,11 @@ void destroyWindow() {
 
 void createUnits(World& world) {
 	cout << "Creating units...\n";
-	// Create a basic plant;
+	// Create a water;
+	Entity water;
+	water.addComponent(PositionComponent(1,1));
+	water.addComponent(WaterComponent(10));
+	EntityManager.addEntity(water);
 	// Entities should be added to the world here
 }
 
@@ -114,10 +118,14 @@ int main (int, char**)
 
 	// Initialize the world
 	World world;
+	
 	// Add rendering
 	RenderSystem renderSystem(world, window);
+	world.addSystem(renderSystem);
+	
 	// Add some water
 	WaterSystem waterSystem(world);
+	world.addSystem(waterSystem);
 	
 	// create units
 	createUnits(world);

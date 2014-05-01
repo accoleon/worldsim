@@ -12,7 +12,7 @@ namespace gws {
 	public:
 		EntityManager();
 		~EntityManager();
-
+		addEntity(Entity entity);
 	private:
 	
 	};
