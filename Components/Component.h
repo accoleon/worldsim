@@ -8,6 +8,11 @@
 #ifndef COMPONENT_H
 #define COMPONENT_H
 namespace gws {
+	enum ComponentType { 
+		Position,
+		Render,
+		Water
+	};
 	struct Component {
 	};
 } /* gws */

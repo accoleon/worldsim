@@ -9,9 +9,7 @@
 #define RENDER_COMPONENT_H
 namespace gws {
 	struct RenderComponent : Component {
-		int x;
-		int y;
-		int z;
+		bool visible;
 	};
 } /* gws */
 #endif

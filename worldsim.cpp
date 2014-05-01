@@ -30,7 +30,7 @@ void createWindow() {
 		std::cout << "SDL_Init Error: " << SDL_GetError() << std::endl;
 		return;
 	}
-	window = SDL_CreateWindow("Hello World!", 0, 0, screenWidth, screenHeight,
+	window = SDL_CreateWindow("Genetic World Simulator", 0, 0, screenWidth, screenHeight,
 		SDL_WINDOW_SHOWN);
 	if (window == nullptr){
 		std::cout << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;

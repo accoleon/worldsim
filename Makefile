@@ -1,7 +1,8 @@
 CC:=icpc
 CXX:=icpc
-CXXFLAGS:=-O3 -Wall -Wextra -pedantic -std=c++11
-LDFLAGS:=-ltbb -lSDL2 -std=c++11
+CFLAGS:=$(shell sdl2-config --cflags)
+CXXFLAGS:=-O3 -Wall -Wextra -pedantic -std=c++11 $(shell sdl2-config --cflags)
+LDFLAGS:=-ltbb -std=c++11 $(shell sdl2-config --libs)
 UNAME:=$(shell uname)
 ifeq ($(UNAME),Darwin)
 endif
