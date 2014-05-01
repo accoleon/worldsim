@@ -5,9 +5,7 @@ World Simulation Visualization with mutating organisms, based on an
 Entity-Component Architecture and data/task parallelism.
 
 ##Install/Prerequisites
-[SDL 2.0.3](http://www.libsdl.org/download-2.0.php)
-
-[SDL2_ttf 2.0.12](http://www.libsdl.org/projects/SDL_ttf/)
+[SFML 2.1](http://www.sfml-dev.org/download/sfml/2.1/)
 
 [Intel C++ Studio XE 2013 for Linux](https://registrationcenter.intel.com/RegCenter/NComForm.aspx?ProductID=1534&pass=yes)
 
@@ -17,3 +15,6 @@ Entity-Component Architecture and data/task parallelism.
 
 ##Run
 	./worldsim
+
+##References
+[SFML 2.1 Tutorials](http://www.sfml-dev.org/tutorials/2.1/)
