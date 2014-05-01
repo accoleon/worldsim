@@ -8,11 +8,11 @@ CPPFLAGS+=-stdlib=libc++
 LDFLAGS+=-stdlib=libc++
 endif
 
-all: worldsim
+all: worldsim testSFML
 
 worldsim: worldsim.o units.o World.o EntityManager.o
 
 testSFML: testSFML.o
 
 clean:
-	rm -f worldsim *.o
+	rm -f *.o worldsim testSFML
