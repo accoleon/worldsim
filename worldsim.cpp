@@ -22,7 +22,7 @@ units world;
 
 void setupGraphics() {
 	// Setup Window
-	sf::RenderWindow window(sf::VideoMode(200, 200), "Testing");
+	sf::RenderWindow window(sf::VideoMode(0, 0), "Testing", sf::Style::Fullscreen);
   sf::CircleShape shape(100.f);
   shape.setFillColor(sf::Color::Green);
 
@@ -31,7 +31,7 @@ void setupGraphics() {
     sf::Event event;
     while (window.pollEvent(event))
     {
-      if (event.type == sf::Event::Closed)
+      if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
         window.close();
     }
 
