@@ -4,16 +4,19 @@
 // University of Oregon
 // 2014-04-18
 
-#include "Components/Component.h"
-
+#ifndef ENTITY_MANAGER_H
+#define ENTITY_MANAGER_H
+#include "Entity.h"
+#include "World.h"
 
 namespace gws {
 	class EntityManager {
 	public:
-		EntityManager();
+		EntityManager(World& world);
 		~EntityManager();
-		addEntity(Entity entity);
+		void addEntity(Entity& entity);
 	private:
-	
+		World& world;
 	};
 } /* gws */
+#endif

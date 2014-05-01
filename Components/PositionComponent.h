@@ -9,6 +9,7 @@
 #define POSITION_COMPONENT_H
 namespace gws {
 	struct PositionComponent : Component {
+		PositionComponent(int x, int y) : x(x), y(y) {}
 		int x;
 		int y;
 	};

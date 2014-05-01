@@ -91,11 +91,14 @@ void destroyWindow() {
 
 void createUnits(World& world) {
 	cout << "Creating units...\n";
-	// Create a water;
-	Entity water;
-	water.addComponent(PositionComponent(1,1));
-	water.addComponent(WaterComponent(10));
-	EntityManager.addEntity(water);
+	EntityManager entityManager(world);
+	// Create a pond;
+	Entity pond;
+	PositionComponent position(1,1);
+	WaterComponent water(10);
+	pond.addComponent(position);
+	pond.addComponent(water);
+	entityManager.addEntity(pond);
 	// Entities should be added to the world here
 }
 

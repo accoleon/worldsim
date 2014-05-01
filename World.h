@@ -12,6 +12,7 @@
 
 #include "tbb/tbb.h"
 
+#include "Entity.h"
 #include "Components/PositionComponent.h"
 #include "Components/WaterComponent.h"
 #include "Components/RenderComponent.h"
@@ -30,6 +31,7 @@ namespace gws {
 		World(int width = default_width, int height = default_height);
 		~World();
 		std::vector<System*> systems;
+		std::vector<Entity> entities;
 		tbb::concurrent_vector<PositionComponent> positions;
 		tbb::concurrent_vector<WaterComponent> waters;
 		tbb::concurrent_vector<RenderComponent> renders;
