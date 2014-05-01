@@ -14,8 +14,6 @@ namespace gws {
 	}
 	WaterSystem::~WaterSystem() {}
 	void WaterSystem::Update() {
-		for(auto wc : world.waters) {
-			cout << "a block of water here\n";
-		}
+		
 	}
 } /* gws */

@@ -10,7 +10,7 @@ using std::cout;
 #include "RenderSystem.h"
 
 namespace gws {
-	RenderSystem::RenderSystem(World& world) : world(world) {
+	RenderSystem::RenderSystem(World& world, SDL_Window* window) : world(world), window(window) {
 		cout << "RenderSystem attached to world\n";
 	}
 	RenderSystem::~RenderSystem() {}

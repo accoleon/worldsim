@@ -21,19 +21,22 @@ using std::endl;
 #include "World.h"
 using namespace gws;
 
-units world;
+const int screenWidth(640);
+const int screenHeight(480);
+SDL_Window* window;
 
-void setupGraphics() {
+void createWindow() {
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0){
 		std::cout << "SDL_Init Error: " << SDL_GetError() << std::endl;
 		return;
 	}
-	SDL_Window *window = SDL_CreateWindow("Hello World!", 0, 0, -1, -1,
-		SDL_WINDOW_FULLSCREEN_DESKTOP);
+	window = SDL_CreateWindow("Hello World!", 0, 0, screenWidth, screenHeight,
+		SDL_WINDOW_SHOWN);
 	if (window == nullptr){
 		std::cout << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
 		return;
 	}
+	/*
 	SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	if (renderer == nullptr){
 		std::cout << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
@@ -79,15 +82,11 @@ void setupGraphics() {
       SDL_RenderCopy(renderer, texture, NULL, NULL);
       SDL_RenderPresent(renderer);
   }
-
-  delete[] pixels;
-  SDL_DestroyTexture(texture);
-  SDL_DestroyRenderer(renderer);
+*/
+}
+void destroyWindow() {
   SDL_DestroyWindow(window);
   SDL_Quit();
-}
-void teardownGraphics() {
-
 }
 
 void createUnits(World& world) {
@@ -110,21 +109,22 @@ void teardown()
 
 int main (int, char**)
 {
-	setupGraphics();
-	EntityManager man;
-	Entity ents;
+	// Initialize SDL and create window
+	createWindow();
+
 	// Initialize the world
 	World world;
+	// Add rendering
+	RenderSystem renderSystem(world, window);
 	// Add some water
 	WaterSystem waterSystem(world);
-	// Add rendering
-	RenderSystem renderSystem(world);
+	
 	// create units
 	createUnits(world);
 	// run world
 	runWorld();
 	// teardown
 	teardown();
-	teardownGraphics();
+	destroyWindow();
 	return 0;
 }
