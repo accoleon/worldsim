@@ -16,8 +16,14 @@ namespace gws {
 		~WaterSystem();
 		void Update();
 		std::string getName();
+		int getWater(int index);
+		void setWater(int index, int set);
+		int compareWater(int former, int latter);
+		void reduceWater(int index, int reduction);
+		void increaseWater(int index, int addition);
 	private:
 		World& world;
+		std::map<int, int> water_levels;
 	};
 } /* gws */
 #endif

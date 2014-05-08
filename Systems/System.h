@@ -7,6 +7,7 @@
 #ifndef SYSTEM_H
 #define SYSTEM_H
 #include <string>
+#include <map>
 namespace gws {
 	class System {
 	public:

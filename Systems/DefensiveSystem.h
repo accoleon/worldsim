@@ -16,8 +16,14 @@ namespace gws {
 		~DefensiveSystem();
 		void Update();
 		std::string getName();
+		int getDefenseStat(int index);
+		void setDefenseStat(int index, int set);
+		int compareDefenses(int former, int latter);
+		void reduceDefense(int index, int reduction);
+		void increaseDefense(int index, int addition);
 	private:
 		World& world;
+		std::map<int, int> defensive_stats;
 	};
 } /* gws */
 #endif

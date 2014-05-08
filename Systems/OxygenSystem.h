@@ -16,8 +16,14 @@ namespace gws {
 		~OxygenSystem();
 		void Update();
 		std::string getName();
+		int getOxygen(int index);
+		void setOxygen(int index, int set);
+		int compareOxygen(int former, int latter);
+		void reduceOxygen(int index, int reduction);
+		void increaseOxygen(int index, int addition);
 	private:
 		World& world;
+		std::map<int, int> oxygen_levels;
 	};
 } /* gws */
 #endif

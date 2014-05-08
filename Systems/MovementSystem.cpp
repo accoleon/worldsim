@@ -21,4 +21,25 @@ namespace gws {
 	string MovementSystem::getName() {
 		return "MovementSystem";
 	}
+	int MovementSystem::getMovement(int index){
+		return movement_stats[index];
+	}
+	void MovementSystem::setMovement(int index, int set){
+		movement_stats[index] = set;
+	}
+	int MovementSystem::compareMovements(int former, int latter){
+		if(movement_stats[former] > movement_stats[latter]){
+			return 1;
+		}else if (movement_stats[former] == movement_stats[latter]){
+			return 0;
+		}else{
+			return -1;
+		}
+	}
+	void MovementSystem::reduceMovement(int index, int reduction){
+		movement_stats[index] -= reduction;
+	}
+	void MovementSystem::increaseMovement(int index, int addition){
+		movement_stats[index] += addition;
+	}	
 } /* gws */
