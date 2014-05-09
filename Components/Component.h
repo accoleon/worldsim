@@ -14,6 +14,7 @@ namespace gws {
 		Water
 	};
 	struct Component {
+		ComponentType type;
 	};
 } /* gws */
 #endif

@@ -9,6 +9,11 @@ using std::cout;
 using std::endl;
 
 #include "EntityManager.h"
+#include "Components/Component.h"
+#include "Components/PositionComponent.h"
+#include "Components/RenderComponent.h"
+#include "Components/WaterComponent.h"
+
 
 namespace gws {
 	EntityManager::EntityManager(World& world) : world(world) {}
@@ -16,7 +21,9 @@ namespace gws {
 	void EntityManager::addEntity(Entity& entity) {
 		world.entities.push_back(entity);
 		for (auto component : entity.components) {
-			cout << "this entity has a component!\n";
+			if (component.type == Position) {
+				
+			}
 		}
 	}
 } /* gws */

@@ -9,7 +9,7 @@
 #define WATER_COMPONENT_H
 namespace gws {
 	struct WaterComponent : Component {
-		WaterComponent(int waterLevel) : waterLevel(waterLevel) {}
+		WaterComponent(int waterLevel) : waterLevel(waterLevel) : type(Water) {}
 		int waterLevel;
 	};
 } /* gws */
