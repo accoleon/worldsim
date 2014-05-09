@@ -9,7 +9,7 @@
 #define RENDER_COMPONENT_H
 namespace gws {
 	struct RenderComponent : Component {
-		RenderComponent() : visible(true), type(Render) {}
+		RenderComponent() : visible(true) {}
 		bool visible;
 	};
 } /* gws */

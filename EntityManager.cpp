@@ -21,9 +21,9 @@ namespace gws {
 	void EntityManager::addEntity(Entity& entity) {
 		world.entities.push_back(entity);
 		for (auto component : entity.components) {
-			if (component.type == Position) {
-				
-			}
+			/*if (component.type == Position) {
+				world.positions.push_back(component)
+			}*/
 		}
 	}
 } /* gws */
