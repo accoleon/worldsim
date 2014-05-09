@@ -1,0 +1,23 @@
+Core System
+-Rendering
+-Other systems needed to run GWS
+
+Weather Systems
+-Water
+-Oxygen
+-OtherWeather(Random weather events, etc)
+
+Mutation Systems
+-EvolutionConditions(Why/Circumstances)
+-Mutations(How)
+
+Animal Systems
+-Movement
+-Offensive(Same as plant?)
+-Defensive
+-Survival(Eating, Drinking, etc)
+
+Plant Systems
+-Offensive
+-Defensive
+-Survival
