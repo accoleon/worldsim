@@ -1,8 +1,8 @@
 // SurvivalSystem.h
 // 
-// Xu Junjie, Kevin
+// Cagle, Sam
 // University of Oregon
-// 2014-04-30
+// 2014-05-10
 
 #ifndef SURVIVAL_SYSTEM_H
 #define SURVIVAL_SYSTEM_H
@@ -16,6 +16,7 @@ namespace gws {
 		~SurvivalSystem();
 		void Update();
 		std::string getName();
+		
 	private:
 		World& world;
 	};

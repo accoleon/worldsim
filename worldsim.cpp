@@ -17,7 +17,10 @@ using std::endl;
 #include "units.h"
 #include "Systems/RenderSystem.h"
 #include "Systems/SystemManager.h"
-#include "Systems/WaterSystem.h"
+#include "Systems/NutrientSystem.h"
+#include "Systems/MovementSystem.h"
+#include "Systems/OxygenSystem.h"
+#include "Systems/SurvivalSystem.h"
 #include "World.h"
 using namespace gws;
 
@@ -51,7 +54,7 @@ void createUnits(World& world) {
 	// Create a pond;
 	Entity pond;
 	PositionComponent position(1,1);
-	WaterComponent water(10);
+	NutrientComponent water(10);
 	pond.addComponent(position);
 	pond.addComponent(water);
 	entityManager.addEntity(pond);
@@ -83,8 +86,8 @@ int main (int, char**)
 	world.addSystem(renderSystem);
 	
 	// Add some water
-	WaterSystem waterSystem(world);
-	world.addSystem(waterSystem);
+	NutrientSystem nutrientSystem(world);
+	world.addSystem(nutrientSystem);
 	
 	// create units
 	createUnits(world);

@@ -1,8 +1,8 @@
 // SurvivalSystem.cpp
 // 
-// Xu Junjie, Kevin
+// Cagle, Sam
 // University of Oregon
-// 2014-04-30
+// 2014-05-10
 
 #include <iostream>
 using std::cout;

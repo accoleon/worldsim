@@ -14,7 +14,7 @@
 
 #include "Entity.h"
 #include "Components/PositionComponent.h"
-#include "Components/WaterComponent.h"
+#include "Components/NutrientComponent.h"
 #include "Components/RenderComponent.h"
 #include "Systems/System.h"
 
@@ -33,7 +33,7 @@ namespace gws {
 		std::vector<System*> systems;
 		std::vector<Entity> entities;
 		tbb::concurrent_vector<PositionComponent> positions;
-		tbb::concurrent_vector<WaterComponent> waters;
+		tbb::concurrent_vector<NutrientComponent> nutrients;
 		tbb::concurrent_vector<RenderComponent> renders;
 		void addSystem(System& system);
 		int width;

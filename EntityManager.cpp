@@ -12,7 +12,7 @@ using std::endl;
 #include "Components/Component.h"
 #include "Components/PositionComponent.h"
 #include "Components/RenderComponent.h"
-#include "Components/WaterComponent.h"
+#include "Components/NutrientComponent.h"
 
 
 namespace gws {

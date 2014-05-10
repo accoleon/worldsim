@@ -1,8 +1,8 @@
 // MovementSystem.h
 // 
-// Xu Junjie, Kevin
+// Cagle, Sam
 // University of Oregon
-// 2014-04-30
+// 2014-05-10
 
 #ifndef MOVEMENT_SYSTEM_H
 #define MOVEMENT_SYSTEM_H
