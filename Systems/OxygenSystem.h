@@ -23,7 +23,7 @@ namespace gws {
 		void increaseOxygen(int index, int addition);
 	private:
 		World& world;
-		std::map<int, int> oxygen_levels;
+		int oxygen_levels[];
 	};
 } /* gws */
 #endif

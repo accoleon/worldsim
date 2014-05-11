@@ -23,7 +23,7 @@ namespace gws {
 		void increaseMovement(int index, int addition);
 	private:
 		World& world;
-		std::map<int, int> movement_stats;
+		int movement_stats[];
 	};
 } /* gws */
 #endif

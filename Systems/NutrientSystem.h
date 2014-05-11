@@ -23,7 +23,7 @@ namespace gws {
 		void increaseNutrient(int index, int addition);
 	private:
 		World& world;
-		int* nutrient_levels;
+		int nutrient_levels[];
 	};
 } /* gws */
 #endif

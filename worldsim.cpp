@@ -54,9 +54,9 @@ void createUnits(World& world) {
 	// Create a pond;
 	Entity pond;
 	PositionComponent position(1,1);
-	NutrientComponent water(10);
+	NutrientComponent nutrient(10);
 	pond.addComponent(position);
-	pond.addComponent(water);
+	pond.addComponent(nutrient);
 	entityManager.addEntity(pond);
 	// Entities should be added to the world here
 }
