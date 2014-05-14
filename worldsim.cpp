@@ -33,11 +33,18 @@ void createWindow() {
 		std::cout << "SDL_Init Error: " << SDL_GetError() << std::endl;
 		return;
 	}
-	window = SDL_CreateWindow("Genetic World Simulator", 
+	//Fullscreen broken.. black screen
+	/*window = SDL_CreateWindow("Genetic World Simulator", 
 		SDL_WINDOWPOS_UNDEFINED, 
 		SDL_WINDOWPOS_UNDEFINED, 
 		0, 0,
-		SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_OPENGL);
+		SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_OPENGL); */
+	window = SDL_CreateWindow("Genetic World Simulator", 
+		SDL_WINDOWPOS_UNDEFINED, 
+		SDL_WINDOWPOS_UNDEFINED, 
+		screenWidth, screenHeight, 
+		SDL_WINDOW_OPENGL);
+
 	if (window == nullptr){
 		std::cout << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
 		return;
@@ -83,6 +90,7 @@ int main (int, char**)
 	
 	// Add rendering
 	RenderSystem renderSystem(world, window);
+	renderSystem.run();
 	world.addSystem(renderSystem);
 	
 	// Add some water
