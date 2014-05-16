@@ -105,6 +105,13 @@ namespace gws {
 		// Load texture
 		glGenTextures(1, &tex);
 
+		//Empty world - brown
+		for (int i = 0; i < screenWidth * screenHeight * 3; i+=3){
+			pixelArray[i] = 0.5f;
+			pixelArray[i+1] = 0.35f;
+			pixelArray[i+2] = 0.05f;
+		}
+
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, screenWidth, screenHeight, 0, GL_RGB, GL_FLOAT, pixelArray);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -127,24 +134,27 @@ namespace gws {
 		SDL_GL_CreateContext(window);
 		glewExperimental = GL_TRUE;
 		glewInit();
+		Display_Init();
 
+		auto start = clock();
+		int frameCount = 0;
 		bool quit = false;
 		SDL_Event event;
-		for (int i = 0; i < screenWidth * screenHeight * 3; i+=3){
-			pixelArray[i] = 0.5f;
-			pixelArray[i+1] = 0.35f;
-			pixelArray[i+2] = 0.05f;
-		}
-		Display_Init();
 		
 		while (!quit) {
 			Update();
+			frameCount++;
 			while(SDL_PollEvent(&event)) {
 				if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN && event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)) {
 					quit = true;
  				}
 			}
 		}
+
+		auto timeElapsed = clock() - start;
+		auto secondsElapsed = timeElapsed / CLOCKS_PER_SEC;
+		cout << frameCount / secondsElapsed << " fps" << endl;
+
 		SDL_Quit();
 
 		glDeleteTextures(1, &tex);
