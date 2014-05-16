@@ -11,7 +11,7 @@
 namespace gws {
 	class System {
 	public:
-		virtual void Update() = 0;
+		virtual void update() = 0;
 		virtual std::string getName() = 0;
 	};
 } /* gws */

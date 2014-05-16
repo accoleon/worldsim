@@ -15,13 +15,18 @@
 namespace gws {
 	class RenderSystem : public System {
 	public:
-		RenderSystem(World& world, SDL_Window* window);
+		RenderSystem(World& world, SDL_Window* window, SDL_Renderer* renderer, SDL_Texture* texture);
 		~RenderSystem();
-		void Update();
+		void update();
 		std::string getName();
 	private:
 		World& world;
 		SDL_Window* window;
+		SDL_Renderer* renderer;
+		SDL_Texture* texture;
+		Uint32* pixels;
+		int width;
+		int height;
 	};
 } /* gws */
 #endif

@@ -16,7 +16,7 @@ namespace gws {
 
 	}
 	MovementSystem::~MovementSystem() {}
-	void MovementSystem::Update() {
+	void MovementSystem::update() {
 	}
 	string MovementSystem::getName() {
 		return "MovementSystem";

@@ -18,7 +18,7 @@ namespace gws {
 
 	}
 	WaterSystem::~WaterSystem() {}
-	void WaterSystem::Update() {
+	void WaterSystem::update() {
 	}
 	string WaterSystem::getName() {
 		return "WaterSystem";

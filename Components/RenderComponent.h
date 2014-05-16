@@ -8,9 +8,10 @@
 #ifndef RENDER_COMPONENT_H
 #define RENDER_COMPONENT_H
 namespace gws {
-	struct RenderComponent : Component {
+	struct RenderComponent : gws::Component {
 		RenderComponent() : visible(true) {}
 		bool visible;
+		ComponentType getType() { return Render; }
 	};
 } /* gws */
 #endif

@@ -13,8 +13,13 @@ namespace gws {
 	struct Entity {
 		int id;
 		std::vector<Component*> components;
-		void addComponent(Component& component) {
-			components.push_back(&component);
+		void addComponent(Component* component) {
+			components.push_back(component);
+		}
+		void setID(int id) {
+			for (auto component : components) {
+				component->ID = id;
+			}
 		}
 	};
 } /* gws */

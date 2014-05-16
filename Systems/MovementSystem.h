@@ -14,7 +14,7 @@ namespace gws {
 	public:
 		MovementSystem(World& world);
 		~MovementSystem();
-		void Update();
+		void update();
 		std::string getName();
 		int getMovement(int index);
 		void setMovement(int index, int set);

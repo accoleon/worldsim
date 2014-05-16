@@ -14,7 +14,7 @@ namespace gws {
 	public:
 		NutrientSystem(World& world);
 		~NutrientSystem();
-		void Update();
+		void update();
 		std::string getName();
 		int getNutrient(int index);
 		void setNutrient(int index, int set);

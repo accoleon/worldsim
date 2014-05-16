@@ -4,14 +4,28 @@
 // University of Oregon
 // 2014-04-30
 
-#include "Component.h"
 #ifndef POSITION_COMPONENT_H
 #define POSITION_COMPONENT_H
+#include <cstdlib>
+
+#include "Component.h"
 namespace gws {
-	struct PositionComponent : Component {
-		PositionComponent(int x, int y) : x(x), y(y) {}
+	struct PositionComponent : gws::Component {
 		int x;
 		int y;
+		const int minX = 0;
+		const int minY = 0;
+		const int maxX = 640;
+		const int maxY = 480;
+		PositionComponent(int x, int y) : x(x), y(y) {}
+		PositionComponent() {
+			x = rand() % maxX + minX;
+			y = rand() % maxY + minY;
+			cout << "x is " << x << endl;
+			cout << "y is " << y << endl;
+		}
+
+		ComponentType getType() { return Position; }
 	};
 } /* gws */
 #endif

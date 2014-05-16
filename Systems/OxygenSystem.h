@@ -14,7 +14,7 @@ namespace gws {
 	public:
 		OxygenSystem(World& world);
 		~OxygenSystem();
-		void Update();
+		void update();
 		std::string getName();
 		int getOxygen(int index);
 		void setOxygen(int index, int set);

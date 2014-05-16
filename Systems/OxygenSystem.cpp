@@ -17,7 +17,7 @@ namespace gws {
 
 	}
 	OxygenSystem::~OxygenSystem() {}
-	void OxygenSystem::Update() {
+	void OxygenSystem::update() {
 	}
 	string OxygenSystem::getName() {
 		return "OxygenSystem";
