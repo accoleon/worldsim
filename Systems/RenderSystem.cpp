@@ -28,7 +28,7 @@ namespace gws {
 		"   Color = color;"
 		"   Texcoord = texcoord;"
 		"   gl_Position = vec4(position, 0.0, 1.0);"
-	"}";
+		"}";
 	const GLchar* fragmentSource =
 		"#version 150 core\n"
 		"in vec3 Color;"
@@ -37,7 +37,7 @@ namespace gws {
 		"uniform sampler2D tex;"
 		"void main() {"
 		"   outColor = texture(tex, Texcoord);"
-	"}";
+		"}";
 
 	RenderSystem::RenderSystem(World& world, SDL_Window* window) : world(world), window(window) {
 
@@ -118,7 +118,7 @@ namespace gws {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-		glClearColor(0.5f, 0.35f, 0.05f, 1.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		// Draw a rectangle from the 2 triangles using 6 indices
@@ -136,11 +136,11 @@ namespace gws {
 		glewInit();
 		Display_Init();
 
-		auto start = clock();
 		int frameCount = 0;
 		bool quit = false;
 		SDL_Event event;
-		
+
+		double start = omp_get_wtime();
 		while (!quit) {
 			Update();
 			frameCount++;
@@ -150,13 +150,11 @@ namespace gws {
  				}
 			}
 		}
-
-		auto timeElapsed = clock() - start;
-		auto secondsElapsed = timeElapsed / CLOCKS_PER_SEC;
+		//Floating point exception (core dumped)
+		double end = omp_get_wtime();
+		double secondsElapsed = end - start;
 		cout << frameCount / secondsElapsed << " fps" << endl;
-
-		SDL_Quit();
-
+		
 		glDeleteTextures(1, &tex);
 
 		glDeleteProgram(shaderProgram);

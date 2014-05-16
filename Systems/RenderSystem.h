@@ -12,6 +12,7 @@
 #include <GL/glew.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
+#include <omp.h>
 
 #include "System.h"
 #include "../World.h"
