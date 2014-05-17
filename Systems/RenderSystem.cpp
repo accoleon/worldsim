@@ -23,19 +23,31 @@ namespace gws {
 		// the main game loop in worldsim.cpp, then this system focuses solely on 
 		// updating the pixel map
 		SDL_QueryTexture(texture, NULL, NULL, &width, &height);
+		format = SDL_AllocFormat(SDL_PIXELFORMAT_ARGB8888);
 	  pixels = new Uint32[width * height];
 	  memset(pixels, 255, width * height * sizeof(Uint32));
 	}
-	RenderSystem::~RenderSystem() {}
+	RenderSystem::~RenderSystem() {
+		//SDL_FreeFormat(format);
+		//delete pixels;
+	}
 	void RenderSystem::update() {
-		for (auto render : renders) { // only render "visible" entities
-			int ID = render->ID;
+		// is renderComponent redundant? should we combine rendercomponent and
+		// positioncomponent?
+		// Render all waters in the world
+		for (auto water : world.waters) {
+			for (auto position : world.positions) {
+				if (water->ID == position->ID) {
+					cout << "drawing x: " << position->x << " y: " << position->y << endl;
+					pixels[position->y * width + position->x] = SDL_MapRGBA(format, 0, 0, 255, 255);
+				}
+			}
 		}
-		for (size_t i = 0; i < width; ++i) {
+		/*for (size_t i = 0; i < width; ++i) {
 			for (size_t j = 0; j < height; ++j) {
 				pixels[j * width + i] = rand() % 294967295;
 			}
-		}
+		}*/
 		SDL_UpdateTexture(texture, NULL, pixels, width * sizeof(Uint32));			
     SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer, texture, NULL, NULL);

@@ -18,12 +18,13 @@ using std::endl;
 #include "Entity.h"
 #include "EntityManager.h"
 #include "units.h"
-#include "Systems/RenderSystem.h"
-#include "Systems/SystemManager.h"
 #include "Systems/NutrientSystem.h"
 #include "Systems/MovementSystem.h"
 #include "Systems/OxygenSystem.h"
+#include "Systems/RenderSystem.h"
 #include "Systems/SurvivalSystem.h"
+#include "Systems/SystemManager.h"
+#include "Systems/WaterSystem.h"
 #include "World.h"
 using namespace gws;
 
@@ -62,8 +63,8 @@ void destroyWindow() {
   SDL_Quit();
 }
 
-void createUnits(World& world) {
-	cout << "Creating units...\n";
+void createEntities() {
+	cout << "Creating entities...\n";
 	EntityManager entityManager(world);
 	// Create 10 random lakes;
 	for (size_t i = 0; i < 10; ++i) {
@@ -71,6 +72,18 @@ void createUnits(World& world) {
 		cout << "Lake " << i << " added\n";
 	}
 	// Entities should be added to the world here
+}
+
+void addSystems() {
+	NutrientSystem nutrientSystem(world);
+	world.addSystem(nutrientSystem);
+	
+	WaterSystem waterSystem(world);
+	world.addSystem(waterSystem);
+	
+	// Add rendering
+	RenderSystem renderSystem(world, window, renderer, texture);
+	world.addSystem(renderSystem);
 }
 
 void runWorld() {
@@ -101,21 +114,14 @@ int main (int, char**)
 	createWindow();
 
 	// Initialize the world
+	createEntities();
+	addSystems();
 	
-	// Add rendering
-	RenderSystem renderSystem(world, window, renderer, texture);
-	world.addSystem(renderSystem);
-	
-	// Add some water
-	NutrientSystem nutrientSystem(world);
-	world.addSystem(nutrientSystem);
-	
-	// create units
-	createUnits(world);
-	// run world
+	// Run simulation
 	runWorld();
-	// teardown
+	
+	// Teardown
 	teardown();
-	destroyWindow();
+	destroyWindow(); // Destroy SDL constructs
 	return 0;
 }

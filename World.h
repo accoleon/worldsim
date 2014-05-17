@@ -33,7 +33,7 @@ namespace gws {
 		~World();
 		std::vector<System*> systems;
 		std::vector<Entity> entities;
-		tbb::concurrent_vector<Component*> positions;
+		tbb::concurrent_vector<PositionComponent*> positions;
 		tbb::concurrent_vector<Component*> nutrients;
 		tbb::concurrent_vector<Component*> renders;
 		tbb::concurrent_vector<Component*> waters;

@@ -24,6 +24,7 @@ namespace gws {
 		SDL_Window* window;
 		SDL_Renderer* renderer;
 		SDL_Texture* texture;
+		SDL_PixelFormat* format;
 		Uint32* pixels;
 		int width;
 		int height;

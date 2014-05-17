@@ -27,7 +27,7 @@ namespace gws {
 				world.nutrients.push_back(component);
 				break;
 			case Position:
-				world.positions.push_back(component);
+				world.positions.push_back(static_cast<PositionComponent*>(component));
 				break;
 			case Water:
 				world.waters.push_back(component);
