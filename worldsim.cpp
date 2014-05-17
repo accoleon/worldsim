@@ -28,12 +28,12 @@ using std::endl;
 #include "World.h"
 using namespace gws;
 
-const int screenWidth(640);
-const int screenHeight(480);
+const int screenWidth(800);
+const int screenHeight(600);
 SDL_Window* window;
 SDL_Renderer* renderer;
 SDL_Texture* texture;
-World world;
+World world(screenWidth, screenHeight);
 
 void createWindow() {
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0){
@@ -67,7 +67,7 @@ void createEntities() {
 	cout << "Creating entities...\n";
 	EntityManager entityManager(world);
 	// Create 1000 random lakes;
-	for (size_t i = 0; i < 1000; ++i) {
+	for (size_t i = 0; i < 10000; ++i) {
 		entityManager.addRandomLake();
 		cout << "Lake " << i << " added\n";
 	}

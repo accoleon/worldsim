@@ -3,6 +3,8 @@
 // Xu Junjie, Kevin
 // University of Oregon
 // 2014-05-01
+
+#include <cilk/cilk.h>
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
@@ -35,14 +37,22 @@ namespace gws {
 		// is renderComponent redundant? should we combine rendercomponent and
 		// positioncomponent?
 		// Render all waters in the world
-		for (auto water : world.waters) {
+		cilk_for (auto water = world.waters.cbegin(); water != world.waters.cend(); ++water) {
 			for (auto position : world.positions) {
-				if (water->ID == position->ID) {
-					cout << "drawing x: " << position->x << " y: " << position->y << " level: " << water->waterLevel << endl;
-					pixels[position->y * width + position->x] = SDL_MapRGBA(format, 0, 0, water->waterLevel, 255);
+				if ((*water)->ID == position->ID) {
+					//cout << "drawing x: " << position->x << " y: " << position->y << " level: " << water->waterLevel << "\r";
+					pixels[position->y * width + position->x] = SDL_MapRGBA(format, 0, 0, (*water)->waterLevel, 255);
 				}
 			}
 		}
+		/*for (auto water : world.waters) {
+			for (auto position : world.positions) {
+				if (water->ID == position->ID) {
+					//cout << "drawing x: " << position->x << " y: " << position->y << " level: " << water->waterLevel << "\r";
+					pixels[position->y * width + position->x] = SDL_MapRGBA(format, 0, 0, water->waterLevel, 255);
+				}
+			}
+		}*/
 		/*for (size_t i = 0; i < width; ++i) {
 			for (size_t j = 0; j < height; ++j) {
 				pixels[j * width + i] = rand() % 294967295;
