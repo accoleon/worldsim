@@ -14,7 +14,7 @@ namespace gws {
 	public:
 		OffensiveSystem(World& world);
 		~OffensiveSystem();
-		void Update();
+		void update();
 		std::string getName();
 		int getOffenseStat(int index);
 		void setOffenseStat(int index, int set);

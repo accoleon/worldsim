@@ -14,7 +14,7 @@ namespace gws {
 	public:
 		DefensiveSystem(World& world);
 		~DefensiveSystem();
-		void Update();
+		void update();
 		std::string getName();
 		int getDefenseStat(int index);
 		void setDefenseStat(int index, int set);

@@ -6,6 +6,7 @@
 // University of Oregon
 // 2014-04-30
 
+#include <cilk/cilk.h>
 #include <iostream>
 using std::cout;
 using std::endl;
@@ -18,5 +19,14 @@ namespace gws {
 	void World::addSystem(System& system) {
 		systems.push_back(&system);
 		cout << "World: Added " << system.getName() << endl;
+	}
+	
+	void World::runSystems() {
+		// Probably don't want this - we have to order the systems to update 
+		// in a certain order since they have dependencies - generally render at
+		// the end of every other system
+		for (auto system : systems) {
+			system->update();
+		}
 	}
 } /* gws */

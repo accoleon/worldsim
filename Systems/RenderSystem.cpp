@@ -3,6 +3,8 @@
 // Xu Junjie, Kevin
 // University of Oregon
 // 2014-05-01
+
+#include <cilk/cilk.h>
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
@@ -13,8 +15,8 @@ using std::string;
 #include "RenderSystem.h"
 
 namespace gws {
-	const int screenWidth(640);
-	const int screenHeight(480);
+	const int screenWidth(800);
+	const int screenHeight(600);
 	float pixelArray[screenWidth * screenHeight * 3];
 	// Shader sources
 	const GLchar* vertexSource =
@@ -40,7 +42,12 @@ namespace gws {
 		"}";
 
 	RenderSystem::RenderSystem(World& world, SDL_Window* window) : world(world), window(window) {
-
+		SDL_Init(SDL_INIT_VIDEO);
+		//SDL_QueryTexture(texture, NULL, NULL, &screenWidth, &screenHeight);
+		SDL_GL_CreateContext(window);
+		glewExperimental = GL_TRUE;
+		glewInit();
+		Display_Init();
 	}
 	RenderSystem::~RenderSystem() {}
  
@@ -129,32 +136,7 @@ namespace gws {
 		
 	}
 
-	void RenderSystem::run(){
-		SDL_Init(SDL_INIT_VIDEO);
-		SDL_GL_CreateContext(window);
-		glewExperimental = GL_TRUE;
-		glewInit();
-		Display_Init();
-
-		int frameCount = 0;
-		bool quit = false;
-		SDL_Event event;
-
-		double start = omp_get_wtime();
-		while (!quit) {
-			Update();
-			frameCount++;
-			while(SDL_PollEvent(&event)) {
-				if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN && event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)) {
-					quit = true;
- 				}
-			}
-		}
-		//Floating point exception (core dumped)
-		double end = omp_get_wtime();
-		double secondsElapsed = end - start;
-		cout << frameCount / secondsElapsed << " fps" << endl;
-		
+	void RenderSystem::destroy(){
 		glDeleteTextures(1, &tex);
 
 		glDeleteProgram(shaderProgram);
@@ -165,15 +147,19 @@ namespace gws {
 		glDeleteBuffers(1, &vbo);
 	}
 
-	void RenderSystem::Update() {
+	void RenderSystem::update() {
 		//cout << "Updating\n";
-		for (int i = 0; i < screenWidth * screenHeight; i+=3){
-			pixelArray[i] = 0.0f;
-			pixelArray[i+1] = 0.0f;
-			pixelArray[i+2] = 1.0f;
+		cilk_for (auto water = world.waters.cbegin(); water != world.waters.cend(); ++water) {
+			for (auto position : world.positions) {
+				if ((*water)->ID == position->ID) {
+					//cout << "drawing x: " << position->x << " y: " << position->y << " level: " << water->waterLevel << "\r";
+					pixelArray[position->y * screenWidth * 3 + position->x *3] = 0.0f;
+					pixelArray[position->y * screenWidth * 3 + position->x *3 + 1] = 0.0f;
+					pixelArray[position->y * screenWidth * 3 + position->x *3 + 2] = 1.0f;
+				}
+			}
 		}
-
-		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 640, 480, GL_RGB, GL_FLOAT, pixelArray);
+		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, screenWidth,screenHeight, GL_RGB, GL_FLOAT, pixelArray);
 		// Draw a rectangle from the 2 triangles using 6 indices
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		SDL_GL_SwapWindow(window);

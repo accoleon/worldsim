@@ -22,9 +22,9 @@ namespace gws {
 	public:
 		RenderSystem(World& world, SDL_Window* window);
 		~RenderSystem();
-		void Update();
 		void Display_Init();
-		void run();
+		void destroy();
+		void update();
 		std::string getName();
 	private:
 		World& world;
@@ -35,6 +35,8 @@ namespace gws {
 		GLuint vertexShader;
 		GLuint fragmentShader;
 		GLuint shaderProgram;
+		int width;
+		int height;
 	};
 } /* gws */
 #endif

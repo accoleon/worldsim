@@ -15,8 +15,11 @@ namespace gws {
 		EntityManager(World& world);
 		~EntityManager();
 		void addEntity(Entity& entity);
+		void addRandomEntity();
+		void addRandomLake();
 	private:
 		World& world;
+		int nextEntityID;
 	};
 } /* gws */
 #endif

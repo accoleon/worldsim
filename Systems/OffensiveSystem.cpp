@@ -17,7 +17,7 @@ namespace gws {
 
 	}
 	OffensiveSystem::~OffensiveSystem() {}
-	void OffensiveSystem::Update() {
+	void OffensiveSystem::update() {
 	}
 	string OffensiveSystem::getName() {
 		return "OffensiveSystem";

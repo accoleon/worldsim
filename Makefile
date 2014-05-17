@@ -8,7 +8,7 @@ VPATH=Components Entities Systems
 
 all: worldsim
 
-worldsim: worldsim.o units.o World.o EntityManager.o SystemManager.o NutrientSystem.o RenderSystem.o OxygenSystem.o MovementSystem.o SurvivalSystem.o
+worldsim: worldsim.o units.o World.o EntityManager.o SystemManager.o NutrientSystem.o RenderSystem.o OxygenSystem.o MovementSystem.o SurvivalSystem.o WaterSystem.o
 
 testSDL: testSDL.o
 

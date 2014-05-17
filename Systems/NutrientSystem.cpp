@@ -18,7 +18,7 @@ namespace gws {
 
 	}
 	NutrientSystem::~NutrientSystem() {}
-	void NutrientSystem::Update() {
+	void NutrientSystem::update() {
 	}
 	string NutrientSystem::getName() {
 		return "NutrientSystem";

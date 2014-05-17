@@ -16,7 +16,7 @@ namespace gws {
 		DefensiveSystem::DefensiveSystem(World& world) : world(world) {
 	}
 	DefensiveSystem::~DefensiveSystem() {}
-	void DefensiveSystem::Update() {
+	void DefensiveSystem::update() {
 	}
 	string DefensiveSystem::getName() {
 		return "DefensiveSystem";

@@ -16,6 +16,7 @@
 #include "Components/PositionComponent.h"
 #include "Components/NutrientComponent.h"
 #include "Components/RenderComponent.h"
+#include "Components/WaterComponent.h"
 #include "Systems/System.h"
 
 // 2D world, maybe add the third z dimension later
@@ -32,12 +33,14 @@ namespace gws {
 		~World();
 		std::vector<System*> systems;
 		std::vector<Entity> entities;
-		tbb::concurrent_vector<PositionComponent> positions;
-		tbb::concurrent_vector<NutrientComponent> nutrients;
-		tbb::concurrent_vector<RenderComponent> renders;
+		tbb::concurrent_vector<PositionComponent*> positions;
+		tbb::concurrent_vector<Component*> nutrients;
+		tbb::concurrent_vector<Component*> renders;
+		tbb::concurrent_vector<WaterComponent*> waters;
 		void addSystem(System& system);
 		int width;
 		int height;
+		void runSystems();
 	private:
 
 	};
