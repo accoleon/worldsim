@@ -20,25 +20,21 @@ namespace gws {
 	float pixelArray[screenWidth * screenHeight * 3];
 	// Shader sources
 	const GLchar* vertexSource =
-		"#version 150 core\n"
-		"in vec2 position;"
-		"in vec3 color;"
-		"in vec2 texcoord;"
-		"out vec3 Color;"
-		"out vec2 Texcoord;"
+		"#version 120\n"
+		"attribute vec2 position;"
+		"attribute vec2 texcoord;"
+		"varying vec2 Position;"
+		"varying vec2 Texcoord;"
 		"void main() {"
-		"   Color = color;"
-		"   Texcoord = texcoord;"
-		"   gl_Position = vec4(position, 0.0, 1.0);"
+		"    Texcoord = texcoord;"
+		"    gl_Position = vec4(position, 0.0, 1.0);"
 		"}";
 	const GLchar* fragmentSource =
-		"#version 150 core\n"
-		"in vec3 Color;"
-		"in vec2 Texcoord;"
-		"out vec4 outColor;"
+		"#version 120\n"
+		"varying vec2 Texcoord;"
 		"uniform sampler2D tex;"
 		"void main() {"
-		"   outColor = texture(tex, Texcoord);"
+		"    gl_FragColor = texture2D(tex, Texcoord);"
 		"}";
 
 	RenderSystem::RenderSystem(World& world, SDL_Window* window) : world(world), window(window) {
@@ -82,17 +78,24 @@ namespace gws {
 		vertexShader = glCreateShader(GL_VERTEX_SHADER);
 		glShaderSource(vertexShader, 1, &vertexSource, NULL);
 		glCompileShader(vertexShader);
+		GLsizei length1[100];
+		GLchar vertexLog[100];
+		glGetShaderInfoLog(vertexShader, 100, length1, vertexLog);
+		cout << "VertexShader Log:" << vertexLog << endl;
 
 		// Create and compile the fragment shader
 		fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 		glShaderSource(fragmentShader, 1, &fragmentSource, NULL);
 		glCompileShader(fragmentShader);
+		GLsizei length2[100];
+		GLchar fragmentLog[100];
+		glGetShaderInfoLog(fragmentShader, 100, length2, fragmentLog);
+		cout << "FragmentShader Log:" << fragmentLog << endl;
 
 		// Link the vertex and fragment shader into a shader program
 		shaderProgram = glCreateProgram();
 		glAttachShader(shaderProgram, vertexShader);
 		glAttachShader(shaderProgram, fragmentShader);
-		glBindFragDataLocation(shaderProgram, 0, "outColor");
 		glLinkProgram(shaderProgram);
 		glUseProgram(shaderProgram);
 
@@ -100,10 +103,6 @@ namespace gws {
 		GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
 		glEnableVertexAttribArray(posAttrib);
 		glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), 0);
-
-		GLint colAttrib = glGetAttribLocation(shaderProgram, "color");
-		glEnableVertexAttribArray(colAttrib);
-		glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
 
 		GLint texAttrib = glGetAttribLocation(shaderProgram, "texcoord");
 		glEnableVertexAttribArray(texAttrib);
