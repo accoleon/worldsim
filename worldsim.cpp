@@ -66,8 +66,8 @@ void destroyWindow() {
 void createEntities() {
 	cout << "Creating entities...\n";
 	EntityManager entityManager(world);
-	// Create 10 random lakes;
-	for (size_t i = 0; i < 10; ++i) {
+	// Create 1000 random lakes;
+	for (size_t i = 0; i < 1000; ++i) {
 		entityManager.addRandomLake();
 		cout << "Lake " << i << " added\n";
 	}

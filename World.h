@@ -36,7 +36,7 @@ namespace gws {
 		tbb::concurrent_vector<PositionComponent*> positions;
 		tbb::concurrent_vector<Component*> nutrients;
 		tbb::concurrent_vector<Component*> renders;
-		tbb::concurrent_vector<Component*> waters;
+		tbb::concurrent_vector<WaterComponent*> waters;
 		void addSystem(System& system);
 		int width;
 		int height;

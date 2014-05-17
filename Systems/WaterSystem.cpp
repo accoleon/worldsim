@@ -19,6 +19,10 @@ namespace gws {
 	}
 	WaterSystem::~WaterSystem() {}
 	void WaterSystem::update() {
+		// As a test, randomly change the water levels of every water in the world
+		for (auto water : world.waters) {
+			water->waterLevel = rand() % water->max + water->min;
+		}
 	}
 	string WaterSystem::getName() {
 		return "WaterSystem";

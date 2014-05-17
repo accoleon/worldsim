@@ -30,7 +30,7 @@ namespace gws {
 				world.positions.push_back(static_cast<PositionComponent*>(component));
 				break;
 			case Water:
-				world.waters.push_back(component);
+				world.waters.push_back(static_cast<WaterComponent*>(component));
 				break;
 			case Render:
 				world.renders.push_back(component);

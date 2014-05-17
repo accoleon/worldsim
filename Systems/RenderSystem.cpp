@@ -25,7 +25,7 @@ namespace gws {
 		SDL_QueryTexture(texture, NULL, NULL, &width, &height);
 		format = SDL_AllocFormat(SDL_PIXELFORMAT_ARGB8888);
 	  pixels = new Uint32[width * height];
-	  memset(pixels, 255, width * height * sizeof(Uint32));
+	  //memset(pixels, 100, width * height * sizeof(Uint32));
 	}
 	RenderSystem::~RenderSystem() {
 		//SDL_FreeFormat(format);
@@ -38,8 +38,8 @@ namespace gws {
 		for (auto water : world.waters) {
 			for (auto position : world.positions) {
 				if (water->ID == position->ID) {
-					cout << "drawing x: " << position->x << " y: " << position->y << endl;
-					pixels[position->y * width + position->x] = SDL_MapRGBA(format, 0, 0, 255, 255);
+					cout << "drawing x: " << position->x << " y: " << position->y << " level: " << water->waterLevel << endl;
+					pixels[position->y * width + position->x] = SDL_MapRGBA(format, 0, 0, water->waterLevel, 255);
 				}
 			}
 		}
