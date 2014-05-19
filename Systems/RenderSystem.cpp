@@ -3,6 +3,11 @@
 // Xu Junjie, Kevin
 // University of Oregon
 // 2014-05-01
+//
+// Li, Juston
+// University of Oregon
+// 2014-05-19
+//
 
 #include <cilk/cilk.h>
 #include <cstdlib>
@@ -13,6 +18,9 @@ using std::endl;
 #include <string>
 using std::string;
 #include "RenderSystem.h"
+
+#define BROWN 	0xFF8B4513
+#define CYAN	0xFF00FFFF
 
 namespace gws {
 	const int screenWidth(800);
@@ -114,7 +122,7 @@ namespace gws {
 		//Empty world - brown 
 		for (int i = 0; i < screenWidth * screenHeight; i++){
 			//cilk_for here seems to make it slower ~.0009 vs serial .0004
-			pixelArray[i] = 0xFFB8860B;
+			pixelArray[i] = BROWN;
 		}
 
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, screenWidth, screenHeight, 0, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, pixelArray);
@@ -148,7 +156,10 @@ namespace gws {
 		cilk_for (auto water = world.waters.cbegin(); water != world.waters.cend(); ++water) {
 			for (auto position : world.positions) {
 				if ((*water)->ID == position->ID) {
-					pixelArray[position->y * screenWidth + position->x] = 0xFF0000FF;
+					//Start water color as Cyan. Reducing the green component will make blue component
+					//more apparent, giving a relatively darker blue.
+					//Use waterLevel as a scale for how dark. 0 Light : 255 Dark
+					pixelArray[position->y * screenWidth + position->x] = CYAN-0x00000100*(*water)->waterLevel;
 				}
 			}
 		}
