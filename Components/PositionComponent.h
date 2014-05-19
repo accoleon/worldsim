@@ -21,8 +21,8 @@ namespace gws {
 		PositionComponent() {
 			x = rand() % maxX + minX;
 			y = rand() % maxY + minY;
-			cout << "x is " << x << endl;
-			cout << "y is " << y << endl;
+			//cout << "x is " << x << endl;
+			//cout << "y is " << y << endl;
 		}
 
 		ComponentType getType() { return Position; }

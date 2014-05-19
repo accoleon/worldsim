@@ -71,7 +71,7 @@ void createEntities() {
 	// Create 1000 random lakes;
 	for (size_t i = 0; i < 10000; ++i) {
 		entityManager.addRandomLake();
-		cout << "Lake " << i << " added\n";
+		//cout << "Lake " << i << " added\n";
 	}
 	// Entities should be added to the world here
 }
