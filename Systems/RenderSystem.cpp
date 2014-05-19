@@ -3,6 +3,11 @@
 // Xu Junjie, Kevin
 // University of Oregon
 // 2014-05-01
+//
+// Li, Juston
+// University of Oregon
+// 2014-05-19
+//
 
 #include <cilk/cilk.h>
 #include <cstdlib>
@@ -14,55 +19,155 @@ using std::endl;
 using std::string;
 #include "RenderSystem.h"
 
+#define BROWN 	0xFF8B4513
+#define CYAN	0xFF00FFFF
+
 namespace gws {
-	RenderSystem::RenderSystem(World& world, SDL_Window* window, SDL_Renderer* renderer, SDL_Texture* texture) : 
-	world(world),
-	window(window),
-	renderer(renderer),
-	texture(texture) {
-		// Most of the code below should be moved into functions
-		// KX: Actually I think most of these initialization stuff should be done in
-		// the main game loop in worldsim.cpp, then this system focuses solely on 
-		// updating the pixel map
-		SDL_QueryTexture(texture, NULL, NULL, &width, &height);
-		format = SDL_AllocFormat(SDL_PIXELFORMAT_ARGB8888);
-	  pixels = new Uint32[width * height];
-	  //memset(pixels, 100, width * height * sizeof(Uint32));
+	const int screenWidth(800);
+	const int screenHeight(600);
+	GLuint pixelArray[screenWidth * screenHeight];
+	// Shader sources
+	const GLchar* vertexSource =
+		"#version 120\n"
+		"attribute vec2 position;"
+		"attribute vec2 texcoord;"
+		"varying vec2 Position;"
+		"varying vec2 Texcoord;"
+		"void main() {"
+		"    Texcoord = texcoord;"
+		"    gl_Position = vec4(position, 0.0, 1.0);"
+		"}";
+	const GLchar* fragmentSource =
+		"#version 120\n"
+		"varying vec2 Texcoord;"
+		"uniform sampler2D tex;"
+		"void main() {"
+		"    gl_FragColor = texture2D(tex, Texcoord);"
+		"}";
+
+	RenderSystem::RenderSystem(World& world, SDL_Window* window) : world(world), window(window) {
+		SDL_Init(SDL_INIT_VIDEO);
+		//SDL_QueryTexture(texture, NULL, NULL, &screenWidth, &screenHeight);
+		SDL_GL_CreateContext(window);
+		glewExperimental = GL_TRUE;
+		glewInit();
+		Display_Init();
 	}
-	RenderSystem::~RenderSystem() {
-		//SDL_FreeFormat(format);
-		//delete pixels;
+	RenderSystem::~RenderSystem() {}
+ 
+	void RenderSystem::Display_Init() {
+
+		// Create a Vertex Buffer Object and copy the vertex data to it
+		glGenBuffers(1, &vbo);
+
+		GLfloat vertices[] = {
+		//  Position   Color Texcoords
+			-1.0f,  1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, // Top-left
+			1.0f,  1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // Top-right
+			1.0f, -1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // Bottom-right
+			-1.0f, -1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f  // Bottom-left
+		};
+
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+		// Create an element array
+		glGenBuffers(1, &ebo);
+
+		GLuint elements[] = {
+			0, 1, 2,
+			2, 3, 0
+		};
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
+
+		// Create and compile the vertex shader
+		vertexShader = glCreateShader(GL_VERTEX_SHADER);
+		glShaderSource(vertexShader, 1, &vertexSource, NULL);
+		glCompileShader(vertexShader);
+		GLsizei length1[100];
+		GLchar vertexLog[100];
+		glGetShaderInfoLog(vertexShader, 100, length1, vertexLog);
+		cout << "VertexShader Log:" << vertexLog << endl;
+
+		// Create and compile the fragment shader
+		fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+		glShaderSource(fragmentShader, 1, &fragmentSource, NULL);
+		glCompileShader(fragmentShader);
+		GLsizei length2[100];
+		GLchar fragmentLog[100];
+		glGetShaderInfoLog(fragmentShader, 100, length2, fragmentLog);
+		cout << "FragmentShader Log:" << fragmentLog << endl;
+
+		// Link the vertex and fragment shader into a shader program
+		shaderProgram = glCreateProgram();
+		glAttachShader(shaderProgram, vertexShader);
+		glAttachShader(shaderProgram, fragmentShader);
+		glLinkProgram(shaderProgram);
+		glUseProgram(shaderProgram);
+
+		// Specify the layout of the vertex data
+		GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
+		glEnableVertexAttribArray(posAttrib);
+		glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), 0);
+
+		GLint texAttrib = glGetAttribLocation(shaderProgram, "texcoord");
+		glEnableVertexAttribArray(texAttrib);
+		glVertexAttribPointer(texAttrib, 2, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (void*)(5 * sizeof(GLfloat)));
+
+		// Load texture
+		glGenTextures(1, &tex);
+
+		//Empty world - brown 
+		for (int i = 0; i < screenWidth * screenHeight; i++){
+			//cilk_for here seems to make it slower ~.0009 vs serial .0004
+			pixelArray[i] = BROWN;
+		}
+
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, screenWidth, screenHeight, 0, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, pixelArray);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		glClearColor(0.0f,0.0f,0.0f,1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		// Swap buffers
+		SDL_GL_SwapWindow(window);
+		
 	}
+
+	void RenderSystem::destroy(){
+		glDeleteTextures(1, &tex);
+
+		glDeleteProgram(shaderProgram);
+		glDeleteShader(fragmentShader);
+		glDeleteShader(vertexShader);
+
+		glDeleteBuffers(1, &ebo);
+		glDeleteBuffers(1, &vbo);
+	}
+
 	void RenderSystem::update() {
-		// is renderComponent redundant? should we combine rendercomponent and
-		// positioncomponent?
-		// Render all waters in the world
+		//cout << "Updating\n";
 		cilk_for (auto water = world.waters.cbegin(); water != world.waters.cend(); ++water) {
 			for (auto position : world.positions) {
 				if ((*water)->ID == position->ID) {
-					//cout << "drawing x: " << position->x << " y: " << position->y << " level: " << water->waterLevel << "\r";
-					pixels[position->y * width + position->x] = SDL_MapRGBA(format, 0, 0, (*water)->waterLevel, 255);
+					//Start water color as Cyan. Reducing the green component will make blue component
+					//more apparent, giving a relatively darker blue.
+					//Use waterLevel as a scale for how dark. 0 Light : 255 Dark
+					pixelArray[position->y * screenWidth + position->x] = CYAN-0x00000100*(*water)->waterLevel;
 				}
 			}
 		}
-		/*for (auto water : world.waters) {
-			for (auto position : world.positions) {
-				if (water->ID == position->ID) {
-					//cout << "drawing x: " << position->x << " y: " << position->y << " level: " << water->waterLevel << "\r";
-					pixels[position->y * width + position->x] = SDL_MapRGBA(format, 0, 0, water->waterLevel, 255);
-				}
-			}
-		}*/
-		/*for (size_t i = 0; i < width; ++i) {
-			for (size_t j = 0; j < height; ++j) {
-				pixels[j * width + i] = rand() % 294967295;
-			}
-		}*/
-		SDL_UpdateTexture(texture, NULL, pixels, width * sizeof(Uint32));			
-    SDL_RenderClear(renderer);
-    SDL_RenderCopy(renderer, texture, NULL, NULL);
-    SDL_RenderPresent(renderer);
+		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, screenWidth,screenHeight, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, pixelArray);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		SDL_GL_SwapWindow(window);
 	}
+
 	string RenderSystem::getName() {
 		return "RenderSystem";
 	}

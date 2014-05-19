@@ -44,23 +44,25 @@ void createWindow() {
 		SDL_WINDOWPOS_UNDEFINED, 
 		SDL_WINDOWPOS_UNDEFINED, 
 		0, 0,
-		SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_OPENGL);
+		SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_OPENGL); 
+
 	if (window == nullptr){
 		std::cout << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
 		return;
 	}
+	/*
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	if (renderer == nullptr){
 		std::cout << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
 		return ;
 	}
-	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, screenWidth, screenHeight);
+	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, screenWidth, screenHeight); */
 }
 void destroyWindow() {
-	SDL_DestroyRenderer(renderer);
-	SDL_DestroyTexture(texture);
-  SDL_DestroyWindow(window);
-  SDL_Quit();
+	//SDL_DestroyRenderer(renderer);
+	//SDL_DestroyTexture(texture);
+	SDL_DestroyWindow(window);
+	SDL_Quit();
 }
 
 void createEntities() {
@@ -82,25 +84,25 @@ void addSystems() {
 	world.addSystem(waterSystem);
 	
 	// Add rendering
-	RenderSystem renderSystem(world, window, renderer, texture);
+	RenderSystem renderSystem(world, window);
 	world.addSystem(renderSystem);
 }
 
 void runWorld() {
 	cout << "Running world...\n";
 	// Simulation loop should be here
-  bool quit = false;
-  SDL_Event event;
-  while (!quit) {
+	bool quit = false;
+	SDL_Event event;
+	while (!quit) {
 		while(SDL_PollEvent(&event)) {
-      //If the user has Xed out the window
-      if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN && event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)) {
-          //Quit the program
-          quit = true;
-      }
+			//If the user has Xed out the window
+			if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN && event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)) {
+			//Quit the program
+				quit = true;
+			}
 		}
 		world.runSystems();
-  }
+	}
 }
 
 void teardown()
