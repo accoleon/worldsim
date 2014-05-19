@@ -43,8 +43,8 @@ void createWindow() {
 	window = SDL_CreateWindow("Genetic World Simulator", 
 		SDL_WINDOWPOS_UNDEFINED, 
 		SDL_WINDOWPOS_UNDEFINED, 
-		0, 0,
-		SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_OPENGL); 
+		screenWidth, screenHeight,
+		SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL); 
 
 	if (window == nullptr){
 		std::cout << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
@@ -117,6 +117,7 @@ int main (int, char**)
 
 	// Initialize the world
 	createEntities();
+	sleep(1);
 	addSystems();
 	
 	// Run simulation
