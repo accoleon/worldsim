@@ -10,13 +10,14 @@ using std::endl;
 
 #include "EntityManager.h"
 //#include "Components/Component.h"
+#include "Components/SurvivalComponent.h"
 #include "Components/PositionComponent.h"
 #include "Components/RenderComponent.h"
 #include "Components/NutrientComponent.h"
 
 
 namespace gws {
-	EntityManager::EntityManager(World& world) : world(world) {}
+	EntityManager::EntityManager(World& world) : world(world), nextEntityID(0) {}
 	EntityManager::~EntityManager() {}
 	void EntityManager::addEntity(Entity& entity) {
 		entity.setID(nextEntityID++);
@@ -41,6 +42,13 @@ namespace gws {
 	void EntityManager::addRandomEntity() {
 		// Create a random entity with random parameters
 		
+	}
+	
+	void EntityManager::addRandomPlant() {
+		// Create a random plant-type entity
+		Entity plant;
+		plant.addComponent(new PositionComponent());
+		plant.addComponent(new RenderComponent());
 	}
 	void EntityManager::addRandomLake() {
 		Entity lake;

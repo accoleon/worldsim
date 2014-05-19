@@ -17,6 +17,7 @@ namespace gws {
 		void addEntity(Entity& entity);
 		void addRandomEntity();
 		void addRandomLake();
+		void addRandomPlant();
 	private:
 		World& world;
 		int nextEntityID;
