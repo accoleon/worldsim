@@ -17,7 +17,7 @@ using std::string;
 namespace gws {
 	const int screenWidth(800);
 	const int screenHeight(600);
-	float pixelArray[screenWidth * screenHeight * 3];
+	GLuint pixelArray[screenWidth * screenHeight];
 	// Shader sources
 	const GLchar* vertexSource =
 		"#version 120\n"
@@ -111,25 +111,22 @@ namespace gws {
 		// Load texture
 		glGenTextures(1, &tex);
 
-		//Empty world - brown
-		for (int i = 0; i < screenWidth * screenHeight * 3; i+=3){
-			pixelArray[i] = 0.5f;
-			pixelArray[i+1] = 0.35f;
-			pixelArray[i+2] = 0.05f;
+		//Empty world - brown 
+		for (int i = 0; i < screenWidth * screenHeight; i++){
+			//cilk_for here seems to make it slower ~.0009 vs serial .0004
+			pixelArray[i] = 0xFFB8860B;
 		}
 
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, screenWidth, screenHeight, 0, GL_RGB, GL_FLOAT, pixelArray);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, screenWidth, screenHeight, 0, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, pixelArray);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClearColor(0.0f,0.0f,0.0f,1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		// Draw a rectangle from the 2 triangles using 6 indices
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
 		// Swap buffers
 		SDL_GL_SwapWindow(window);
 		
@@ -151,18 +148,15 @@ namespace gws {
 		cilk_for (auto water = world.waters.cbegin(); water != world.waters.cend(); ++water) {
 			for (auto position : world.positions) {
 				if ((*water)->ID == position->ID) {
-					//cout << "drawing x: " << position->x << " y: " << position->y << " level: " << water->waterLevel << "\r";
-					pixelArray[position->y * screenWidth * 3 + position->x *3] = 0.0f;
-					pixelArray[position->y * screenWidth * 3 + position->x *3 + 1] = 0.0f;
-					pixelArray[position->y * screenWidth * 3 + position->x *3 + 2] = 1.0f;
+					pixelArray[position->y * screenWidth + position->x] = 0xFF0000FF;
 				}
 			}
 		}
-		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, screenWidth,screenHeight, GL_RGB, GL_FLOAT, pixelArray);
-		// Draw a rectangle from the 2 triangles using 6 indices
+		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, screenWidth,screenHeight, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, pixelArray);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		SDL_GL_SwapWindow(window);
 	}
+
 	string RenderSystem::getName() {
 		return "RenderSystem";
 	}
