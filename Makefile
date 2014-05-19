@@ -3,8 +3,14 @@ CXX:=icpc
 LD:=icpc
 CFLAGS:=$(shell sdl2-config --cflags)
 CXXFLAGS:=-Wall -Wextra -pedantic -std=c++11 $(shell sdl2-config --cflags)
-LDFLAGS:=-ltbb -std=c++11 $(shell sdl2-config --libs) -lGL -lGLEW -fopenmp
+LDFLAGS:=-ltbb -std=c++11 $(shell sdl2-config --libs) -lGLEW -fopenmp
 VPATH=Components Entities Systems
+# OS X
+ifeq ($(shell uname),Darwin)
+	LDFLAGS += -framework OpenGL
+else
+	LDFLAGS += -lGL			
+endif
 
 all: worldsim
 
