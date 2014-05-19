@@ -117,7 +117,7 @@ int main (int, char**)
 
 	// Initialize the world
 	createEntities();
-	sleep(1);
+	//sleep(1);
 	addSystems();
 	
 	// Run simulation
