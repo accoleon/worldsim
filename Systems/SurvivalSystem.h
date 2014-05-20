@@ -15,7 +15,7 @@ namespace gws {
 	public:
 		SurvivalSystem(World& world);
 		~SurvivalSystem();
-		void Update(int index);
+		void update();
 		std::string getName();
 		std::string getSurvivalType(int index);
 		void setSurvivalType(int index, survival_type new_type);
