@@ -153,15 +153,11 @@ namespace gws {
 
 	void RenderSystem::update() {
 		//cout << "Updating\n";
-		cilk_for (auto water = world.waters.cbegin(); water != world.waters.cend(); ++water) {
-			for (auto position : world.positions) {
-				if ((*water)->ID == position->ID) {
-					//Start water color as Cyan. Reducing the green component will make blue component
-					//more apparent, giving a relatively darker blue.
-					//Use waterLevel as a scale for how dark. 0 Light : 255 Dark
-					pixelArray[position->y * screenWidth + position->x] = CYAN-0x00000100*(*water)->waterLevel;
-				}
-			}
+		cilk_for (int i = 0; i < world.waters.size(); ++i) {
+			//Start water color as Cyan. Reducing the green component will make blue component
+			//more apparent, giving a relatively darker blue.
+			//Use waterLevel as a scale for how dark. 0 Light : 255 Dark
+			pixelArray[world.positions[i].y * screenWidth + world.positions[i].x] = CYAN-0x00000100 * world.waters[i].waterLevel;
 		}
 		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, screenWidth,screenHeight, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, pixelArray);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

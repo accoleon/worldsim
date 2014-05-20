@@ -10,13 +10,13 @@
 #define WORLD_H
 #include <vector>
 
-#include "tbb/tbb.h"
+#include "tbb/concurrent_vector.h"
 
-#include "Entity.h"
 #include "Components/PositionComponent.h"
 #include "Components/NutrientComponent.h"
 #include "Components/RenderComponent.h"
 #include "Components/WaterComponent.h"
+#include "Components/SurvivalComponent.h"
 #include "Systems/System.h"
 
 // 2D world, maybe add the third z dimension later
@@ -25,24 +25,36 @@
 // together
 
 namespace gws {
-	const int default_width(640);
-	const int default_height(480);
 	class World {
 	public:
+		const static int default_width = 640;
+		const static int default_height = 480;
 		World(int width = default_width, int height = default_height);
 		~World();
+		int nextEntityID = 0;
+		// We might not need concurrent_vectors since we try to make sure
+		// there is no multithreaded writing to them. Performance-wise 
+		// concurrent vectors are slower than contiguous STL vectors
 		std::vector<System*> systems;
-		std::vector<Entity> entities;
-		tbb::concurrent_vector<PositionComponent*> positions;
+		//std::vector<Entity> entities;
+		//tbb::concurrent_vector<PositionComponent*> positions;
+		std::vector<PositionComponent> positions;
+		// Especially when we use polymorphism - the objects are not in contiguous memory at all!
 		tbb::concurrent_vector<Component*> nutrients;
 		tbb::concurrent_vector<Component*> renders;
-		tbb::concurrent_vector<WaterComponent*> waters;
-		void addSystem(System& system);
+		//tbb::concurrent_vector<WaterComponent*> waters;
+		std::vector<WaterComponent> waters;
+		tbb::concurrent_vector<SurvivalComponent*> survivors;
+		
 		int width;
 		int height;
-		void runSystems();
+		
+		int addEntity();
+		int addRandomLake();
+		int addRandomPlant();
+		void addSystem(System& system);
+		void runSystems();		
 	private:
-
 	};
 } /* gws */
 #endif

@@ -7,9 +7,13 @@
 #ifndef MOVEMENT_SYSTEM_H
 #define MOVEMENT_SYSTEM_H
 #include "System.h"
-#include "../World.h"
+
+
 
 namespace gws {
+	// Forward declarations
+	class World;
+	
 	class MovementSystem : public System {
 	public:
 		MovementSystem(World& world);
