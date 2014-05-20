@@ -18,7 +18,7 @@ using std::endl;
 #include "Entity.h"
 #include "EntityManager.h"
 #include "units.h"
-#include "Systems/NutrientSystem.h"
+//#include "Systems/NutrientSystem.h"
 #include "Systems/MovementSystem.h"
 #include "Systems/OxygenSystem.h"
 #include "Systems/RenderSystem.h"
@@ -74,14 +74,18 @@ void createEntities() {
 		//cout << "Lake " << i << " added\n";
 	}
 	// Entities should be added to the world here
+	
 }
 
 void addSystems() {
-	NutrientSystem nutrientSystem(world);
-	world.addSystem(nutrientSystem);
+	//NutrientSystem nutrientSystem(world);
+	//world.addSystem(nutrientSystem);
 	
 	WaterSystem waterSystem(world);
 	world.addSystem(waterSystem);
+	
+	SurvivalSystem survivalSystem(world);
+	world.addSystem(survivalSystem);
 	
 	// Add rendering
 	RenderSystem renderSystem(world, window);

@@ -171,4 +171,8 @@ namespace gws {
 	string RenderSystem::getName() {
 		return "RenderSystem";
 	}
+	
+	SystemType RenderSystem::getType() {
+		return RenderSys;
+	}
 } /* gws */

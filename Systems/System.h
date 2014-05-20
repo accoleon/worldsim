@@ -9,10 +9,16 @@
 #include <string>
 #include <map>
 namespace gws {
+	enum SystemType {
+		WaterSys,
+		RenderSys,
+		SurvivalSys
+	};
 	class System {
 	public:
 		virtual void update() = 0;
 		virtual std::string getName() = 0;
+		virtual SystemType getType() = 0;
 	};
 } /* gws */
 #endif

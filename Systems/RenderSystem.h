@@ -26,6 +26,7 @@ namespace gws {
 		void destroy();
 		void update();
 		std::string getName();
+		SystemType getType();
 	private:
 		World& world;
 		SDL_Window* window;

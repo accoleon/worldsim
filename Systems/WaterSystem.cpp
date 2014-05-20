@@ -29,6 +29,9 @@ namespace gws {
 	string WaterSystem::getName() {
 		return "WaterSystem";
 	}
+	SystemType WaterSystem::getType() {
+		return WaterSys;
+	}
 	int WaterSystem::getWater(int index){
 		return water_levels[index];
 	}

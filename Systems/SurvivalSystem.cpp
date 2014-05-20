@@ -16,7 +16,11 @@ namespace gws {
 
 	}
 	SurvivalSystem::~SurvivalSystem() {}
-	void SurvivalSystem::Update(int index) {
+	void SurvivalSystem::update() {
+		// KX: update() should update all entities in the world, not a specific
+		// entity - you can refactor the major logic into another function
+		// and call it from update()
+		int index = 0;
 		//Main AI controller for how each Entity will move throughout the World
 		survival_type stype = survival_types[index];
 		switch(stype){
@@ -87,6 +91,9 @@ namespace gws {
 	}
 	string SurvivalSystem::getName() {
 		return "SurvivalSystem";
+	}
+	SystemType SurvivalSystem::getType() {
+		return SurvivalSys;
 	}
 	void SurvivalSystem::setSurvivalType(int index, survival_type new_type){
 		survival_types[index] = new_type;
