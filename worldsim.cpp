@@ -67,7 +67,7 @@ void destroyWindow() {
 void createEntities() {
 	cout << "Creating entities...\n";
 	// Create random lakes;
-	for (size_t i = 0; i < 50000; ++i) {
+	for (size_t i = 0; i < 10000000; ++i) {
 		world.addRandomLake();
 	}
 	// Entities should be added to the world here
