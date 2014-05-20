@@ -4,6 +4,7 @@
 // University of Oregon
 // 2014-04-30
 
+#include <cilk/cilk.h>
 #include <iostream>
 using std::cout;
 using std::endl;
@@ -20,14 +21,22 @@ namespace gws {
 	WaterSystem::~WaterSystem() {}
 	void WaterSystem::update() {
 		// As a test, randomly change the water levels of every water in the world
-		for (auto water : world.waters) {
+		cilk_for (auto water = world.waters.begin(); water != world.waters.end(); ++water) {
 			water->waterLevel += 1;
 			if (water->waterLevel > water->max)
 				water->waterLevel = water->max;
-		}
+		}/*
+		for (auto& water : world.waters) {
+			water.waterLevel += 1;
+			if (water.waterLevel > water.max)
+				water.waterLevel = water.max;
+		}*/
 	}
 	string WaterSystem::getName() {
 		return "WaterSystem";
+	}
+	SystemType WaterSystem::getType() {
+		return WaterSys;
 	}
 	int WaterSystem::getWater(int index){
 		return water_levels[index];

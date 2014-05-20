@@ -15,10 +15,8 @@ using std::endl;
 #include "Components/Component.h"
 #include "Components/NutrientComponent.h"
 #include "Components/PositionComponent.h"
-#include "Entity.h"
-#include "EntityManager.h"
 #include "units.h"
-#include "Systems/NutrientSystem.h"
+//#include "Systems/NutrientSystem.h"
 #include "Systems/MovementSystem.h"
 #include "Systems/OxygenSystem.h"
 #include "Systems/RenderSystem.h"
@@ -26,6 +24,7 @@ using std::endl;
 #include "Systems/SystemManager.h"
 #include "Systems/WaterSystem.h"
 #include "World.h"
+
 using namespace gws;
 
 const int screenWidth(800);
@@ -67,21 +66,23 @@ void destroyWindow() {
 
 void createEntities() {
 	cout << "Creating entities...\n";
-	EntityManager entityManager(world);
-	// Create 1000 random lakes;
-	for (size_t i = 0; i < 10000; ++i) {
-		entityManager.addRandomLake();
-		//cout << "Lake " << i << " added\n";
+	// Create random lakes;
+	for (size_t i = 0; i < 50000; ++i) {
+		world.addRandomLake();
 	}
 	// Entities should be added to the world here
+	
 }
 
 void addSystems() {
-	NutrientSystem nutrientSystem(world);
-	world.addSystem(nutrientSystem);
+	//NutrientSystem nutrientSystem(world);
+	//world.addSystem(nutrientSystem);
 	
 	WaterSystem waterSystem(world);
 	world.addSystem(waterSystem);
+	
+	SurvivalSystem survivalSystem(world);
+	world.addSystem(survivalSystem);
 	
 	// Add rendering
 	RenderSystem renderSystem(world, window);

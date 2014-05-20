@@ -16,6 +16,7 @@ namespace gws {
 		~WaterSystem();
 		void update();
 		std::string getName();
+		SystemType getType();
 		int getWater(int index);
 		void setWater(int index, int set);
 		int compareWater(int former, int latter);

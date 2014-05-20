@@ -12,8 +12,8 @@
 namespace gws {
 	struct WaterComponent : gws::Component {
 		int waterLevel;
-		const int min = 0;
-		const int max = 255;
+		const static int min = 0;
+		const static int max = 255;
 		WaterComponent(int waterLevel) : waterLevel(waterLevel){}
 		WaterComponent() { // default constructor - randomized
 			waterLevel = rand() % max + min;

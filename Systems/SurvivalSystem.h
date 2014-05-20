@@ -17,6 +17,7 @@ namespace gws {
 		~SurvivalSystem();
 		void update();
 		std::string getName();
+		SystemType getType();
 		std::string getSurvivalType(int index);
 		void setSurvivalType(int index, survival_type new_type);
 	private:
