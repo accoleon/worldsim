@@ -32,7 +32,7 @@ namespace gws {
 		~World();
 		int width;
 		int height;
-		int nextEntityID = 0;
+		size_t nextEntityID = 0;
 		
 		// Component vectors
 		// We might not need concurrent_vectors since we try to make sure
@@ -51,11 +51,11 @@ namespace gws {
 
 		// Functions
 		void reserve(size_t size); // Reserve space for potential entities
-		int addRandomLake();
-		int addRandomPlant();
+		size_t addRandomLake();
+		size_t addRandomPlant();
 		void runSystems();		
 	private:
-		int addEntity();
+		size_t addEntity();
 	};
 } /* gws */
 #endif

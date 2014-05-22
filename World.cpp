@@ -21,20 +21,20 @@ namespace gws {
 		renderSystem(*this, window) {}
 	World::~World() {}
 	
-	int World::addEntity() {
-		int ID = nextEntityID++;
+	size_t World::addEntity() {
+		size_t ID = nextEntityID++;
 		positions.emplace_back();
 		waters.emplace_back();
 		return ID;
 	}
-	int World::addRandomPlant() {
+	size_t World::addRandomPlant() {
 		// Create a random plant-type entity
-		int ID = addEntity();;
+		size_t ID = addEntity();;
 		return ID;
 	}
-	int World::addRandomLake() {
+	size_t World::addRandomLake() {
 		// Create a random lake entity
-		int ID = addEntity();;
+		size_t ID = addEntity();;
 		return ID;
 	}
 	
