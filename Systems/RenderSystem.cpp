@@ -18,6 +18,7 @@ using std::endl;
 #include <string>
 using std::string;
 #include "RenderSystem.h"
+#include "../World.h"
 
 #define BROWN 	0xFF8B4513
 #define CYAN	0xFF00FFFF
@@ -120,7 +121,7 @@ namespace gws {
 		glGenTextures(1, &tex);
 
 		//Empty world - brown 
-		for (int i = 0; i < screenWidth * screenHeight; i++){
+		for (int i = 0; i < screenWidth * screenHeight; ++i){
 			//cilk_for here seems to make it slower ~.0009 vs serial .0004
 			pixelArray[i] = BROWN;
 		}
@@ -153,7 +154,8 @@ namespace gws {
 
 	void RenderSystem::update() {
 		//cout << "Updating\n";
-		cilk_for (int i = 0; i < world.waters.size(); ++i) {
+		auto end = world.waters.size();
+		cilk_for (auto i = 0; i < end; ++i) {
 			//Start water color as Cyan. Reducing the green component will make blue component
 			//more apparent, giving a relatively darker blue.
 			//Use waterLevel as a scale for how dark. 0 Light : 255 Dark

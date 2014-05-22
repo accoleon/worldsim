@@ -10,14 +10,13 @@
 #define WORLD_H
 #include <vector>
 
-#include "tbb/concurrent_vector.h"
-
 #include "Components/PositionComponent.h"
 #include "Components/NutrientComponent.h"
 #include "Components/RenderComponent.h"
 #include "Components/WaterComponent.h"
 #include "Components/SurvivalComponent.h"
-#include "Systems/System.h"
+#include "Systems/WaterSystem.h"
+#include "Systems/RenderSystem.h"
 
 // 2D world, maybe add the third z dimension later
 // width/height refers to the size of the world being simulated, but
@@ -29,32 +28,34 @@ namespace gws {
 	public:
 		const static int default_width = 640;
 		const static int default_height = 480;
-		World(int width = default_width, int height = default_height);
+		World(SDL_Window* window, int width = default_width, int height = default_height);
 		~World();
+		int width;
+		int height;
 		int nextEntityID = 0;
+		
+		// Component vectors
 		// We might not need concurrent_vectors since we try to make sure
 		// there is no multithreaded writing to them. Performance-wise 
 		// concurrent vectors are slower than contiguous STL vectors
-		std::vector<System*> systems;
-		//std::vector<Entity> entities;
-		//tbb::concurrent_vector<PositionComponent*> positions;
-		std::vector<PositionComponent> positions;
 		// Especially when we use polymorphism - the objects are not in contiguous memory at all!
-		tbb::concurrent_vector<Component*> nutrients;
-		tbb::concurrent_vector<Component*> renders;
-		//tbb::concurrent_vector<WaterComponent*> waters;
+		std::vector<PositionComponent> positions;
+		std::vector<NutrientComponent> nutrients;
+		std::vector<RenderComponent> renders;
 		std::vector<WaterComponent> waters;
-		tbb::concurrent_vector<SurvivalComponent*> survivors;
+		std::vector<SurvivalComponent> survivors;
 		
-		int width;
-		int height;
-		
-		int addEntity();
+		// Systems
+		WaterSystem waterSystem;
+		RenderSystem renderSystem;
+
+		// Functions
+		void reserve(size_t size); // Reserve space for potential entities
 		int addRandomLake();
 		int addRandomPlant();
-		void addSystem(System& system);
 		void runSystems();		
 	private:
+		int addEntity();
 	};
 } /* gws */
 #endif

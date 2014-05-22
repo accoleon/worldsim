@@ -10,9 +10,10 @@
 using namespace gws;
 namespace gws {
 	struct NutrientComponent : Component {
-		NutrientComponent(int nutrientLevel) : nutrientLevel(nutrientLevel){}
+		NutrientComponent(int nutrientLevel) : nutrientLevel(nutrientLevel) {
+			active = true;
+		}
 		int nutrientLevel;
-		ComponentType getType() { return Nutrient; }
 	};
 } /* gws */
 #endif

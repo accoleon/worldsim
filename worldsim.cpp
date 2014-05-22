@@ -32,7 +32,7 @@ const int screenHeight(600);
 SDL_Window* window;
 SDL_Renderer* renderer;
 SDL_Texture* texture;
-World world(screenWidth, screenHeight);
+
 
 void createWindow() {
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0){
@@ -64,32 +64,20 @@ void destroyWindow() {
 	SDL_Quit();
 }
 
-void createEntities() {
+void createEntities(World& world) {
+	world.reserve(10000000);
 	cout << "Creating entities...\n";
 	// Create random lakes;
-	for (size_t i = 0; i < 10000000; ++i) {
+	for (size_t i = 0; i < 5000000; ++i) {
+		world.addRandomLake();
+	}
+	for (size_t i = 0; i < 5000000; ++i) {
 		world.addRandomLake();
 	}
 	// Entities should be added to the world here
-	
 }
 
-void addSystems() {
-	//NutrientSystem nutrientSystem(world);
-	//world.addSystem(nutrientSystem);
-	
-	WaterSystem waterSystem(world);
-	world.addSystem(waterSystem);
-	
-	SurvivalSystem survivalSystem(world);
-	world.addSystem(survivalSystem);
-	
-	// Add rendering
-	RenderSystem renderSystem(world, window);
-	world.addSystem(renderSystem);
-}
-
-void runWorld() {
+void runWorld(World& world) {
 	cout << "Running world...\n";
 	// Simulation loop should be here
 	bool quit = false;
@@ -117,12 +105,14 @@ int main (int, char**)
 	createWindow();
 
 	// Initialize the world
-	createEntities();
-	//sleep(1);
-	addSystems();
+	World world(window, screenWidth, screenHeight);
+	
+	createEntities(world);
 	
 	// Run simulation
-	runWorld();
+	runWorld(world);
+	
+	
 	
 	// Teardown
 	teardown();

@@ -17,15 +17,11 @@ namespace gws {
 		const int minY = 0;
 		const int maxX = 800;
 		const int maxY = 600; // have to find some way to link this with screenWidth/height
-		PositionComponent(int x, int y) : x(x), y(y) {}
-		PositionComponent() {
-			x = rand() % maxX + minX;
-			y = rand() % maxY + minY;
-			//cout << "x is " << x << endl;
-			//cout << "y is " << y << endl;
+		PositionComponent(int x, int y) : x(x), y(y) {
+			active = true;
 		}
-
-		ComponentType getType() { return Position; }
+		PositionComponent() : PositionComponent(rand() % maxX + minX, rand() % maxY + minY) {
+		}
 	};
 } /* gws */
 #endif

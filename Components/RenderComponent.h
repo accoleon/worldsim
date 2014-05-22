@@ -11,7 +11,6 @@ namespace gws {
 	struct RenderComponent : gws::Component {
 		RenderComponent() : visible(true) {}
 		bool visible;
-		ComponentType getType() { return Render; }
 	};
 } /* gws */
 #endif

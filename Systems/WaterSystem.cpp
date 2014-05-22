@@ -13,6 +13,7 @@ using std::endl;
 using std::string;
 #include <map>
 #include "WaterSystem.h"
+#include "../World.h"
 
 namespace gws {
 	WaterSystem::WaterSystem(World& world) : world(world) {

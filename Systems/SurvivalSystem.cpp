@@ -12,6 +12,7 @@ using std::endl;
 #include <time.h>
 using std::string;
 #include "SurvivalSystem.h"
+#include "../World.h"
 
 namespace gws {
 	SurvivalSystem::SurvivalSystem(World& world) : world(world) {
@@ -19,13 +20,11 @@ namespace gws {
 	}
 	SurvivalSystem::~SurvivalSystem() {}
 	void SurvivalSystem::update() {
-<<<<<<< HEAD
-=======
+
 		// KX: update() should update all entities in the world, not a specific
 		// entity - you can refactor the major logic into another function
 		// and call it from update()
 		int index = 0;
->>>>>>> 022c8f585612afa33695f71f1307160e3a4e5335
 		//Main AI controller for how each Entity will move throughout the World
 		
 		
@@ -35,8 +34,15 @@ namespace gws {
 		//Animals provide both and can be eating by other animals
 		//SurvivalComponent will have the requirements
 		
-		//tbb:concurrent_Vector<SurvivalComponent*>::iterator surv_iter;
-		for(auto surv_iter = world.survivals.cbegin(); pos_iter != world.survivals.cend(); pos_iter++){
+		// KX: I suggest using index-based looping, e.g.
+		auto end = world.survivors.size();
+		// every iteration checks the var instead of calling a function
+		for (auto i = 0; i < end; ++i) {
+			// KX: Have to rethink your current implementation in stencil form
+			
+		}
+		/*
+		for(auto surv_iter = world.survivors.begin(); pos_iter != world.survivors.end(); ++pos_iter){
 			//Get this entity's positions
 			//We are guaranteed that the ID in the positions vector will be the same ID in the survivals vector
 			survival_type stype = (*surv_iter)->getSurvivalType((*surv_iter).ID);
@@ -467,7 +473,7 @@ namespace gws {
 					//Means that the organism didn't have an AI type
 					return -1;
 			}
-		}
+		}*/
 	}
 	string SurvivalSystem::getName() {
 		return "SurvivalSystem";

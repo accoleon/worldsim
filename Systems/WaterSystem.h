@@ -7,9 +7,9 @@
 #ifndef WATER_SYSTEM_H
 #define WATER_SYSTEM_H
 #include "System.h"
-#include "../World.h"
 
 namespace gws {
+	class World;
 	class WaterSystem : public System {
 	public:
 		WaterSystem(World& world);

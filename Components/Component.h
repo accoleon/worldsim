@@ -16,8 +16,7 @@ namespace gws {
 	};
 	
 	struct Component {
-		virtual ComponentType getType() = 0;
-		int ID;
+		bool active;
 	};
 } /* gws */
 #endif

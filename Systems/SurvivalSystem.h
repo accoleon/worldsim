@@ -7,9 +7,9 @@
 #ifndef SURVIVAL_SYSTEM_H
 #define SURVIVAL_SYSTEM_H
 #include "System.h"
-#include "../World.h"
 
 namespace gws {
+	class World;
 	class SurvivalSystem : public System {
 	enum survival_type {EXPLORE, STATIONARY, BREED, NORTH, EAST, SOUTH, WEST};
 	public:

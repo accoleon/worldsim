@@ -14,7 +14,11 @@ using std::endl;
 #include "World.h"
 
 namespace gws {
-	World::World(int width, int height) : width(width), height(height) {}
+	World::World(SDL_Window* window, int width, int height) : 
+		width(width),
+		height(height),
+		waterSystem(*this),
+		renderSystem(*this, window) {}
 	World::~World() {}
 	
 	int World::addEntity() {
@@ -26,31 +30,30 @@ namespace gws {
 	int World::addRandomPlant() {
 		// Create a random plant-type entity
 		int ID = addEntity();;
-		//Entity plant;
-		//plant.addComponent(new PositionComponent());
-		//plant.addComponent(new RenderComponent());
 		return ID;
 	}
 	int World::addRandomLake() {
 		// Create a random lake entity
 		int ID = addEntity();;
-		//lake.addComponent(new WaterComponent());
-		//lake.addComponent(new PositionComponent());
-		//lake.addComponent(new RenderComponent());
 		return ID;
 	}
-	// This might not be necessary - we already know what we want to add
-	void World::addSystem(System& system) {
-		systems.push_back(&system);
-		cout << "World: Added " << system.getName() << endl;
+	
+	void World::reserve(size_t size) {
+		positions.reserve(size);
+		waters.reserve(size);
+		survivors.reserve(size);
 	}
 	
 	void World::runSystems() {
 		// Probably don't want this - we have to order the systems to update 
 		// in a certain order since they have dependencies - generally render at
 		// the end of every other system
-		for (auto system : systems) {
-			system->update();
+		if (nextEntityID == 0) {
+			cout << "World is empty" << endl;
 		}
+		waterSystem.update();
+		
+		// Rendering is done after everything else
+		renderSystem.update();
 	}
 } /* gws */

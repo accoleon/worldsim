@@ -10,15 +10,14 @@
 
 #include "Component.h"
 namespace gws {
-	struct WaterComponent : gws::Component {
+	struct WaterComponent : Component {
 		int waterLevel;
 		const static int min = 0;
 		const static int max = 255;
-		WaterComponent(int waterLevel) : waterLevel(waterLevel){}
-		WaterComponent() { // default constructor - randomized
-			waterLevel = rand() % max + min;
+		WaterComponent(int waterLevel) : waterLevel(waterLevel) {
+			active = true;
 		}
-		ComponentType getType() { return Water; }
+		WaterComponent() : WaterComponent(rand() % max + min) {}
 	};
 } /* gws */
 #endif

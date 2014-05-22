@@ -15,9 +15,9 @@
 #include <omp.h>
 
 #include "System.h"
-#include "../World.h"
 
 namespace gws {
+	class World;
 	class RenderSystem : public System {
 	public:
 		RenderSystem(World& world, SDL_Window* window);
