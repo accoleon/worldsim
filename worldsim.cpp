@@ -29,6 +29,7 @@ using namespace gws;
 
 const int screenWidth(800);
 const int screenHeight(600);
+const double FPS = 24;
 SDL_Window* window;
 SDL_Renderer* renderer;
 SDL_Texture* texture;
@@ -87,7 +88,16 @@ void runWorld(World& world) {
 				quit = true;
 			}
 		}
+
+		double SPF = 1/FPS;
+		double start = omp_get_wtime();
 		world.runSystems();
+		double end = omp_get_wtime();
+		double secondsElapsed = end - start;
+		double sleepTime = SPF-secondsElapsed;
+		if (sleepTime > 0 ) {
+			SDL_Delay(sleepTime*1000);
+		}
 	}
 }
 
