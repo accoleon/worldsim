@@ -20,6 +20,8 @@ namespace gws {
 		SystemType getType();
 		std::string getSurvivalType(int index);
 		void setSurvivalType(int index, survival_type new_type);
+		int tryRandom(int start_id);
+		int tryClockwise(int start_id);
 	private:
 		World& world;
 		survival_type survival_types[];
