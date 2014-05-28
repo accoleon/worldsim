@@ -202,21 +202,21 @@ namespace gws {
 		//tbb::concurrent_vector<PositionComponent*>::iterator pos_iter;
 		for(auto pos_iter = world.positions.cbegin(); pos_iter != world.positions.cend(); pos_iter++){
 			//Get the 9 positions needed
-			if( pos_iter.x == this.x && pos_iter.y == (this.y)+1 ){
+			if( pos_iter.x == this_pos.x && pos_iter.y == (this_pos.y)+1 ){
 				north = pos_iter;
-			}else if( pos_iter.x == (this.x)+1 && pos_iter.y == (this.y)+1){
+			}else if( pos_iter.x == (this_pos.x)+1 && pos_iter.y == (this_pos.y)+1){
 				northeast = pos_iter;
-			}else if( pos_iter.x == (this.x)+1 && pos_iter.y == (this.y)){
+			}else if( pos_iter.x == (this_pos.x)+1 && pos_iter.y == (this_pos.y)){
 				east = pos_iter;
-			}else if( pos_iter.x == (this.x)+1 && pos_iter.y == (this.y)-1){
+			}else if( pos_iter.x == (this_pos.x)+1 && pos_iter.y == (this_pos.y)-1){
 				southeast = pos_iter;
-			}else if( pos_iter.x == (this.x) && pos_iter.y == (this.y)-1){
+			}else if( pos_iter.x == (this_pos.x) && pos_iter.y == (this_pos.y)-1){
 				south = pos_iter;
-			}else if( pos_iter.x == (this.x)-1 && pos_iter.y == (this.y)-1){
+			}else if( pos_iter.x == (this_pos.x)-1 && pos_iter.y == (this_pos.y)-1){
 				southwest = pos_iter;
-			}else if( pos_iter.x == (this.x)+1 && pos_iter.y == (this.y)){
+			}else if( pos_iter.x == (this_pos.x)+1 && pos_iter.y == (this_pos.y)){
 				west = pos_iter;
-			}else if( pos_iter.x == (this.x)-1 && pos_iter.y == (this.y)+1){
+			}else if( pos_iter.x == (this_pos.x)-1 && pos_iter.y == (this_pos.y)+1){
 				northwest = pos_iter;
 			}
 		}
@@ -316,21 +316,21 @@ namespace gws {
 		//tbb::concurrent_vector<PositionComponent*>::iterator pos_iter;
 		for(auto pos_iter = world.positions.cbegin(); pos_iter != world.positions.cend(); pos_iter++){
 			//Get the 9 positions needed
-			if( pos_iter.x == this.x && pos_iter.y == (this.y)+1 ){
+			if( pos_iter.x == this_pos.x && pos_iter.y == (this_pos.y)+1 ){
 				north = pos_iter;
-			}else if( pos_iter.x == (this.x)+1 && pos_iter.y == (this.y)+1){
+			}else if( pos_iter.x == (this_pos.x)+1 && pos_iter.y == (this_pos.y)+1){
 				northeast = pos_iter;
-			}else if( pos_iter.x == (this.x)+1 && pos_iter.y == (this.y)){
+			}else if( pos_iter.x == (this_pos.x)+1 && pos_iter.y == (this_pos.y)){
 				east = pos_iter;
-			}else if( pos_iter.x == (this.x)+1 && pos_iter.y == (this.y)-1){
+			}else if( pos_iter.x == (this_pos.x)+1 && pos_iter.y == (this_pos.y)-1){
 				southeast = pos_iter;
-			}else if( pos_iter.x == (this.x) && pos_iter.y == (this.y)-1){
+			}else if( pos_iter.x == (this_pos.x) && pos_iter.y == (this_pos.y)-1){
 				south = pos_iter;
-			}else if( pos_iter.x == (this.x)-1 && pos_iter.y == (this.y)-1){
+			}else if( pos_iter.x == (this_pos.x)-1 && pos_iter.y == (this_pos.y)-1){
 				southwest = pos_iter;
-			}else if( pos_iter.x == (this.x)+1 && pos_iter.y == (this.y)){
+			}else if( pos_iter.x == (this_pos.x)+1 && pos_iter.y == (this_pos.y)){
 				west = pos_iter;
-			}else if( pos_iter.x == (this.x)-1 && pos_iter.y == (this.y)+1){
+			}else if( pos_iter.x == (this_pos.x)-1 && pos_iter.y == (this_pos.y)+1){
 				northwest = pos_iter;
 			}
 		}
