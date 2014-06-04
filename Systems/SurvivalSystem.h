@@ -11,7 +11,7 @@
 namespace gws {
 	class World;
 	class SurvivalSystem : public System {
-	enum survival_type {EXPLORE, STATIONARY, BREED, NORTH, EAST, SOUTH, WEST};
+	enum survival_type {EXPLORE, STATIONARY, NORTH, EAST, SOUTH, WEST};
 	public:
 		SurvivalSystem(World& world);
 		~SurvivalSystem();
