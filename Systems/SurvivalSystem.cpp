@@ -20,461 +20,373 @@ namespace gws {
 	}
 	SurvivalSystem::~SurvivalSystem() {}
 	void SurvivalSystem::update() {
-
-		// KX: update() should update all entities in the world, not a specific
-		// entity - you can refactor the major logic into another function
-		// and call it from update()
-		int index = 0;
 		//Main AI controller for how each Entity will move throughout the World
-		
-		
-		//Everything inherits the ID from the base component
-		//Will need to loop through ALL of the survival components here
-		//Plants provide nutrients and consume none
-		//Animals provide both and can be eating by other animals
-		//SurvivalComponent will have the requirements
-		
 		// KX: I suggest using index-based looping, e.g.
 		auto end = world.survivors.size();
 		// every iteration checks the var instead of calling a function
-		for (auto i = 0; i < end; ++i) {
+		for(auto i = 0; i < end; ++i){
 			// KX: Have to rethink your current implementation in stencil form
 			
-		}
-		/*
-		for(auto surv_iter = world.survivors.begin(); pos_iter != world.survivors.end(); ++pos_iter){
 			//Get this entity's positions
 			//We are guaranteed that the ID in the positions vector will be the same ID in the survivals vector
-			survival_type stype = (*surv_iter)->getSurvivalType((*surv_iter).ID);
-			PositionComponent this_pos = world.positions[(*surv_iter).ID];
-			PositionComponent north;
-			PositionComponent north;
-			PositionComponent northeast;
-			PositionComponent east;
-			PositionComponent southeast;
-			PositionComponent south;
-			PositionComponent southwest;
-			PositionComponent west;
-			PositionComponent northwest;
-			//tbb::concurrent_vector<PositionComponent*>::iterator pos_iter;
+			survival_type stype = world.survivors[i].getSType();
+			PositionComponent* this_pos = &(world.positions[i]);
+			PositionComponent* north;
+			PositionComponent* northeast;
+			PositionComponent* east;
+			PositionComponent* southeast;
+			PositionComponent* south;
+			PositionComponent* southwest;
+			PositionComponent* west;
+			PositionComponent* northeast;
+			//tbb::concurrent_vector<PositionComponent*>::iterator (*pos_iter);
 			for(auto pos_iter = world.positions.cbegin(); pos_iter != world.positions.cend(); pos_iter++){
-				cout << "TEST" << endl;
 				//Get the 9 positions needed
-				if( pos_iter.x == this.x && pos_iter.y == (this.y)+1 ){
-					north = pos_iter;
-				}else if( pos_iter.x == (this.x)+1 && pos_iter.y == (this.y)+1){
-					northeast = pos_iter;
-				}else if( pos_iter.x == (this.x)+1 && pos_iter.y == (this.y)){
-					east = pos_iter;
-				}else if( pos_iter.x == (this.x)+1 && pos_iter.y == (this.y)-1){
-					southeast = pos_iter;
-				}else if( pos_iter.x == (this.x) && pos_iter.y == (this.y)-1){
-					south = pos_iter;
-				}else if( pos_iter.x == (this.x)-1 && pos_iter.y == (this.y)-1){
-					southwest = pos_iter;
-				}else if( pos_iter.x == (this.x)+1 && pos_iter.y == (this.y)){
-					west = pos_iter;
-				}else if( pos_iter.x == (this.x)-1 && pos_iter.y == (this.y)+1){
-					northwest = pos_iter;
+				if( pos_iter->x == this_pos->x && pos_iter->y == (this_pos->y)+1 ){
+					north = (*pos_iter);
+				}else if( pos_iter->x == (this_pos->x)+1 && pos_iter->y == (this_pos->y)+1){
+					northeast = (*pos_iter);
+				}else if( pos_iter->x == (this_pos->x)+1 && pos_iter->y == (this_pos->y)){
+					east = (*pos_iter);
+				}else if( pos_iter->x == (this_pos->x)+1 && pos_iter->y == (this_pos->y)-1){
+					southeast = (*pos_iter);
+				}else if( pos_iter->x == (this_pos->x) && pos_iter->y == (this_pos->y)-1){
+					south = (*pos_iter);
+				}else if( pos_iter->x == (this_pos->x)-1 && pos_iter->y == (this_pos->y)-1){
+					southwest = (*pos_iter);
+				}else if( pos_iter->x == (this_pos->x)+1 && pos_iter->y == (this_pos->y)){
+					west = (*pos_iter);
+				}else if( pos_iter->x == (this_pos->x)-1 && pos_iter->y == (this_pos->y)+1){
+					northeast = (*pos_iter);
 				}
 			}
+			int nutrientReq = world.nutrients[start_id].nutrientLevel;
+			int waterReq    = world.waters[start_id].waterLevel;
 			switch(stype){
 				case EXPLORE:
 					//EXPLORE entities will always seek out new resources instead of staying put
 					//Riskier strategy
-					
-					int nutrientReq = world.nutrients[(*surv_iter).ID];
-					int waterReq    = world.waters[(*surv_iter).ID];
-					
-					srand(time(NULL));
-					int random_dir = rand() % 9 + 1; //Get a random direction from 1 through 8
-					
-					//Try a random direction first, then go clockwise starting from north 
-					if(random_dir == 1){
-						if(world.nutrients[north.ID] > nutrientReq && world.waters[north.ID] > waterReq){
-							//First case
-							//Attempt to go north, and then consume the nutrients/water there if possible
-							north.ID = (*surv_iter).ID; //Write the new position
-							this_pos.ID = 0; //Set the old position to be empty
-							world.nutrients[north.ID].reduceNutrient(north.ID, nutrientReq); //Consume nutrients
-							world.waters[north.ID].reduceWater(north.ID, waterReq);
+					//Try random directions first					
+					if(tryRandom(i) == -1){
+						//Then try clockwise
+						if(tryClockwise(i) == -1){
+							//Organism dies
+							death_array[this_pos->ID] = 0;
 						}
-					}else if(random_dir == 2){
-						if(world.nutrients[northeast.ID] > nutrientReq && world.waters[northeast.ID] > waterReq){
-							//Northeast
-							northeast.ID = (*surv_iter).ID;
-							this_pos.ID = 0;
-							world.nutrients[northeast.ID].reduceNutrient(northeast.ID, nutrientReq); 
-							world.waters[northeast.ID].reduceWater(northeast.ID, waterReq);
-						}
-					}else if(random_dir == 3){
-						if(world.nutrients[east.ID] > nutrientReq && world.waters[east.ID] > waterReq){
-							//East
-							east.ID = (*surv_iter).ID;
-							this_pos.ID = 0;
-							world.nutrients[east.ID].reduceNutrient(east.ID, nutrientReq); 
-							world.waters[east.ID].reduceWater(east.ID, waterReq);
-						}
-					}else if(random_dir == 4){
-						if(world.nutrients[southeast.ID] > nutrientReq && world.waters[southeast.ID] > waterReq){
-							//Southeast
-							southeast.ID = (*surv_iter).ID;
-							this_pos.ID = 0;
-							world.nutrients[southeast.ID].reduceNutrient(southeast.ID, nutrientReq); 
-							world.waters[southeast.ID].reduceWater(southeast.ID, waterReq);
-						}
-					}else if(random_dir == 5){
-						if(world.nutrients[south.ID] > nutrientReq && world.waters[south.ID] > waterReq){
-							//South
-							south.ID = (*surv_iter).ID;
-							this_pos.ID = 0;
-							world.nutrients[south.ID].reduceNutrient(south.ID, nutrientReq); 
-							world.waters[south.ID].reduceWater(south.ID, waterReq);
-						}
-					}else if(random_dir == 6){
-						if(world.nutrients[southwest.ID] > nutrientReq && world.waters[southwest.ID] > waterReq){
-							//Southwest
-							southwest.ID = (*surv_iter).ID;
-							this_pos.ID = 0;
-							world.nutrients[southwest.ID].reduceNutrient(southwest.ID, nutrientReq); 
-							world.waters[southwest.ID].reduceWater(southwest.ID, waterReq);
-						}
-					}else if(random_dir == 7){
-						if(world.nutrients[west.ID] > nutrientReq && world.waters[west.ID] > waterReq){
-							//West
-							west.ID = (*surv_iter).ID;
-							this_pos.ID = 0;
-							world.nutrients[west.ID].reduceNutrient(west.ID, nutrientReq); 
-							world.waters[west.ID].reduceWater(west.ID, waterReq);
-						}
-					}else if(random_dir == 8){
-						if(world.nutrients[northwest.ID] > nutrientReq && world.waters[northwest.ID] > waterReq){
-							//Northest
-							northwest.ID = (*surv_iter).ID;
-							this_pos.ID = 0;
-							world.nutrients[northwest.ID].reduceNutrient(northwest.ID, nutrientReq); 
-							world.waters[northwest.ID].reduceWater(northwest.ID, waterReq);
-						}
-					}
-					
-					//Now that random directions are attempted, try now each one in clockwise order
-					if(world.nutrients[north.ID] > nutrientReq && world.waters[north.ID] > waterReq){
-						//First case
-						//Attempt to go north, and then consume the nutrients/water there if possible
-						north.ID = (*surv_iter).ID; //Write the new position
-						this_pos.ID = 0; //Set the old position to be empty
-						world.nutrients[north.ID].reduceNutrient(north.ID, nutrientReq); //Consume nutrients
-						world.waters[north.ID].reduceWater(north.ID, waterReq);
-					}else if(world.nutrients[northeast.ID] > nutrientReq && world.waters[northeast.ID] > waterReq){
-						//Northeast
-						northeast.ID = (*surv_iter).ID;
-						this_pos.ID = 0;
-						world.nutrients[northeast.ID].reduceNutrient(northeast.ID, nutrientReq); 
-						world.waters[northeast.ID].reduceWater(northeast.ID, waterReq);
-					}else if(world.nutrients[east.ID] > nutrientReq && world.waters[east.ID] > waterReq){
-						//East
-						east.ID = (*surv_iter).ID;
-						this_pos.ID = 0;
-						world.nutrients[east.ID].reduceNutrient(east.ID, nutrientReq); 
-						world.waters[east.ID].reduceWater(east.ID, waterReq);
-					}else if(world.nutrients[southeast.ID] > nutrientReq && world.waters[southeast.ID] > waterReq){
-						//Southeast
-						southeast.ID = (*surv_iter).ID;
-						this_pos.ID = 0;
-						world.nutrients[southeast.ID].reduceNutrient(southeast.ID, nutrientReq); 
-						world.waters[southeast.ID].reduceWater(southeast.ID, waterReq);
-					}else if(world.nutrients[south.ID] > nutrientReq && world.waters[south.ID] > waterReq){
-						//South
-						south.ID = (*surv_iter).ID;
-						this_pos.ID = 0;
-						world.nutrients[south.ID].reduceNutrient(south.ID, nutrientReq); 
-						world.waters[south.ID].reduceWater(south.ID, waterReq);
-					}else if(world.nutrients[southwest.ID] > nutrientReq && world.waters[southwest.ID] > waterReq){
-						//Southwest
-						southwest.ID = (*surv_iter).ID;
-						this_pos.ID = 0;
-						world.nutrients[southwest.ID].reduceNutrient(southwest.ID, nutrientReq); 
-						world.waters[southwest.ID].reduceWater(southwest.ID, waterReq);
-					}else if(world.nutrients[west.ID] > nutrientReq && world.waters[west.ID] > waterReq){
-						//West
-						west.ID = (*surv_iter).ID;
-						this_pos.ID = 0;
-						world.nutrients[west.ID].reduceNutrient(west.ID, nutrientReq); 
-						world.waters[west.ID].reduceWater(west.ID, waterReq);
-					}else if(world.nutrients[northwest.ID] > nutrientReq && world.waters[northwest.ID] > waterReq){
-						//Northest
-						northwest.ID = (*surv_iter).ID;
-						this_pos.ID = 0;
-						world.nutrients[northwest.ID].reduceNutrient(northwest.ID, nutrientReq); 
-						world.waters[northwest.ID].reduceWater(northwest.ID, waterReq);
-					}else if(world.nutrients[this_pos.ID] > nutrientReq && world.waters[this_pos.ID] > waterReq){
-						//If there are no available nutrients elsewhere, consume the current position
-						world.nutrients[this_pos.ID].reduceNutrient(this_pos.ID, nutrientReq); 
-						world.waters[this_pos.ID].reduceWater(this_pos.ID, waterReq);
-					}else{
-						//If there are no nutrients
-						//Organism dies 
-						death_array[this_pos.ID] = 0; 
 					}
 				case STATIONARY:
 					//STATIONARY entities will always consume existing resources before exploring to new ones
 					//Note: will not breed.
 					//Selfish but safe for that round
 					
-					if(world.nutrients[this_pos.ID] > nutrientReq && world.waters[this_pos.ID] > waterReq){
+					if(world.nutrients[this_pos->ID].nutrientLevel > nutrientReq && world.waters[this_pos->ID].waterLevel > waterReq){
 						//Consume current position before attempting to move
-						world.nutrients[this_pos.ID].reduceNutrient(this_pos.ID, nutrientReq); 
-						world.waters[this_pos.ID].reduceWater(this_pos.ID, waterReq);
+						world.nutrients[this_pos->ID].nutrientLevel = world.nutrients[this_pos->ID].nutrientLevel - nutrientReq;
+						world.waters[this_pos->ID].waterLevel = world.waters[this_pos->ID].waterLevel - waterReq;
 					}else{
-						//Move after the current resoruces are dried up
-						if(world.nutrients[north.ID] > nutrientReq && world.waters[north.ID] > waterReq){
-							//First case
-							//Attempt to go north, and then consume the nutrients/water there if possible
-							north.ID = (*surv_iter).ID; //Write the new position
-							this_pos.ID = 0; //Set the old position to be empty
-							world.nutrients[north.ID].reduceNutrient(north.ID, nutrientReq); //Consume nutrients
-							world.waters[north.ID].reduceWater(north.ID, waterReq);
-						}else if(world.nutrients[northeast.ID] > nutrientReq && world.waters[northeast.ID] > waterReq){
-							//Northeast
-							northeast.ID = (*surv_iter).ID;
-							this_pos.ID = 0;
-							world.nutrients[northeast.ID].reduceNutrient(northeast.ID, nutrientReq); 
-							world.waters[northeast.ID].reduceWater(northeast.ID, waterReq);
-						}else if(world.nutrients[east.ID] > nutrientReq && world.waters[east.ID] > waterReq){
-							//East
-							east.ID = (*surv_iter).ID;
-							this_pos.ID = 0;
-							world.nutrients[east.ID].reduceNutrient(east.ID, nutrientReq); 
-							world.waters[east.ID].reduceWater(east.ID, waterReq);
-						}else if(world.nutrients[southeast.ID] > nutrientReq && world.waters[southeast.ID] > waterReq){
-							//Southeast
-							southeast.ID = (*surv_iter).ID;
-							this_pos.ID = 0;
-							world.nutrients[southeast.ID].reduceNutrient(southeast.ID, nutrientReq); 
-							world.waters[southeast.ID].reduceWater(southeast.ID, waterReq);
-						}else if(world.nutrients[south.ID] > nutrientReq && world.waters[south.ID] > waterReq){
-							//South
-							south.ID = (*surv_iter).ID;
-							this_pos.ID = 0;
-							world.nutrients[south.ID].reduceNutrient(south.ID, nutrientReq); 
-							world.waters[south.ID].reduceWater(south.ID, waterReq);
-						}else if(world.nutrients[southwest.ID] > nutrientReq && world.waters[southwest.ID] > waterReq){
-							//Southwest
-							southwest.ID = (*surv_iter).ID;
-							this_pos.ID = 0;
-							world.nutrients[southwest.ID].reduceNutrient(southwest.ID, nutrientReq); 
-							world.waters[southwest.ID].reduceWater(southwest.ID, waterReq);
-						}else if(world.nutrients[west.ID] > nutrientReq && world.waters[west.ID] > waterReq){
-							//West
-							west.ID = (*surv_iter).ID;
-							this_pos.ID = 0;
-							world.nutrients[west.ID].reduceNutrient(west.ID, nutrientReq); 
-							world.waters[west.ID].reduceWater(west.ID, waterReq);
-						}else if(world.nutrients[northwest.ID] > nutrientReq && world.waters[northwest.ID] > waterReq){
-							//Northest
-							northwest.ID = (*surv_iter).ID;
-							this_pos.ID = 0;
-							world.nutrients[northwest.ID].reduceNutrient(northwest.ID, nutrientReq); 
-							world.waters[northwest.ID].reduceWater(northwest.ID, waterReq);
-						}else{
-							//If there are no nutrients
-							//Organism dies 
-							death_array[this_pos.ID] = 0; 
-						}
-					}
-				case BREED:
-					//BREED entities will always consume existing resrouces before exploring to new ones
-					//Differs from STATIONARY in that they will also reproduce with no regard to how many nutrients are available to them
-					//Unselfish, unsafe. Extra entities will consume resources faster leading to a quicker death
-					
-					//if(can breed){   //How to do this part?? May need to eliminate the possibility of breeding for simplicity's sake -- Sam
-					//	breed
-					//}else{
-						if(world.nutrients[this_pos.ID] > nutrientReq && world.waters[this_pos.ID] > waterReq){
-							//Consume current position before attempting to move
-							world.nutrients[this_pos.ID].reduceNutrient(this_pos.ID, nutrientReq); 
-							world.waters[this_pos.ID].reduceWater(this_pos.ID, waterReq);
-						}else{
-							//Move after the current resoruces are dried up
-							if(world.nutrients[north.ID] > nutrientReq && world.waters[north.ID] > waterReq){
-								//First case
-								//Attempt to go north, and then consume the nutrients/water there if possible
-								north.ID = (*surv_iter).ID; //Write the new position
-								this_pos.ID = 0; //Set the old position to be empty
-								world.nutrients[north.ID].reduceNutrient(north.ID, nutrientReq); //Consume nutrients
-								world.waters[north.ID].reduceWater(north.ID, waterReq);
-							}else if(world.nutrients[northeast.ID] > nutrientReq && world.waters[northeast.ID] > waterReq){
-								//Northeast
-								northeast.ID = (*surv_iter).ID;
-								this_pos.ID = 0;
-								world.nutrients[northeast.ID].reduceNutrient(northeast.ID, nutrientReq); 
-								world.waters[northeast.ID].reduceWater(northeast.ID, waterReq);
-							}else if(world.nutrients[east.ID] > nutrientReq && world.waters[east.ID] > waterReq){
-								//East
-								east.ID = (*surv_iter).ID;
-								this_pos.ID = 0;
-								world.nutrients[east.ID].reduceNutrient(east.ID, nutrientReq); 
-								world.waters[east.ID].reduceWater(east.ID, waterReq);
-							}else if(world.nutrients[southeast.ID] > nutrientReq && world.waters[southeast.ID] > waterReq){
-								//Southeast
-								southeast.ID = (*surv_iter).ID;
-								this_pos.ID = 0;
-								world.nutrients[southeast.ID].reduceNutrient(southeast.ID, nutrientReq); 
-								world.waters[southeast.ID].reduceWater(southeast.ID, waterReq);
-							}else if(world.nutrients[south.ID] > nutrientReq && world.waters[south.ID] > waterReq){
-								//South
-								south.ID = (*surv_iter).ID;
-								this_pos.ID = 0;
-								world.nutrients[south.ID].reduceNutrient(south.ID, nutrientReq); 
-								world.waters[south.ID].reduceWater(south.ID, waterReq);
-							}else if(world.nutrients[southwest.ID] > nutrientReq && world.waters[southwest.ID] > waterReq){
-								//Southwest
-								southwest.ID = (*surv_iter).ID;
-								this_pos.ID = 0;
-								world.nutrients[southwest.ID].reduceNutrient(southwest.ID, nutrientReq); 
-								world.waters[southwest.ID].reduceWater(southwest.ID, waterReq);
-							}else if(world.nutrients[west.ID] > nutrientReq && world.waters[west.ID] > waterReq){
-								//West
-								west.ID = (*surv_iter).ID;
-								this_pos.ID = 0;
-								world.nutrients[west.ID].reduceNutrient(west.ID, nutrientReq); 
-								world.waters[west.ID].reduceWater(west.ID, waterReq);
-							}else if(world.nutrients[northwest.ID] > nutrientReq && world.waters[northwest.ID] > waterReq){
-								//Northwest
-								northwest.ID = (*surv_iter).ID;
-								this_pos.ID = 0;
-								world.nutrients[northwest.ID].reduceNutrient(northwest.ID, nutrientReq); 
-								world.waters[northwest.ID].reduceWater(northwest.ID, waterReq);
-							}else{
-								//If there are no nutrients
-								//Organism dies 
-								death_array[this_pos.ID] = 0; 
+						//Move after the current resources are dried up
+						if(tryRandom(i) == -1){
+							if(tryClockwise(i) == -1){
+								death_array[this_pos->ID] = 0; 
 							}
 						}
-					//}
+					}
 				case NORTH:
 					//NORTH entities will always go as far north as they can.
-					if(world.nutrients[north.ID] > nutrientReq && world.waters[north.ID] > waterReq){
+					if(world.nutrients[north->ID].nutrientLevel > nutrientReq && world.waters[north->ID].waterLevel > waterReq){
 						//First case
 						//Attempt to go north, and then consume the nutrients/water there if possible
-						north.ID = (*surv_iter).ID; //Write the new position
-						this_pos.ID = 0; //Set the old position to be empty
-						world.nutrients[north.ID].reduceNutrient(north.ID, nutrientReq); //Consume nutrients
-						world.waters[north.ID].reduceWater(north.ID, waterReq);
-					}else if(world.nutrients[northeast.ID] > nutrientReq && world.waters[northeast.ID] > waterReq){
-						//Northeast
-						northeast.ID = (*surv_iter).ID;
-						this_pos.ID = 0;
-						world.nutrients[northeast.ID].reduceNutrient(northeast.ID, nutrientReq); 
-						world.waters[northeast.ID].reduceWater(northeast.ID, waterReq);
-					}else if(world.nutrients[northwest.ID] > nutrientReq && world.waters[northwest.ID] > waterReq){
-						//Northwest
-						northwest.ID = (*surv_iter).ID;
-						this_pos.ID = 0;
-						world.nutrients[northwest.ID].reduceNutrient(northwest.ID, nutrientReq); 
-						world.waters[northwest.ID].reduceWater(northwest.ID, waterReq);
-					}else if(world.nutrients[this_pos.ID] > nutrientReq && world.waters[this_pos.ID] > waterReq){
+						north->ID = i; //Write the new position
+						this_pos->ID = 0; //Set the old position to be empty
+						world.nutrients[north->ID].nutrientLevel = world.nutrients[north->ID].nutrientLevel - nutrientReq;
+						world.waters[north->ID].waterLevel = world.waters[north->ID].waterLevel - waterReq;
+					}else if(world.nutrients[this_pos->ID].nutrientLevel > nutrientReq && world.waters[this_pos->ID].waterLevel > waterReq){
 						//Consume current position after attempting to move
-						world.nutrients[this_pos.ID].reduceNutrient(this_pos.ID, nutrientReq); 
-						world.waters[this_pos.ID].reduceWater(this_pos.ID, waterReq);
+						world.nutrients[this_pos->ID].nutrientLevel = world.nutrients[this_pos->ID].nutrientLevel - nutrientReq;
+						world.waters[this_pos->ID].waterLevel = world.waters[this_pos->ID].waterLevel - waterReq;
 					}else{
 						//If there are no nutrients
 						//Organism dies 
-						death_array[this_pos.ID] = 0; 
+						death_array[this_pos->ID] = 0; 
 					}
 				case EAST:
 					//EAST entities will always go as far east as they can.
-					if(world.nutrients[east.ID] > nutrientReq && world.waters[east.ID] > waterReq){
-						east.ID = (*surv_iter).ID; //Write the new position
-						this_pos.ID = 0; //Set the old position to be empty
-						world.nutrients[east.ID].reduceNutrient(east.ID, nutrientReq); //Consume nutrients
-						world.waters[east.ID].reduceWater(east.ID, waterReq);
-					}else if(world.nutrients[northeast.ID] > nutrientReq && world.waters[northeast.ID] > waterReq){
-						//Northeast
-						northeast.ID = (*surv_iter).ID;
-						this_pos.ID = 0;
-						world.nutrients[northeast.ID].reduceNutrient(northeast.ID, nutrientReq); 
-						world.waters[northeast.ID].reduceWater(northeast.ID, waterReq);
-					}else if(world.nutrients[southeast.ID] > nutrientReq && world.waters[southeast.ID] > waterReq){
-						//Southeast
-						southeast.ID = (*surv_iter).ID;
-						this_pos.ID = 0;
-						world.nutrients[southeast.ID].reduceNutrient(southeast.ID, nutrientReq); 
-						world.waters[southeast.ID].reduceWater(southeast.ID, waterReq);
-					}else if(world.nutrients[this_pos.ID] > nutrientReq && world.waters[this_pos.ID] > waterReq){
+					if(world.nutrients[east->ID].nutrientLevel > nutrientReq && world.waters[east->ID].waterLevel > waterReq){
+						east->ID = i; //Write the new position
+						this_pos->ID = 0; //Set the old position to be empty
+						world.nutrients[east->ID].nutrientLevel = world.nutrients[east->ID].nutrientLevel - nutrientReq;
+						world.waters[east->ID].waterLevel = world.waters[east->ID].waterLevel - waterReq;
+					}else if(world.nutrients[this_pos->ID].nutrientLevel > nutrientReq && world.waters[this_pos->ID].waterLevel > waterReq){
 						//Consume current position after attempting to move
-						world.nutrients[this_pos.ID].reduceNutrient(this_pos.ID, nutrientReq); 
-						world.waters[this_pos.ID].reduceWater(this_pos.ID, waterReq);
+						world.nutrients[this_pos->ID].nutrientLevel = world.nutrients[this_pos->ID].nutrientLevel - nutrientReq;
+						world.waters[this_pos->ID].waterLevel = world.waters[this_pos->ID].waterLevel - waterReq;
 					}else{
 						//If there are no nutrients
 						//Organism dies 
-						death_array[this_pos.ID] = 0; 
+						death_array[this_pos->ID] = 0; 
 					}
 				case SOUTH:
 					//SOUTH entities will always go as far south as they can.
-					if(world.nutrients[southeast.ID] > nutrientReq && world.waters[southeast.ID] > waterReq){
-						//Southeast
-						southeast.ID = (*surv_iter).ID;
-						this_pos.ID = 0;
-						world.nutrients[southeast.ID].reduceNutrient(southeast.ID, nutrientReq); 
-						world.waters[southeast.ID].reduceWater(southeast.ID, waterReq);
-					}else if(world.nutrients[south.ID] > nutrientReq && world.waters[south.ID] > waterReq){
+					if(world.nutrients[south->ID].nutrientLevel > nutrientReq && world.waters[south->ID].waterLevel > waterReq){
 						//South
-						south.ID = (*surv_iter).ID;
-						this_pos.ID = 0;
-						world.nutrients[south.ID].reduceNutrient(south.ID, nutrientReq); 
-						world.waters[south.ID].reduceWater(south.ID, waterReq);
-					}else if(world.nutrients[southwest.ID] > nutrientReq && world.waters[southwest.ID] > waterReq){
-						//Southwest
-						southwest.ID = (*surv_iter).ID;
-						this_pos.ID = 0;
-						world.nutrients[southwest.ID].reduceNutrient(southwest.ID, nutrientReq); 
-						world.waters[southwest.ID].reduceWater(southwest.ID, waterReq);
-					}else if(world.nutrients[this_pos.ID] > nutrientReq && world.waters[this_pos.ID] > waterReq){
+						south->ID = i;
+						this_pos->ID = 0;
+						world.nutrients[south->ID].nutrientLevel = world.nutrients[south->ID].nutrientLevel - nutrientReq;
+						world.waters[south->ID].waterLevel = world.waters[south->ID].waterLevel - waterReq;
+					}else if(world.nutrients[this_pos->ID].nutrientLevel > nutrientReq && world.waters[this_pos->ID].waterLevel > waterReq){
 						//Consume current position after attempting to move
-						world.nutrients[this_pos.ID].reduceNutrient(this_pos.ID, nutrientReq); 
-						world.waters[this_pos.ID].reduceWater(this_pos.ID, waterReq);
+						world.nutrients[this_pos->ID].nutrientLevel = world.nutrients[this_pos->ID].nutrientLevel - nutrientReq;
+						world.waters[this_pos->ID].waterLevel = world.waters[this_pos->ID].waterLevel - waterReq;
 					}else{
 						//If there are no nutrients
 						//Organism dies 
-						death_array[this_pos.ID] = 0; 
+						death_array[this_pos->ID] = 0; 
 					}
 				case WEST:
 					//WEST entities will always go as far west as they can.
-					if(world.nutrients[southwest.ID] > nutrientReq && world.waters[southwest.ID] > waterReq){
-						//Southwest
-						southwest.ID = (*surv_iter).ID;
-						this_pos.ID = 0;
-						world.nutrients[southwest.ID].reduceNutrient(southwest.ID, nutrientReq); 
-						world.waters[southwest.ID].reduceWater(southwest.ID, waterReq);
-					}else if(world.nutrients[west.ID] > nutrientReq && world.waters[west.ID] > waterReq){
+					if(world.nutrients[west->ID].nutrientLevel > nutrientReq && world.waters[west->ID].waterLevel > waterReq){
 						//West
-						west.ID = (*surv_iter).ID;
-						this_pos.ID = 0;
-						world.nutrients[west.ID].reduceNutrient(west.ID, nutrientReq); 
-						world.waters[west.ID].reduceWater(west.ID, waterReq);
-					}else if(world.nutrients[northwest.ID] > nutrientReq && world.waters[northwest.ID] > waterReq){
-						//Northwest
-						northwest.ID = (*surv_iter).ID;
-						this_pos.ID = 0;
-						world.nutrients[northwest.ID].reduceNutrient(northwest.ID, nutrientReq); 
-						world.waters[northwest.ID].reduceWater(northwest.ID, waterReq);
-					}else if(world.nutrients[this_pos.ID] > nutrientReq && world.waters[this_pos.ID] > waterReq){
+						west->ID = i;
+						this_pos->ID = 0;
+						world.nutrients[west->ID].nutrientLevel = world.nutrients[west->ID].nutrientLevel - nutrientReq;
+						world.waters[west->ID].waterLevel = world.waters[west->ID].waterLevel - waterReq;
+					}else if(world.nutrients[this_pos->ID].nutrientLevel > nutrientReq && world.waters[this_pos->ID].waterLevel > waterReq){
 						//Consume current position after attempting to move
-						world.nutrients[this_pos.ID].reduceNutrient(this_pos.ID, nutrientReq); 
-						world.waters[this_pos.ID].reduceWater(this_pos.ID, waterReq);
+						world.nutrients[this_pos->ID].nutrientLevel = world.nutrients[this_pos->ID].nutrientLevel - nutrientReq;
+						world.waters[this_pos->ID].waterLevel = world.waters[this_pos->ID].waterLevel - waterReq;
 					}else{
 						//If there are no nutrients
 						//Organism dies 
-						death_array[this_pos.ID] = 0; 
+						death_array[this_pos->ID] = 0; 
 					}
 				default:
 					//Should never hit this case
 					//Means that the organism didn't have an AI type
 					return -1;
 			}
-		}*/
+		}
 	}
+	
+	int SurvivalSystem::tryRandom(int start_id){
+		
+		survival_type stype = world.survivors[start_id].getSType();
+		PositionComponent* this_pos = &(world.positions[start_id]);
+		PositionComponent* north;
+		PositionComponent* northeast;
+		PositionComponent* east;
+		PositionComponent* southeast;
+		PositionComponent* south;
+		PositionComponent* southwest;
+		PositionComponent* west;
+		PositionComponent* northeast;
+		//tbb::concurrent_vector<PositionComponent*>::iterator (*pos_iter);
+		for(auto pos_iter = world.positions.cbegin(); pos_iter != world.positions.cend(); pos_iter++){
+			//Get the 9 positions needed
+			if( pos_iter->x == this_pos->x && pos_iter->y == (this_pos->y)+1 ){
+				north = (*pos_iter);
+			}else if( pos_iter->x == (this_pos->x)+1 && pos_iter->y == (this_pos->y)+1){
+				northeast = (*pos_iter);
+			}else if( pos_iter->x == (this_pos->x)+1 && pos_iter->y == (this_pos->y)){
+				east = (*pos_iter);
+			}else if( pos_iter->x == (this_pos->x)+1 && pos_iter->y == (this_pos->y)-1){
+				southeast = (*pos_iter);
+			}else if( pos_iter->x == (this_pos->x) && pos_iter->y == (this_pos->y)-1){
+				south = (*pos_iter);
+			}else if( pos_iter->x == (this_pos->x)-1 && pos_iter->y == (this_pos->y)-1){
+				southwest = (*pos_iter);
+			}else if( pos_iter->x == (this_pos->x)+1 && pos_iter->y == (this_pos->y)){
+				west = (*pos_iter);
+			}else if( pos_iter->x == (this_pos->x)-1 && pos_iter->y == (this_pos->y)+1){
+				northeast = (*pos_iter);
+			}
+		}
+		int nutrientReq = world.nutrients[start_id].nutrientLevel;
+		int waterReq    = world.waters[start_id].waterLevel;
+		
+		srand(time(NULL));
+		int random_dir = rand() % 9 + 1; //Get a random direction from 1 through 8
+		
+		//Try a random direction first, then go clockwise starting from north 
+		if(random_dir == 1)
+			if(world.nutrients[north->ID].nutrientLevel > nutrientReq && world.waters[north->ID].waterLevel > waterReq){
+				//First case
+				//Attempt to go north, and then consume the nutrients/water there if possible
+				north->ID = start_id; //Write the new position
+				this_pos->ID = 0; //Set the old position to be empty
+				world.nutrients[north->ID].nutrientLevel = world.nutrients[north->ID].nutrientLevel - nutrientReq;
+				world.waters[north->ID].waterLevel = world.waters[north->ID].waterLevel - waterReq;
+				return 0;
+			}
+		}else if(random_dir == 2){
+			if(world.nutrients[northeast->ID].nutrientLevel > nutrientReq && world.waters[northeast->ID].waterLevel > waterReq){
+				//Northeast
+				northeast->ID = start_id;
+				this_pos->ID = 0;
+				world.nutrients[northeast->ID].nutrientLevel = world.nutrients[northeast->ID].nutrientLevel - nutrientReq;
+				world.waters[northeast->ID].waterLevel = world.waters[northeast->ID].waterLevel - waterReq;
+				return 0;
+			}
+		}else if(random_dir == 3){
+			if(world.nutrients[east->ID].nutrientLevel > nutrientReq && world.waters[east->ID].waterLevel > waterReq){
+				//East
+				east->ID = start_id;
+				this_pos->ID = 0;
+				world.nutrients[east->ID].nutrientLevel = world.nutrients[east->ID].nutrientLevel - nutrientReq;
+				world.waters[east->ID].waterLevel = world.waters[east->ID].waterLevel - waterReq;
+				return 0;
+			}
+		}else if(random_dir == 4){
+			if(world.nutrients[southeast->ID].nutrientLevel > nutrientReq && world.waters[southeast->ID].waterLevel > waterReq){
+				//Southeast
+				southeast->ID = start_id;
+				this_pos->ID = 0;
+				world.nutrients[southeast->ID].nutrientLevel = world.nutrients[southeast->ID].nutrientLevel - nutrientReq;
+				world.waters[southeast->ID].waterLevel = world.waters[southeast->ID].waterLevel - waterReq;
+			}
+		}else if(random_dir == 5){
+			if(world.nutrients[south->ID].nutrientLevel > nutrientReq && world.waters[south->ID].waterLevel > waterReq){
+				//South
+				south->ID = start_id;
+				this_pos->ID = 0;
+				world.nutrients[south->ID].nutrientLevel = world.nutrients[south->ID].nutrientLevel - nutrientReq;
+				world.waters[south->ID].waterLevel = world.waters[south->ID].waterLevel - waterReq;
+				return 0;
+			}
+		}else if(random_dir == 6){
+			if(world.nutrients[southwest->ID].nutrientLevel > nutrientReq && world.waters[southwest->ID].waterLevel > waterReq){
+				//Southwest
+				southwest->ID = start_id;
+				this_pos->ID = 0;
+				world.nutrients[southwest->ID].nutrientLevel = world.nutrients[southwest->ID].nutrientLevel - nutrientReq;
+				world.waters[southwest->ID].waterLevel = world.waters[southwest->ID].waterLevel - waterReq;
+				return 0;
+			}
+		}else if(random_dir == 7){
+			if(world.nutrients[west->ID].nutrientLevel > nutrientReq && world.waters[west->ID].waterLevel > waterReq){
+				//West
+				west->ID = start_id;
+				this_pos->ID = 0;
+				world.nutrients[west->ID].nutrientLevel = world.nutrients[west->ID].nutrientLevel - nutrientReq;
+				world.waters[west->ID].waterLevel = world.waters[west->ID].waterLevel - waterReq;
+				return 0;
+			}
+		}else if(random_dir == 8){
+			if(world.nutrients[northwest->ID].nutrientLevel > nutrientReq && world.waters[northwest->ID].waterLevel > waterReq){
+				//Northwest
+				northwest->ID = start_id;
+				this_pos->ID = 0;
+				world.nutrients[northwest->ID].nutrientLevel = world.nutrients[northwest->ID].nutrientLevel - nutrientReq;
+				world.waters[northwest->ID].waterLevel = world.waters[northwest->ID].waterLevel - waterReq;
+				return 0;
+			}
+		}
+		return -1;
+	}
+	
+	int SurvivalSystem::tryClockwise(int start_id){
+		survival_type stype = world.survivors[start_id].getSType();
+		PositionComponent* this_pos = &(world.positions[start_id]);
+		PositionComponent* north;
+		PositionComponent* northeast;
+		PositionComponent* east;
+		PositionComponent* southeast;
+		PositionComponent* south;
+		PositionComponent* southwest;
+		PositionComponent* west;
+		PositionComponent* northwest;
+		//tbb::concurrent_vector<PositionComponent*>::iterator (*pos_iter);
+		for(auto pos_iter = world.positions.cbegin(); pos_iter != world.positions.cend(); pos_iter++){
+			//Get the 9 positions needed
+			if( pos_iter->x == this_pos->x && pos_iter->y == (this_pos->y)+1 ){
+				north = (*pos_iter);
+			}else if( pos_iter->x == (this_pos->x)+1 && pos_iter->y == (this_pos->y)+1){
+				northeast = (*pos_iter);
+			}else if( pos_iter->x == (this_pos->x)+1 && pos_iter->y == (this_pos->y)){
+				east = (*pos_iter);
+			}else if( pos_iter->x == (this_pos->x)+1 && pos_iter->y == (this_pos->y)-1){
+				southeast = (*pos_iter);
+			}else if( pos_iter->x == (this_pos->x) && pos_iter->y == (this_pos->y)-1){
+				south = (*pos_iter);
+			}else if( pos_iter->x == (this_pos->x)-1 && pos_iter->y == (this_pos->y)-1){
+				southwest = (*pos_iter);
+			}else if( pos_iter->x == (this_pos->x)+1 && pos_iter->y == (this_pos->y)){
+				west = (*pos_iter);
+			}else if( pos_iter->x == (this_pos->x)-1 && pos_iter->y == (this_pos->y)+1){
+				northwest = (*pos_iter);
+			}
+		}
+		int nutrientReq = world.nutrients[start_id].nutrientLevel;
+		int waterReq    = world.waters[start_id].waterLevel;
+		
+		if(world.nutrients[north->ID].nutrientLevel > nutrientReq && world.waters[north->ID].waterLevel > waterReq){
+			//First case
+			//Attempt to go north, and then consume the nutrients/water there if possible
+			north->ID = start_id; //Write the new position
+			this_pos->ID = 0; //Set the old position to be empty
+			world.nutrients[north->ID].nutrientLevel = world.nutrients[north->ID].nutrientLevel - nutrientReq;
+			world.waters[north->ID].waterLevel = world.waters[north->ID].waterLevel - waterReq;
+			return 0;
+		}else if(world.nutrients[northeast->ID].nutrientLevel > nutrientReq && world.waters[northeast->ID].waterLevel > waterReq){
+			//Northeast
+			northeast->ID = start_id;
+			this_pos->ID = 0;
+			world.nutrients[northeast->ID].nutrientLevel = world.nutrients[northeast->ID].nutrientLevel - nutrientReq;
+			world.waters[northeast->ID].waterLevel = world.waters[northeast->ID].waterLevel - waterReq;
+			return 0;
+		}else if(world.nutrients[east->ID].nutrientLevel > nutrientReq && world.waters[east->ID].waterLevel > waterReq){
+			//East
+			east->ID = start_id;
+			this_pos->ID = 0;
+			world.nutrients[east->ID].nutrientLevel = world.nutrients[east->ID].nutrientLevel - nutrientReq;
+			world.waters[east->ID].waterLevel = world.waters[east->ID].waterLevel - waterReq;
+			return 0;
+		}else if(world.nutrients[southeast->ID].nutrientLevel > nutrientReq && world.waters[southeast->ID].waterLevel > waterReq){
+			//Southeast
+			southeast->ID = start_id;
+			this_pos->ID = 0;
+			world.nutrients[southeast->ID].nutrientLevel = world.nutrients[southeast->ID].nutrientLevel - nutrientReq;
+			world.waters[southeast->ID].waterLevel = world.waters[southeast->ID].waterLevel - waterReq;
+			return 0;
+		}else if(world.nutrients[south->ID].nutrientLevel > nutrientReq && world.waters[south->ID].waterLevel > waterReq){
+			//South
+			south->ID = start_id;
+			this_pos->ID = 0;
+			world.nutrients[south->ID].nutrientLevel = world.nutrients[south->ID].nutrientLevel - nutrientReq;
+			world.waters[south->ID].waterLevel = world.waters[south->ID].waterLevel - waterReq;
+			return 0;
+		}else if(world.nutrients[southwest->ID].nutrientLevel > nutrientReq && world.waters[southwest->ID].waterLevel > waterReq){
+			//Southwest
+			southwest->ID = start_id;
+			this_pos->ID = 0;
+			world.nutrients[southwest->ID].nutrientLevel = world.nutrients[southwest->ID].nutrientLevel - nutrientReq;
+			world.waters[southwest->ID].waterLevel = world.waters[southwest->ID].waterLevel - waterReq;
+			return 0;
+		}else if(world.nutrients[west->ID].nutrientLevel > nutrientReq && world.waters[west->ID].waterLevel > waterReq){
+			//West
+			west->ID = start_id;
+			this_pos->ID = 0;
+			world.nutrients[west->ID].nutrientLevel = world.nutrients[west->ID].nutrientLevel - nutrientReq;
+			world.waters[west->ID].waterLevel = world.waters[west->ID].waterLevel - waterReq;
+			return 0;
+		}else if(world.nutrients[northwest->ID].nutrientLevel > nutrientReq && world.waters[northwest->ID].waterLevel > waterReq){
+			//Northwest
+			northwest->ID = start_id;
+			this_pos->ID = 0;
+			world.nutrients[northwest->ID].nutrientLevel = world.nutrients[northwest->ID].nutrientLevel - nutrientReq;
+			world.waters[northwest->ID].waterLevel = world.waters[northwest->ID].waterLevel - waterReq;
+			return 0;
+		}else if(world.nutrients[this_pos->ID].nutrientLevel > nutrientReq && world.waters[this_pos->ID].waterLevel > waterReq){
+			//If there are no available nutrients elsewhere, consume the current position
+			world.nutrients[this_pos->ID].nutrientLevel = world.nutrients[this_pos->ID].nutrientLevel - nutrientReq;
+			world.waters[this_pos->ID].waterLevel = world.waters[this_pos->ID].waterLevel - waterReq;;
+			return 0;
+		}else{
+			//Unsuccessful
+			return -1;
+		}
+		return -1;
+	}
+	
 	string SurvivalSystem::getName() {
 		return "SurvivalSystem";
 	}
@@ -491,8 +403,6 @@ namespace gws {
 				return "EXPLORE";
 			case STATIONARY:
 				return "STATIONARY";
-			case BREED:
-				return "BREED";
 			case NORTH:
 				return "NORTH";
 			case EAST:
