@@ -7,15 +7,16 @@
 #ifndef NUTRIENT_SYSTEM_H
 #define NUTRIENT_SYSTEM_H
 #include "System.h"
-#include "../World.h"
 
 namespace gws {
+	class World;
 	class NutrientSystem : public System {
 	public:
 		NutrientSystem(World& world);
 		~NutrientSystem();
 		void update();
 		std::string getName();
+		SystemType getType();
 		int getNutrient(int index);
 		void setNutrient(int index, int set);
 		int compareNutrient(int former, int latter);
@@ -23,7 +24,7 @@ namespace gws {
 		void increaseNutrient(int index, int addition);
 	private:
 		World& world;
-		int nutrient_levels[];
+		std::map<int, int> water_levels;
 	};
 } /* gws */
 #endif

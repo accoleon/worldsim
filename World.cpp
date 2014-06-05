@@ -18,6 +18,7 @@ namespace gws {
 		width(width),
 		height(height),
 		waterSystem(*this),
+		nutrientSystem(*this),
 		renderSystem(*this, window) {}
 	World::~World() {}
 	
@@ -31,14 +32,14 @@ namespace gws {
 		// Create a random plant-type entity
 		size_t ID = nextEntityID++;
 		positions.emplace_back();
-		plants.emplace_back();
+		nutrients.emplace_back();
 		return ID;
 	}
 	size_t World::addRandomAnimal() {
 		// Create a random lake entity
 		size_t ID = nextEntityID++;
 		positions.emplace_back();
-		animals.emplace_back();
+		nutrients.emplace_back();
 		return ID;
 	}
 	size_t World::addRandomLake() {
@@ -50,8 +51,7 @@ namespace gws {
 	}
 	void World::reserve(size_t size) {
 		positions.reserve(size);
-		waters.reserve(size);
-		animals.reserve(size);
+		nutrients.reserve(size);
 		survivors.reserve(size);
 	}
 	void World::runSystems() {

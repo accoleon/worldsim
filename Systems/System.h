@@ -12,6 +12,7 @@ namespace gws {
 	enum SystemType {
 		WaterSys,
 		RenderSys,
+		NutrientSys,
 		SurvivalSys
 	};
 	class System {

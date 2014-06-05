@@ -17,6 +17,7 @@
 #include "Components/SurvivalComponent.h"
 #include "Systems/WaterSystem.h"
 #include "Systems/RenderSystem.h"
+#include "Systems/NutrientSystem.h"
 
 // 2D world, maybe add the third z dimension later
 // width/height refers to the size of the world being simulated, but
@@ -43,13 +44,12 @@ namespace gws {
 		std::vector<NutrientComponent> nutrients;
 		std::vector<RenderComponent> renders;
 		std::vector<WaterComponent> waters;
-		std::vector<WaterComponent> plants;
-		std::vector<WaterComponent> animals;
 		std::vector<SurvivalComponent> survivors;
 		
 		// Systems
 		WaterSystem waterSystem;
 		RenderSystem renderSystem;
+		NutrientSystem nutrientSystem;
 
 		// Functions
 		void reserve(size_t size); // Reserve space for potential entities

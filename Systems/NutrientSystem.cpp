@@ -23,6 +23,9 @@ namespace gws {
 	string NutrientSystem::getName() {
 		return "NutrientSystem";
 	}
+	SystemType NutrientSystem::getType() {
+		return NutrientSys;
+	}
 	int NutrientSystem::getNutrient(int index){
 		return nutrient_levels[index];
 	}

@@ -10,10 +10,13 @@
 using namespace gws;
 namespace gws {
 	struct NutrientComponent : Component {
+		int nutrientLevel;
+		const static int min = 0;
+		const static int max = 255;
 		NutrientComponent(int nutrientLevel) : nutrientLevel(nutrientLevel) {
 			active = true;
 		}
-		int nutrientLevel;
+		NutrientComponent() : NutrientComponent(rand() % max + min) {}
 	};
 } /* gws */
 #endif
