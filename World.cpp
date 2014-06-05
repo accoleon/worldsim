@@ -29,7 +29,7 @@ namespace gws {
 	}
 	size_t World::addRandomPlant() {
 		// Create a random plant-type entity
-		size_t ID = addEntity();
+		size_t ID = nextEntityID++;
 		positions.emplace_back();
 		plants.emplace_back();
 		return ID;

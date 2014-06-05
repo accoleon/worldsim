@@ -11,7 +11,7 @@
 namespace gws {
 	class World;
 	class SurvivalSystem : public System {
-	enum survival_type {EXPLORE, STATIONARY, NORTH, EAST, SOUTH, WEST};
+	enum SurvivalStrategy {EXPLORE, STATIONARY, NORTH, EAST, SOUTH, WEST};
 	public:
 		SurvivalSystem(World& world);
 		~SurvivalSystem();
@@ -19,12 +19,12 @@ namespace gws {
 		std::string getName();
 		SystemType getType();
 		std::string getSurvivalType(int index);
-		void setSurvivalType(int index, survival_type new_type);
+		void setSurvivalType(int index, SurvivalStrategy new_type);
 		int tryRandom(int start_id);
 		int tryClockwise(int start_id);
 	private:
 		World& world;
-		survival_type survival_types[];
+		SurvivalStrategy survival_types[];
 		
 	};
 } /* gws */

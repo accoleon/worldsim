@@ -65,11 +65,11 @@ void destroyWindow() {
 	SDL_Quit();
 }
 
-void createEntities(World& world) {
-	world.reserve(10000000);
+void createEntities(World& world, int num_ents) {
+	world.reserve(num_ents);
 	cout << "Creating entities...\n";
 	// Create random lakes;
-	for (size_t i = 0; i < 10000; ++i) {
+	for (size_t i = 0; i < num_ents; ++i) {
 		world.addRandomLake();
 		world.addRandomAnimal();
 		world.addRandomPlant();
@@ -108,7 +108,7 @@ void teardown()
 	cout << "Tearing down...\n";
 }
 
-int main (int, char**)
+int main (int argc, char** argv)
 {
 	// Initialize SDL and create window
 	createWindow();
@@ -116,7 +116,7 @@ int main (int, char**)
 	// Initialize the world
 	World world(window, screenWidth, screenHeight);
 	
-	createEntities(world);
+	createEntities(world, atoi(argv[1]));
 	
 	// Run simulation
 	runWorld(world);
