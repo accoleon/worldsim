@@ -13,6 +13,7 @@ namespace gws {
 	struct PositionComponent : gws::Component {
 		int x;
 		int y;
+		int ID;
 		const static int minX = 0;
 		const static int minY = 0;
 		const static int maxX = 800;

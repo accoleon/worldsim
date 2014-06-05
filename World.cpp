@@ -29,12 +29,12 @@ namespace gws {
 	}
 	size_t World::addRandomPlant() {
 		// Create a random plant-type entity
-		size_t ID = addEntity();;
+		size_t ID = addEntity();
 		return ID;
 	}
 	size_t World::addRandomLake() {
 		// Create a random lake entity
-		size_t ID = addEntity();;
+		size_t ID = addEntity();
 		return ID;
 	}
 	
