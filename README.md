@@ -18,7 +18,8 @@ Entity-Component Architecture and data/task parallelism.
 	make
 
 ##Run
-	./worldsim
+	./worldsim integer
+	integer is the number of entities of each type created. Note: anything past 100000 creates slowdown on most standard hardware
 
 ##References
 [SFML 2.1 Tutorials](http://www.sfml-dev.org/tutorials/2.1/)
