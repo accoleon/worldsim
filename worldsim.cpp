@@ -69,8 +69,10 @@ void createEntities(World& world) {
 	world.reserve(10000000);
 	cout << "Creating entities...\n";
 	// Create random lakes;
-	for (size_t i = 0; i < 10000000; ++i) {
+	for (size_t i = 0; i < 10000; ++i) {
 		world.addRandomLake();
+		world.addRandomAnimal();
+		world.addRandomPlant();
 	}
 	// Entities should be added to the world here
 }

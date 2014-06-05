@@ -159,7 +159,7 @@ namespace gws {
 			//Start water color as Cyan. Reducing the green component will make blue component
 			//more apparent, giving a relatively darker blue.
 			//Use waterLevel as a scale for how dark. 0 Light : 255 Dark
-			pixelArray[world.positions[i].y * screenWidth + world.positions[i].x] = CYAN-0x00000100 * world.waters[i].waterLevel;
+			pixelArray[world.positions[i].y * screenWidth + world.positions[i].x] = CYAN-0x00000100 * world.plants[i].waterLevel;
 		}
 		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, screenWidth,screenHeight, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, pixelArray);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
