@@ -71,6 +71,8 @@ void createEntities(World& world, int num_ents) {
 	// Create random lakes;
 	for (size_t i = 0; i < num_ents; ++i) {
 		world.addRandomLake();
+		world.addRandomAnimal();
+		world.addRandomPlant();
 	}
 	// Entities should be added to the world here
 }

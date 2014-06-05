@@ -43,6 +43,8 @@ namespace gws {
 		std::vector<NutrientComponent> nutrients;
 		std::vector<RenderComponent> renders;
 		std::vector<WaterComponent> waters;
+		std::vector<WaterComponent> plants;
+		std::vector<WaterComponent> animals;
 		std::vector<SurvivalComponent> survivors;
 		
 		// Systems
@@ -53,6 +55,7 @@ namespace gws {
 		void reserve(size_t size); // Reserve space for potential entities
 		size_t addRandomLake();
 		size_t addRandomPlant();
+		size_t addRandomAnimal();
 		void runSystems();		
 	private:
 		size_t addEntity();
