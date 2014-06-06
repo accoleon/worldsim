@@ -22,8 +22,9 @@ using std::string;
 
 #define BROWN 	0xFF8B4513
 #define CYAN	0xFF00FFFF
-#define MAGENTA	0xFFFF00FF
 #define LIME	0xFF00FF00
+#define MAGENTA	0xFFFF00FF
+
 
 namespace gws {
 	const int screenWidth(800);
@@ -156,17 +157,20 @@ namespace gws {
 
 	void RenderSystem::update() {
 		//cout << "Updating\n";
-		auto end = world.waters.size() + world.nutrients.size();
+		auto end = world.waters.size() + world.survivors.size();
 		cilk_for (auto i = 0; i < end; ++i) {
 			//Start water color as Cyan. Reducing the green component will make blue component
 			//more apparent, giving a relatively darker blue.
 			//Use waterLevel as a scale for how dark. 0 Light : 255 Dark
-			if(world.waters[i].waterLevel != 0) {
-				pixelArray[world.positions[i].y * screenWidth + world.positions[i].x] = CYAN-0x00000100 * world.waters[i].waterLevel;
-			} else if (world.nutrients[i].nutrientLevel != 0){
-				pixelArray[world.positions[i].y * screenWidth + world.positions[i].x] = MAGENTA;
-			} else if (world.nutrients[i].nutrientLevel == 0) {
-				pixelArray[world.positions[i].y * screenWidth + world.positions[i].x] = LIME;
+			if(world.waters[i].active) {
+				pixelArray[world.positions[i].y * screenWidth + world.positions[i].x] = 
+					CYAN-0x00000100 * world.waters[i].waterLevel;
+			} else if (world.survivors[i].strategy == EXPLORE){
+				pixelArray[world.positions[i].y * screenWidth + world.positions[i].x] = 
+					MAGENTA-0x00000001 * world.survivors[i].nutrientRequirement;
+			} else if (world.survivors[i].strategy == STATIONARY) {
+				pixelArray[world.positions[i].y * screenWidth + world.positions[i].x] = 
+					LIME-0x00000100 * world.survivors[i].waterRequirement/2;
 			} else {
 				pixelArray[world.positions[i].y * screenWidth + world.positions[i].x] = BROWN;
 			}			

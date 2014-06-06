@@ -24,7 +24,7 @@ namespace gws {
 		void increaseNutrient(int index, int addition);
 	private:
 		World& world;
-		std::map<int, int> water_levels;
+		std::map<int, int> nutrient_levels;
 	};
 } /* gws */
 #endif

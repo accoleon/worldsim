@@ -18,6 +18,7 @@
 #include "Systems/WaterSystem.h"
 #include "Systems/RenderSystem.h"
 #include "Systems/NutrientSystem.h"
+#include "Systems/SurvivalSystem.h"
 
 // 2D world, maybe add the third z dimension later
 // width/height refers to the size of the world being simulated, but
@@ -50,6 +51,7 @@ namespace gws {
 		WaterSystem waterSystem;
 		RenderSystem renderSystem;
 		NutrientSystem nutrientSystem;
+		SurvivalSystem survivalSystem;
 
 		// Functions
 		void reserve(size_t size); // Reserve space for potential entities

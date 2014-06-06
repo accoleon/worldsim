@@ -14,11 +14,14 @@ using std::endl;
 #include "World.h"
 
 namespace gws {
+	const static int min = 0;
+	const static int max = 255;
 	World::World(SDL_Window* window, int width, int height) : 
 		width(width),
 		height(height),
 		waterSystem(*this),
 		nutrientSystem(*this),
+		survivalSystem(*this),
 		renderSystem(*this, window) {}
 	World::~World() {}
 	
@@ -32,14 +35,16 @@ namespace gws {
 		// Create a random plant-type entity
 		size_t ID = nextEntityID++;
 		positions.emplace_back();
-		nutrients.emplace_back();
+		survivors.emplace_back(STATIONARY,rand() % max + min,rand() % max + min);
+		nutrients.emplace_back(100);
 		return ID;
 	}
 	size_t World::addRandomAnimal() {
 		// Create a random lake entity
 		size_t ID = nextEntityID++;
 		positions.emplace_back();
-		nutrients.emplace_back();
+		survivors.emplace_back(EXPLORE,rand() % max + min,rand() % max + min);
+		nutrients.emplace_back(100);
 		return ID;
 	}
 	size_t World::addRandomLake() {
