@@ -19,13 +19,11 @@ namespace gws {
 	}
 	MovementSystem::~MovementSystem() {}
 	void MovementSystem::update() {
-		int targetX ;
-		int targetY;
 		auto end = world.survivors.size();
 		cilk_for (auto i = 0; i < end; ++i) {
-			targetX = world.positions[i].x;
-			targetY = world.positions[i].y;
 			if (world.survivors[i].active) {
+				int targetX = world.positions[i].x;
+				int targetY = world.positions[i].y;
 				switch(world.survivors[i].strategy) {
 					case EXPLORE:
 						break;
