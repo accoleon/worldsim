@@ -164,13 +164,13 @@ namespace gws {
 			//Use waterLevel as a scale for how dark. 0 Light : 255 Dark
 			if(world.waters[i].active) {
 				pixelArray[world.positions[i].y * screenWidth + world.positions[i].x] = 
-					CYAN-0x00000100 * world.waters[i].waterLevel;
-			} else if (world.survivors[i].strategy == EXPLORE){
+					CYAN - 0x00000100 * world.waters[i].waterLevel * 2.55;
+			} else if (world.survivors[i].active){
 				pixelArray[world.positions[i].y * screenWidth + world.positions[i].x] = 
-					MAGENTA-0x00000001 * world.survivors[i].nutrientRequirement;
-			} else if (world.survivors[i].strategy == STATIONARY) {
+					MAGENTA - 0x00000001 * world.survivors[i].nutrientRequirement * 2.55;
+			} else if (world.nutrients[i].active) {
 				pixelArray[world.positions[i].y * screenWidth + world.positions[i].x] = 
-					LIME-0x00000100 * world.survivors[i].waterRequirement/2;
+					LIME - 0x00000100 * world.survivors[i].waterRequirement * 2.55;
 			} else {
 				pixelArray[world.positions[i].y * screenWidth + world.positions[i].x] = BROWN;
 			}			
