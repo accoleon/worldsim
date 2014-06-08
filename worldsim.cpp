@@ -125,9 +125,12 @@ int main (int argc, char** argv)
 	createWindow();
 
 	// Initialize the world
+	int entities = 5000; //Default 1000
 	World world(window, screenWidth, screenHeight);
-	
-	createEntities(world, atoi(argv[1]));
+	if(argv[1] != NULL){
+		entities = atoi(argv[1]);
+	}	
+	createEntities(world, entities);
 	
 	// Run simulation
 	runWorld(world);
