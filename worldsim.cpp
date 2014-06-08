@@ -68,16 +68,23 @@ void destroyWindow() {
 void createEntities(World& world, int num_ents) {
 	world.reserve(num_ents*2); /*Find out why it needs *2*/
 	cout << "Creating entities...\n";
-	// Create random lakes;
-	for (size_t i = 0; i < num_ents/3; ++i) {
-		world.addRandomLake();
+	// Create random entities;
+	int randEntity;
+	for (size_t i =0; i < num_ents; ++i) {
+		randEntity = rand() % 3;
+		switch (randEntity) {
+			case 0:
+				world.addRandomLake();
+				break;
+			case 1:
+				world.addRandomAnimal();
+				break;
+			case 2:
+				world.addRandomPlant();
+				break;
+		}
 	}
-	for (size_t i = num_ents/3; i < 2*num_ents/3; ++i) {
-		world.addRandomAnimal();;
-	}
-	for (size_t i = 2*num_ents/3; i < num_ents; ++i) {
-		world.addRandomPlant();
-	}
+
 	// Entities should be added to the world here
 }
 

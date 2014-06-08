@@ -27,7 +27,7 @@ namespace gws {
 		SurvivalComponent(bool isActive) {
 			if(isActive) {
 				active = true;
-				strategy = SurvivalStrategy(rand()%7);
+				strategy = SurvivalStrategy(rand() % 7);
 				nutrientRequirement = rand() % max + min;
 				waterRequirement =rand() % max + min;
 			} else {
