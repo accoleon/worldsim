@@ -12,11 +12,18 @@ namespace gws {
 	struct NutrientComponent : Component {
 		int nutrientLevel;
 		const static int min = 0;
-		const static int max = 255;
+		const static int max = 100;
 		NutrientComponent(int nutrientLevel) : nutrientLevel(nutrientLevel) {
 			active = true;
 		}
-		NutrientComponent() : NutrientComponent(rand() % max + min) {}
+		NutrientComponent(bool isActive) {
+			if(isActive) {
+				active = true;
+				nutrientLevel = rand() % max + min;
+			} else {
+				active = false;
+			}
+		}
 	};
 } /* gws */
 #endif

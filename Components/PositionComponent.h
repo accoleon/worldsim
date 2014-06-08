@@ -21,7 +21,14 @@ namespace gws {
 		PositionComponent(int x, int y) : x(x), y(y) {
 			active = true;
 		}
-		PositionComponent() : PositionComponent(rand() % maxX + minX, rand() % maxY + minY) {
+		PositionComponent(bool isActive) {
+			if(isActive) {
+				active = true;
+				x = rand() % maxX + minX;
+				y = rand() % maxY + minY;
+			} else {
+				active = false;
+			}
 		}
 	};
 } /* gws */

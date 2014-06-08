@@ -18,13 +18,22 @@ namespace gws {
 		WEST
 	};
 	struct SurvivalComponent : Component {
-		SurvivalComponent(
-			SurvivalStrategy strat,
-			int nutrientRequirement,
-			int waterRequirement) : 
-			strategy(strat),
-			nutrientRequirement(nutrientRequirement),
-			waterRequirement(waterRequirement) {}
+		const static int min = 0;
+		const static int max = 100;
+		SurvivalComponent(SurvivalStrategy strat, int nutrientRequirement, int waterRequirement) : 
+			strategy(strat), nutrientRequirement(nutrientRequirement),waterRequirement(waterRequirement) {
+			active = true;
+		}
+		SurvivalComponent(bool isActive) {
+			if(isActive) {
+				active = true;
+				strategy = SurvivalStrategy(rand()%7);
+				nutrientRequirement = rand() % max + min;
+				waterRequirement =rand() % max + min;
+			} else {
+				active = false;
+			}
+		}
 		ComponentType getType() { return Survival; }
 		SurvivalStrategy strategy;
 		int nutrientRequirement;

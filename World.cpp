@@ -25,39 +25,38 @@ namespace gws {
 		renderSystem(*this, window) {}
 	World::~World() {}
 	
-	size_t World::addEntity() {
-		size_t ID = nextEntityID++;
-		positions.emplace_back();
-		waters.emplace_back();
-		return ID;
-	}
 	size_t World::addRandomPlant() {
 		// Create a random plant-type entity
 		size_t ID = nextEntityID++;
-		positions.emplace_back();
-		survivors.emplace_back(STATIONARY,rand() % max + min,rand() % max + min);
-		nutrients.emplace_back(100);
+		positions.emplace_back(true);
+		survivors.emplace_back(false);
+		nutrients.emplace_back(true);
+		waters.emplace_back(false);
 		return ID;
 	}
 	size_t World::addRandomAnimal() {
 		// Create a random lake entity
 		size_t ID = nextEntityID++;
-		positions.emplace_back();
-		survivors.emplace_back(EXPLORE,rand() % max + min,rand() % max + min);
-		nutrients.emplace_back(100);
+		positions.emplace_back(true);
+		survivors.emplace_back(true);
+		nutrients.emplace_back(true);
+		waters.emplace_back(false);
 		return ID;
 	}
 	size_t World::addRandomLake() {
 		// Create a random lake entity
 		size_t ID = nextEntityID++;
-		positions.emplace_back();
-		waters.emplace_back();
+		positions.emplace_back(true);
+		survivors.emplace_back(false);
+		nutrients.emplace_back(false);
+		waters.emplace_back(true);
 		return ID;
 	}
 	void World::reserve(size_t size) {
 		positions.reserve(size);
-		nutrients.reserve(size);
 		survivors.reserve(size);
+		nutrients.reserve(size);
+		waters.reserve(size);
 	}
 	void World::runSystems() {
 		// Probably don't want this - we have to order the systems to update 

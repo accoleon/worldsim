@@ -13,11 +13,18 @@ namespace gws {
 	struct WaterComponent : Component {
 		int waterLevel;
 		const static int min = 0;
-		const static int max = 255;
+		const static int max = 100;
 		WaterComponent(int waterLevel) : waterLevel(waterLevel) {
 			active = true;
 		}
-		WaterComponent() : WaterComponent(rand() % max + min) {}
+		WaterComponent(bool isActive) {
+			if(isActive) {
+				active = true;
+				waterLevel = rand() % max + min;
+			} else {
+				active = false;
+			}
+		}
 	};
 } /* gws */
 #endif
