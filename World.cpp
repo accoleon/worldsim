@@ -22,6 +22,7 @@ namespace gws {
 		waterSystem(*this),
 		nutrientSystem(*this),
 		survivalSystem(*this),
+		movementSystem(*this),
 		renderSystem(*this, window) {}
 	World::~World() {}
 	
@@ -66,7 +67,7 @@ namespace gws {
 			cout << "World is empty" << endl;
 		}
 		waterSystem.update();
-		
+		movementSystem.update();
 		// Rendering is done after everything else
 		renderSystem.update();
 	}

@@ -20,6 +20,7 @@ namespace gws {
 		~MovementSystem();
 		void update();
 		std::string getName();
+		SystemType getType();
 		int getMovement(int index);
 		void setMovement(int index, int set);
 		int compareMovements(int former, int latter);
