@@ -124,8 +124,7 @@ namespace gws {
 		glGenTextures(1, &tex);
 
 		//Empty world - brown 
-		for (int i = 0; i < screenWidth * screenHeight; ++i){
-			//cilk_for here seems to make it slower ~.0009 vs serial .0004
+		cilk_for (int i = 0; i < screenWidth * screenHeight; ++i){
 			pixelArray[i] = BROWN;
 		}
 
@@ -156,24 +155,27 @@ namespace gws {
 	}
 
 	void RenderSystem::update() {
+		/*Need an empty world to draw updates on*/
+		cilk_for (int i = 0; i < screenWidth * screenHeight; ++i){
+			pixelArray[i] = BROWN;
+		}
+
 		/*All vectors should be same size*/
 		auto end = world.waters.size();
 		cilk_for (auto i = 0; i < end; ++i) {
 			/*Start colors as light Reducing the a component will make the desired color
 			  more apparent, giving a relatively darker color.
 			  Use waterLevel,nutrientRequirement and waterRequirement as scale 0-100*/
-			if(world.waters[i].active) {
-				pixelArray[world.positions[i].y * screenWidth + world.positions[i].x] = 
-					CYAN - 0x00000100 * world.waters[i].waterLevel * 2.55;
-			} else if (world.survivors[i].active){
+			if(world.survivors[i].active){
 				pixelArray[world.positions[i].y * screenWidth + world.positions[i].x] = 
 					MAGENTA - 0x00000001 * world.survivors[i].nutrientRequirement * 2.55;
-			} else if (world.nutrients[i].active) {
+			} else if(world.waters[i].active) {
+				pixelArray[world.positions[i].y * screenWidth + world.positions[i].x] = 
+					CYAN - 0x00000100 * world.waters[i].waterLevel * 2.55;
+			} else if(world.nutrients[i].active) {
 				pixelArray[world.positions[i].y * screenWidth + world.positions[i].x] = 
 					/*Green scale is halved as we want LIME FF to GREEN 80*/
 					LIME - 0x00000100 * world.survivors[i].waterRequirement * 1.22;
-			} else {
-				pixelArray[world.positions[i].y * screenWidth + world.positions[i].x] = BROWN;
 			}			
 		}
 		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, screenWidth,screenHeight, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, pixelArray);

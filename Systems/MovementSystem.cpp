@@ -45,13 +45,13 @@ namespace gws {
 					case WEST:
 						targetX--;
 						break;
-				}	
-			}
-			if (targetX < 800 && targetX > 0) {
-				world.positions[i].x = targetX;
-			}
-			if (targetY < 600 && targetY > 0) {
-				world.positions[i].y = targetY;
+				}
+				if (targetX < 800 && targetX >= 0) {
+					world.positions[i].x = targetX;
+				}
+				if (targetY < 600 && targetY >= 0) {
+					world.positions[i].y = targetY;
+				}
 			}
 		}
 	}
