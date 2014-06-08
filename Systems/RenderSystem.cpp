@@ -156,12 +156,12 @@ namespace gws {
 	}
 
 	void RenderSystem::update() {
-		//cout << "Updating\n";
-		auto end = world.waters.size() + world.survivors.size();
+		/*All vectors should be same size*/
+		auto end = world.waters.size();
 		cilk_for (auto i = 0; i < end; ++i) {
-			//Start water color as Cyan. Reducing the green component will make blue component
-			//more apparent, giving a relatively darker blue.
-			//Use waterLevel as a scale for how dark. 0 Light : 255 Dark
+			/*Start colors as light Reducing the a component will make the desired color
+			  more apparent, giving a relatively darker color.
+			  Use waterLevel,nutrientRequirement and waterRequirement as scale 0-100*/
 			if(world.waters[i].active) {
 				pixelArray[world.positions[i].y * screenWidth + world.positions[i].x] = 
 					CYAN - 0x00000100 * world.waters[i].waterLevel * 2.55;
@@ -170,7 +170,8 @@ namespace gws {
 					MAGENTA - 0x00000001 * world.survivors[i].nutrientRequirement * 2.55;
 			} else if (world.nutrients[i].active) {
 				pixelArray[world.positions[i].y * screenWidth + world.positions[i].x] = 
-					LIME - 0x00000100 * world.survivors[i].waterRequirement * 2.55;
+					/*Green scale is halved as we want LIME FF to GREEN 80*/
+					LIME - 0x00000100 * world.survivors[i].waterRequirement * 1.22;
 			} else {
 				pixelArray[world.positions[i].y * screenWidth + world.positions[i].x] = BROWN;
 			}			
