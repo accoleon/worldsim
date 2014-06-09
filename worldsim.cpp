@@ -29,7 +29,7 @@ using namespace gws;
 
 const int screenWidth(800);
 const int screenHeight(600);
-const double FPS = 24;
+const double FPSLock = 24;
 SDL_Window* window;
 SDL_Renderer* renderer;
 SDL_Texture* texture;
@@ -89,10 +89,12 @@ void createEntities(World& world, int num_ents) {
 }
 
 void runWorld(World& world) {
+	double frames = 0;
 	cout << "Running world...\n";
 	// Simulation loop should be here
 	bool quit = false;
 	SDL_Event event;
+	double start = omp_get_wtime();
 	while (!quit) {
 		while(SDL_PollEvent(&event)) {
 			//If the user has Xed out the window
@@ -101,8 +103,8 @@ void runWorld(World& world) {
 				quit = true;
 			}
 		}
-
-		double SPF = 1/FPS;
+#ifdef FPS_LOCK
+		double SPF = 1/FPSLock;
 		double start = omp_get_wtime();
 		world.runSystems();
 		double end = omp_get_wtime();
@@ -111,7 +113,16 @@ void runWorld(World& world) {
 		if (sleepTime > 0 ) {
 			SDL_Delay(sleepTime*1000);
 		}
+#else 
+		world.runSystems();
+#endif
+		frames++;
+		
 	}
+	double end = omp_get_wtime();
+	double time = end - start;
+	double FPS = frames / time;
+	cout << FPS << " FPS";
 }
 
 void teardown()
