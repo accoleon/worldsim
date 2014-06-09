@@ -29,7 +29,7 @@ using std::string;
 namespace gws {
 	const int screenWidth(800);
 	const int screenHeight(600);
-	GLuint pixelArray[screenWidth * screenHeight];
+	GLuint pixelArray[2][screenWidth * screenHeight];
 	// Shader sources
 	const GLchar* vertexSource =
 		"#version 120\n"
@@ -125,14 +125,16 @@ namespace gws {
 
 		//Empty world - brown 
 		cilk_for (int i = 0; i < screenWidth * screenHeight; ++i){
-			pixelArray[i] = BROWN;
+			pixelArray[0][i] = BROWN;
+			pixelArray[1][i] = BROWN;
 		}
-
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, screenWidth, screenHeight, 0, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, pixelArray);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, screenWidth, screenHeight, 0, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, pixelArray[0]);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		nextPixel = 0;
 
 		glClearColor(0.0f,0.0f,0.0f,1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -140,7 +142,6 @@ namespace gws {
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		// Swap buffers
 		SDL_GL_SwapWindow(window);
-		
 	}
 
 	void RenderSystem::destroy(){
@@ -155,11 +156,25 @@ namespace gws {
 	}
 
 	void RenderSystem::update() {
+		if(nextPixel == 0) {
+			cilk_spawn(updateImage(0));
+			updatePixel(1);
+		} else {
+			cilk_spawn(updateImage(1));
+			updatePixel(0);
+		}
+		nextPixel = (nextPixel + 1) % 2;
+	}
+	void RenderSystem::updateImage(int pArray) {
+		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, screenWidth,screenHeight, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, pixelArray[pArray]);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		SDL_GL_SwapWindow(window);
+	}
+	void RenderSystem::updatePixel(int pArray) {
 		/*Need an empty world to draw updates on*/
 		cilk_for (int i = 0; i < screenWidth * screenHeight; ++i){
-			pixelArray[i] = BROWN;
+			pixelArray[pArray][i] = BROWN;
 		}
-
 		/*All vectors should be same size*/
 		auto end = world.waters.size();
 		cilk_for (auto i = 0; i < end; ++i) {
@@ -167,22 +182,18 @@ namespace gws {
 			  more apparent, giving a relatively darker color.
 			  Use waterLevel,nutrientRequirement and waterRequirement as scale 0-100*/
 			if(world.survivors[i].active){
-				pixelArray[world.positions[i].y * screenWidth + world.positions[i].x] = 
+				pixelArray[pArray][world.positions[i].y * screenWidth + world.positions[i].x] =
 					MAGENTA - 0x00000001 * world.survivors[i].nutrientRequirement * 2.55;
 			} else if(world.waters[i].active) {
-				pixelArray[world.positions[i].y * screenWidth + world.positions[i].x] = 
+				pixelArray[pArray][world.positions[i].y * screenWidth + world.positions[i].x] =
 					CYAN - 0x00000100 * world.waters[i].waterLevel * 2.55;
 			} else if(world.nutrients[i].active) {
-				pixelArray[world.positions[i].y * screenWidth + world.positions[i].x] = 
+				pixelArray[pArray][world.positions[i].y * screenWidth + world.positions[i].x] =
 					/*Green scale is halved as we want LIME FF to GREEN 80*/
 					LIME - 0x00000100 * world.survivors[i].waterRequirement * 1.22;
 			}			
 		}
-		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, screenWidth,screenHeight, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, pixelArray);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-		SDL_GL_SwapWindow(window);
 	}
-
 	string RenderSystem::getName() {
 		return "RenderSystem";
 	}

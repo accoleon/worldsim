@@ -25,6 +25,8 @@ namespace gws {
 		void Display_Init();
 		void destroy();
 		void update();
+		void updateImage(int pArray);
+		void updatePixel(int pArray);
 		std::string getName();
 		SystemType getType();
 	private:
@@ -36,8 +38,7 @@ namespace gws {
 		GLuint vertexShader;
 		GLuint fragmentShader;
 		GLuint shaderProgram;
-		int width;
-		int height;
+		int nextPixel;
 	};
 } /* gws */
 #endif
