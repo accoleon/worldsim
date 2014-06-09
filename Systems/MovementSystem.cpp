@@ -25,11 +25,15 @@ namespace gws {
 				int targetX = world.positions[i].x;
 				int targetY = world.positions[i].y;
 				switch(world.survivors[i].strategy) {
-					case EXPLORE:
-						break;
 					case STATIONARY:
-						break;
+						/* not implemented use explore
+						break; */
 					case BREED:
+						/* not implemented use explore
+						break; */
+					case EXPLORE:
+						targetX += (rand() % 3) - 1;
+						targetY += (rand() % 3) - 1;
 						break;
 					case NORTH:
 						targetY--;
