@@ -6,6 +6,7 @@
 // University of Oregon
 // 2014-04-16
 
+#include <cilk/cilk.h>
 #include <iostream>
 using std::cout;
 using std::endl;

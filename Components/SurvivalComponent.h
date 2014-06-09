@@ -18,18 +18,23 @@ namespace gws {
 		WEST
 	};
 	struct SurvivalComponent : Component {
-		const static int min = 0;
-		const static int max = 100;
-		SurvivalComponent(SurvivalStrategy strat, int nutrientRequirement, int waterRequirement) : 
-			strategy(strat), nutrientRequirement(nutrientRequirement),waterRequirement(waterRequirement) {
+		const static int minReq= 1;
+		const static int maxReq = 10;
+		const static int minLev = 1;
+		const static int maxLev = 100;
+		SurvivalComponent(SurvivalStrategy strat, int nutrientRequirement, int waterRequirement, int nutrientSupply, int waterSupply) : 
+			strategy(strat), nutrientRequirement(nutrientRequirement), waterRequirement(waterRequirement), 
+			nutrientSupply(nutrientSupply), waterSupply(waterSupply) {
 			active = true;
 		}
 		SurvivalComponent(bool isActive) {
 			if(isActive) {
 				active = true;
 				strategy = SurvivalStrategy(rand() % 7);
-				nutrientRequirement = rand() % max + min;
-				waterRequirement =rand() % max + min;
+				nutrientRequirement = rand() % maxReq + minReq;
+				waterRequirement = rand() % maxReq + minReq;
+				nutrientSupply= rand() % maxLev + minLev;
+				waterSupply = rand() % maxLev + minLev;
 			} else {
 				active = false;
 			}
@@ -38,6 +43,8 @@ namespace gws {
 		SurvivalStrategy strategy;
 		int nutrientRequirement;
 		int waterRequirement;
+		int nutrientSupply;
+		int waterSupply;
 	};
 } /* gws */
 #endif

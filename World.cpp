@@ -67,7 +67,9 @@ namespace gws {
 			cout << "World is empty" << endl;
 		}
 		waterSystem.update();
+		nutrientSystem.update();
 		movementSystem.update();
+		survivalSystem.update();
 		// Rendering is done after everything else
 		renderSystem.update();
 	}

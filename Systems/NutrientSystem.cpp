@@ -4,6 +4,7 @@
 // University of Oregon
 // 2014-05-10
 
+#include <cilk/cilk.h>
 #include <iostream>
 using std::cout;
 using std::endl;
@@ -12,6 +13,7 @@ using std::endl;
 using std::string;
 #include <map>
 #include "NutrientSystem.h"
+#include "../World.h"
 
 namespace gws {
 	NutrientSystem::NutrientSystem(World& world) : world(world) {
@@ -19,6 +21,15 @@ namespace gws {
 	}
 	NutrientSystem::~NutrientSystem() {}
 	void NutrientSystem::update() {
+		auto end = world.nutrients.size();
+		cilk_for (auto i = 0; i < end; ++i) {
+			if(world.nutrients[i].active) {
+				world.nutrients[i].nutrientLevel++;
+				if(world.nutrients[i].nutrientLevel > 100) {
+					world.nutrients[i].nutrientLevel = 100;
+				}
+			}
+		}
 	}
 	string NutrientSystem::getName() {
 		return "NutrientSystem";
