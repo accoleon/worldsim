@@ -9,7 +9,6 @@
 #include <iostream>
 using std::cout;
 using std::endl;
-#include <cilk/cilk.h>
 #include <string>
 #include <SDL2/SDL.h>
 
@@ -71,7 +70,7 @@ void createEntities(World& world, int num_ents) {
 	cout << "Creating entities...\n";
 	// Create random entities;
 	int randEntity;
-	cilk_for (size_t i =0; i < num_ents; ++i) {
+	for (size_t i =0; i < num_ents; ++i) {
 		randEntity = rand() % 3;
 		switch (randEntity) {
 			case 0:

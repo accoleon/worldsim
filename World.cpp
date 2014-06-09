@@ -66,12 +66,8 @@ namespace gws {
 		if (nextEntityID == 0) {
 			cout << "World is empty" << endl;
 		}
-		cilk_spawn(waterSystem.update());
-		cilk_spawn(nutrientSystem.update());
+		waterSystem.update();
 		movementSystem.update();
-		cilk_sync;
-		/* After plants,water and positions updated. survivors update*/
-		//survivalSystem.update();
 		// Rendering is done after everything else
 		renderSystem.update();
 	}
