@@ -19,34 +19,39 @@ namespace gws {
 	SurvivalSystem::SurvivalSystem(World& world) : world(world) {}
 	SurvivalSystem::~SurvivalSystem() {}
 	void SurvivalSystem::update() {
-		//Main AI controller for how each Entity will move throughout the World
+		/* 
+		 * Refactor, very inefficient. maybe use a map like other systems 
+		 * to store a copy of all positions in 1 iteration.
+		 */
 		auto end = world.survivors.size();
 		cilk_for(auto i = 0; i < end; ++i){
 			auto end = world.waters.size();
 			if(world.survivors[i].active) {
 				for(auto j = 0; j < end; ++j){
 					if( i == j){
-						/*Don't eat yourself..*/
+						/* Don't eat yourself.. */
 						continue;
 					}
 					if(world.positions[i].y == world.positions[j].y && world.positions[i].x == world.positions[j].x){
 						if(world.waters[j].active){
-							world.survivors[i].waterSupply += world.waters[j].waterLevel;
-							if(world.survivors[i].waterSupply > world.survivors[i].maxLev) {
-								world.waters[j].waterLevel = world.survivors[i].waterSupply - world.survivors[i].maxLev;
+							int tempWaterSupply = world.survivors[i].waterSupply + world.waters[j].waterLevel;
+							if(tempWaterSupply > world.survivors[i].maxLev) {
+								world.waterSystem.setWater(j, world.survivors[i].waterSupply - world.survivors[i].maxLev);
 								world.survivors[i].waterSupply = world.survivors[i].maxLev;
 							} else {
-								world.waters[j].waterLevel = 0;
+								world.waterSystem.setWater(j, 0);
+								world.survivors[i].waterSupply = tempWaterSupply;
 							}
 						}
-						/*All herivores for now*/
+						/* All herivores for now */
 						if(world.nutrients[j].active && !world.survivors[j].active) {
-							world.survivors[i].nutrientSupply += world.nutrients[j].nutrientLevel;
-							if(world.survivors[i].nutrientSupply > world.survivors[i].maxLev) {
-								world.nutrients[j].nutrientLevel = world.survivors[i].nutrientSupply - world.survivors[i].maxLev;
+							int tempNutrientSupply = world.survivors[i].nutrientSupply +world.nutrients[j].nutrientLevel;
+							if(tempNutrientSupply > world.survivors[i].maxLev) {
+								world.nutrientSystem.setNutrient(j, world.survivors[i].nutrientSupply - world.survivors[i].maxLev);
 								world.survivors[i].nutrientSupply = world.survivors[i].maxLev;
 							} else {
-								world.nutrients[j].nutrientLevel = 0;
+								world.nutrientSystem.setNutrient(j, 0);
+								world.survivors[i].nutrientSupply = tempNutrientSupply;
 							}
 						}
 					}
