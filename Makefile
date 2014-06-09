@@ -2,7 +2,7 @@ CC:=icc
 CXX:=icpc
 LD:=icpc
 CFLAGS:=$(shell sdl2-config --cflags)
-CXXFLAGS:=-Wall -Wextra -pedantic -std=c++11 $(shell sdl2-config --cflags)
+CXXFLAGS:=-Wall -g -Wextra -pedantic -std=c++11 $(shell sdl2-config --cflags)
 LDFLAGS:=-ltbb -std=c++11 $(shell sdl2-config --libs) -lGLEW -fopenmp
 VPATH=Components Entities Systems
 # OS X

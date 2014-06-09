@@ -72,15 +72,19 @@ void createEntities(World& world, int num_ents) {
 	// Create random entities;
 	int randEntity;
 	for (size_t i =0; i < num_ents; ++i) {
-		randEntity = rand() % 3;
+		randEntity = rand() % 7;
 		switch (randEntity) {
 			case 0:
+			case 1:
+			case 2:
 				world.addRandomLake();
 				break;
-			case 1:
+			case 3:
 				world.addRandomAnimal();
 				break;
-			case 2:
+			case 4:
+			case 5:
+			case 6:
 				world.addRandomPlant();
 				break;
 		}

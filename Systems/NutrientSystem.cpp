@@ -33,7 +33,7 @@ namespace gws {
 				world.nutrients[i].nutrientLevel++;
 				/* Cap nutrient levels */
 				if(world.nutrients[i].nutrientLevel > world.nutrients[i].max) {
-					world.nutrients[i].nutrientLevel = 100;	
+					world.nutrients[i].nutrientLevel = world.nutrients[i].max;
 				}
 			}
 		}

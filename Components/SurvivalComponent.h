@@ -21,7 +21,7 @@ namespace gws {
 		const static int minReq= 1;
 		const static int maxReq = 10;
 		const static int minLev = 1;
-		const static int maxLev = 100;
+		const static int maxLev = 1000;
 		SurvivalComponent(SurvivalStrategy strat, int nutrientRequirement, int waterRequirement, int nutrientSupply, int waterSupply) : 
 			strategy(strat), nutrientRequirement(nutrientRequirement), waterRequirement(waterRequirement), 
 			nutrientSupply(nutrientSupply), waterSupply(waterSupply) {
