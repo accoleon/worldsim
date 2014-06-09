@@ -51,8 +51,8 @@ namespace gws {
 						}
 					}
 				}
-				//world.survivors[i].waterSupply -= world.survivors[i].nutrientRequirement;
-				//world.survivors[i].nutrientSupply -= world.survivors[i].waterRequirement;
+				world.survivors[i].waterSupply -= world.survivors[i].nutrientRequirement;
+				world.survivors[i].nutrientSupply -= world.survivors[i].waterRequirement;
 				if(world.survivors[i].waterSupply <= 0 || world.survivors[i].nutrientSupply <= 0 ){
 					world.survivors[i].active = false;
 					world.positions[i].active = false;

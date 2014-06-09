@@ -21,17 +21,23 @@ namespace gws {
 	}
 	WaterSystem::~WaterSystem() {}
 	void WaterSystem::update() {
-		// As a test, randomly change the water levels of every water in the world
-		cilk_for (auto water = world.waters.begin(); water != world.waters.end(); ++water) {
-			water->waterLevel += 1;
-			if (water->waterLevel > water->max)
-				water->waterLevel = water->max;
-		}/*
-		for (auto& water : world.waters) {
-			water.waterLevel += 1;
-			if (water.waterLevel > water.max)
-				water.waterLevel = water.max;
-		}*/
+		auto end = world.waters.size();
+		cilk_for (auto i = 0; i < end; ++i) {
+			if(world.waters[i].active) {
+				/*Update changes made by other systems*/
+				std::map<int,int>::iterator it = water_levels.find(i);
+				if(it != water_levels.end()) {
+					world.waters[i].waterLevel = getWater(i);
+				}
+				/*Increment all waters*/
+				world.waters[i].waterLevel++;
+				/*Cap water levels*/
+				if(world.waters[i].waterLevel > world.waters[i].max) {
+					world.waters[i].waterLevel = 100;	
+				}
+			}
+		}
+		water_levels.clear();
 	}
 	string WaterSystem::getName() {
 		return "WaterSystem";
@@ -55,10 +61,10 @@ namespace gws {
 		}
 	}
 	void WaterSystem::reduceWater(int index, int reduction){
-		water_levels[index] -= reduction;
+		water_levels[index] = world.waters[index].waterLevel - reduction;
 	}
 	void WaterSystem::increaseWater(int index, int addition){
-		water_levels[index] += addition;
+		water_levels[index] = world.waters[index].waterLevel + addition;
 	}
 	
 } /* gws */

@@ -24,12 +24,21 @@ namespace gws {
 		auto end = world.nutrients.size();
 		cilk_for (auto i = 0; i < end; ++i) {
 			if(world.nutrients[i].active) {
+				/* Update changes made by other systems */
+				std::map<int,int>::iterator it = nutrient_levels.find(i);
+				if(it != nutrient_levels.end()) {
+					world.nutrients[i].nutrientLevel = getNutrient(i);
+				}
+				/* Increment all nutrients */
 				world.nutrients[i].nutrientLevel++;
-				if(world.nutrients[i].nutrientLevel > 100) {
-					world.nutrients[i].nutrientLevel = 100;
+				/* Cap nutrient levels */
+				if(world.nutrients[i].nutrientLevel > world.nutrients[i].max) {
+					world.nutrients[i].nutrientLevel = 100;	
 				}
 			}
 		}
+		/* Clear map for next cycle of updates */
+		nutrient_levels.clear();
 	}
 	string NutrientSystem::getName() {
 		return "NutrientSystem";
@@ -53,10 +62,10 @@ namespace gws {
 		}
 	}
 	void NutrientSystem::reduceNutrient(int index, int reduction){
-		nutrient_levels[index] -= reduction;
+		nutrient_levels[index] = world.nutrients[index].nutrientLevel - reduction;
 	}
 	void NutrientSystem::increaseNutrient(int index, int addition){
-		nutrient_levels[index] += addition;
+		nutrient_levels[index] = world.nutrients[index].nutrientLevel + addition;
 	}
 	
 } /* gws */
