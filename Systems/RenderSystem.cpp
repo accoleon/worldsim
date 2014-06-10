@@ -190,7 +190,7 @@ namespace gws {
 			} else if(world.nutrients[i].active) {
 				pixelArray[pArray][world.positions[i].y * screenWidth + world.positions[i].x] =
 					/*Green scale is halved as we want LIME FF to GREEN 80*/
-					LIME - 0x00000100 * world.nutrients[i].nutrientLevel * .122;
+					LIME - 0x00000100 * world.nutrients[i].nutrientLevel * .127;
 			}			
 		}
 	}
