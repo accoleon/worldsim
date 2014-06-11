@@ -36,7 +36,7 @@ namespace gws {
 						if(world.waters[j].active){
 							int tempWaterSupply = world.survivors[i].waterSupply + world.waters[j].waterLevel;
 							if(tempWaterSupply > world.survivors[i].maxLev) {
-								world.waterSystem.setWater(j, world.survivors[i].waterSupply - world.survivors[i].maxLev);
+								world.waterSystem.setWater(j, tempWaterSupply - world.survivors[i].maxLev);
 								world.survivors[i].waterSupply = world.survivors[i].maxLev;
 							} else {
 								world.waterSystem.setWater(j, 0);
@@ -45,9 +45,9 @@ namespace gws {
 						}
 						/* All herivores for now */
 						if(world.nutrients[j].active && !world.survivors[j].active) {
-							int tempNutrientSupply = world.survivors[i].nutrientSupply +world.nutrients[j].nutrientLevel;
+							int tempNutrientSupply = world.survivors[i].nutrientSupply + world.nutrients[j].nutrientLevel;
 							if(tempNutrientSupply > world.survivors[i].maxLev) {
-								world.nutrientSystem.setNutrient(j, world.survivors[i].nutrientSupply - world.survivors[i].maxLev);
+								world.nutrientSystem.setNutrient(j, tempNutrientSupply - world.survivors[i].maxLev);
 								world.survivors[i].nutrientSupply = world.survivors[i].maxLev;
 							} else {
 								world.nutrientSystem.setNutrient(j, 0);

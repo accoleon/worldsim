@@ -183,14 +183,14 @@ namespace gws {
 			  Use waterLevel,nutrientRequirement and waterRequirement as scale 0-100*/
 			if(world.survivors[i].active){
 				pixelArray[pArray][world.positions[i].y * screenWidth + world.positions[i].x] =
-					MAGENTA - 0x00000001 * world.survivors[i].nutrientSupply * 2.55;
+					MAGENTA - 0x00000001 * world.survivors[i].nutrientSupply * .255;
 			} else if(world.waters[i].active) {
 				pixelArray[pArray][world.positions[i].y * screenWidth + world.positions[i].x] =
-					CYAN - 0x00000100 * world.waters[i].waterLevel * 2.55;
+					CYAN - 0x00000100 * world.waters[i].waterLevel * .255;
 			} else if(world.nutrients[i].active) {
 				pixelArray[pArray][world.positions[i].y * screenWidth + world.positions[i].x] =
 					/*Green scale is halved as we want LIME FF to GREEN 80*/
-					LIME - 0x00000100 * world.nutrients[i].nutrientLevel * 1.22;
+					LIME - 0x00000100 * world.nutrients[i].nutrientLevel * .127;
 			}			
 		}
 	}

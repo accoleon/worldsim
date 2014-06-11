@@ -12,7 +12,7 @@ namespace gws {
 	struct NutrientComponent : Component {
 		int nutrientLevel;
 		const static int min = 0;
-		const static int max = 100;
+		const static int max = 1000;
 		NutrientComponent(int nutrientLevel) : nutrientLevel(nutrientLevel) {
 			active = true;
 		}

@@ -33,7 +33,7 @@ namespace gws {
 				world.waters[i].waterLevel++;
 				/*Cap water levels*/
 				if(world.waters[i].waterLevel > world.waters[i].max) {
-					world.waters[i].waterLevel = world.waters[i].max;	
+					world.waters[i].waterLevel = world.waters[i].max;
 				}
 			}
 		}
