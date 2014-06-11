@@ -21,14 +21,13 @@ namespace gws {
 	}
 	WaterSystem::~WaterSystem() {}
 	void WaterSystem::update() {
+		/* Update changes made by other systems */
+		for (std::map<int, int>::iterator it = water_levels.begin(); it != water_levels.end(); ++it) {
+			world.waters[it->first].waterLevel = water_levels[it->second];
+		}
 		auto end = world.waters.size();
 		cilk_for (auto i = 0; i < end; ++i) {
 			if(world.waters[i].active) {
-				/*Update changes made by other systems*/
-				std::map<int,int>::iterator it = water_levels.find(i);
-				if(it != water_levels.end()) {
-					world.waters[i].waterLevel = getWater(i);
-				}
 				/*Increment all waters*/
 				world.waters[i].waterLevel++;
 				/*Cap water levels*/

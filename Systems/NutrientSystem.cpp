@@ -21,14 +21,13 @@ namespace gws {
 	}
 	NutrientSystem::~NutrientSystem() {}
 	void NutrientSystem::update() {
+		/* Update changes made by other systems */
+		for (std::map<int, int>::iterator it = nutrient_levels.begin(); it != nutrient_levels.end(); ++it) {
+			world.nutrients[it->first].nutrientLevel = nutrient_levels[it->second];
+		}
 		auto end = world.nutrients.size();
 		cilk_for (auto i = 0; i < end; ++i) {
 			if(world.nutrients[i].active) {
-				/* Update changes made by other systems */
-				std::map<int,int>::iterator it = nutrient_levels.find(i);
-				if(it != nutrient_levels.end()) {
-					world.nutrients[i].nutrientLevel = getNutrient(i);
-				}
 				/* Increment all nutrients */
 				world.nutrients[i].nutrientLevel++;
 				/* Cap nutrient levels */
