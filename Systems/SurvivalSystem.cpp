@@ -23,11 +23,11 @@ namespace gws {
 		 * Refactor, very inefficient. maybe use a map like other systems 
 		 * to store a copy of all positions in 1 iteration.
 		 */
-		auto end = world.survivors.size();
-		cilk_for(auto i = 0; i < end; ++i){
-			auto end = world.waters.size();
+		auto end1 = world.survivors.size();
+		cilk_for(auto i = 0; i < end1; ++i){
+			auto end2 = world.waters.size();
 			if(world.survivors[i].active) {
-				for(auto j = 0; j < end; ++j){
+				for(auto j = 0; j < end2; ++j){
 					if( i == j){
 						/* Don't eat yourself.. */
 						continue;

@@ -20,7 +20,7 @@ using std::string;
 #include "RenderSystem.h"
 #include "../World.h"
 
-#define BROWN 	0xFF8B4513
+#define KHAKI 	0xFFF0E68C
 #define CYAN	0xFF00FFFF
 #define LIME	0xFF00FF00
 #define MAGENTA	0xFFFF00FF
@@ -125,8 +125,8 @@ namespace gws {
 
 		//Empty world - brown 
 		cilk_for (int i = 0; i < screenWidth * screenHeight; ++i){
-			pixelArray[0][i] = BROWN;
-			pixelArray[1][i] = BROWN;
+			pixelArray[0][i] = KHAKI;
+			pixelArray[1][i] = KHAKI;
 		}
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, screenWidth, screenHeight, 0, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, pixelArray[0]);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -173,7 +173,7 @@ namespace gws {
 	void RenderSystem::updatePixel(int pArray) {
 		/*Need an empty world to draw updates on*/
 		cilk_for (int i = 0; i < screenWidth * screenHeight; ++i){
-			pixelArray[pArray][i] = BROWN;
+			pixelArray[pArray][i] = KHAKI;
 		}
 		/*All vectors should be same size*/
 		auto end = world.waters.size();

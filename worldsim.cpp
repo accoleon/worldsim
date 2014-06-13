@@ -45,7 +45,7 @@ void createWindow() {
 		SDL_WINDOWPOS_UNDEFINED, 
 		SDL_WINDOWPOS_UNDEFINED, 
 		screenWidth, screenHeight,
-		SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL); 
+		SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN); 
 
 	if (window == nullptr){
 		std::cout << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
